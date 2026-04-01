@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { AboutButton } from "@/components/ui/about-modal";
 import { Spinner } from "@/components/ui/spinner";
+import { getRecentDocs, type RecentDoc } from "@/lib/recent-docs";
 
 interface CreateResult {
   document_id: string;
@@ -17,7 +18,12 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [recentDocs, setRecentDocs] = useState<RecentDoc[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setRecentDocs(getRecentDocs());
+  }, []);
 
   const handleCreate = useCallback(async () => {
     const text = content.trim();
@@ -259,7 +265,37 @@ export default function Home() {
           </code>
         </p>
 
-        <p className="text-center text-[11px] text-neutral-700 mt-2">
+        {recentDocs.length > 0 && (
+          <div className="mt-4 pt-4 border-t border-neutral-900">
+            <p className="text-xs text-neutral-600 mb-2">Recent documents</p>
+            <div className="space-y-1">
+              {recentDocs.slice(0, 5).map((doc) => (
+                <a
+                  key={`${doc.id}-${doc.key}`}
+                  href={`/d/${doc.id}?key=${doc.key}`}
+                  className="flex items-center justify-between px-3 py-2 rounded-lg bg-neutral-900/50 hover:bg-neutral-800/50 transition-colors group"
+                >
+                  <span className="text-sm text-neutral-400 group-hover:text-neutral-200 truncate">
+                    {doc.title}
+                  </span>
+                  <span className={`text-[11px] px-1.5 py-0.5 rounded uppercase font-semibold shrink-0 ml-2 ${
+                    doc.permission === "admin"
+                      ? "bg-purple-900/50 text-purple-300"
+                      : doc.permission === "edit"
+                      ? "bg-blue-900/50 text-blue-300"
+                      : doc.permission === "comment"
+                      ? "bg-amber-900/50 text-amber-300"
+                      : "bg-neutral-800 text-neutral-500"
+                  }`}>
+                    {doc.permission}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <p className="text-center text-[11px] text-neutral-700 mt-4">
           Your markdown, your links, your responsibility. No login. No encryption. No takebacks.
         </p>
       </div>

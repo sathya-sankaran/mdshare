@@ -13,6 +13,7 @@ import type { Permission } from "@/lib/tokens";
 import type { CommentAnchor } from "@/components/editor/comment-highlight";
 import { useDocumentWS } from "@/lib/use-document-ws";
 import { useDisplayName } from "@/lib/use-display-name";
+import { saveRecentDoc } from "@/lib/recent-docs";
 
 interface DocumentViewProps {
   document: DocumentRow;
@@ -57,6 +58,16 @@ export function DocumentView({
     setOpenPanel((prev) => (prev === panel ? null : panel));
   }, []);
 
+  // Save to recent documents
+  useEffect(() => {
+    saveRecentDoc({
+      id: doc.id,
+      title: doc.title,
+      key: tokenKey,
+      permission,
+    });
+  }, [doc.id, doc.title, tokenKey, permission]);
+
   // Presence heartbeat
   const [viewers, setViewers] = useState<{ name: string }[]>([]);
   const sessionIdRef = useRef(Math.random().toString(36).slice(2));
@@ -84,14 +95,24 @@ export function DocumentView({
     return () => clearInterval(interval);
   }, [doc.id, tokenKey, displayName]);
 
+  // Flash tab title when content is updated by someone else
+  const flashTabTitle = useCallback(() => {
+    const original = document.title;
+    document.title = "Updated — " + original.replace("Updated — ", "");
+    setTimeout(() => {
+      document.title = original;
+    }, 3000);
+  }, []);
+
   // Real-time updates via WebSocket (falls back to polling if unavailable)
   const handleWSUpdate = useCallback((content: string, contentHash: string) => {
     if (isSavingRef.current) return;
     setLiveContent(content);
     setLastContentHash(contentHash);
     setSaveStatus("Updated");
+    flashTabTitle();
     setTimeout(() => setSaveStatus("Ready"), 2000);
-  }, []);
+  }, [flashTabTitle]);
 
   const { broadcastUpdate, presenceCount, connected: wsConnected } = useDocumentWS({
     documentId: doc.id,
@@ -113,10 +134,11 @@ export function DocumentView({
         setLiveContent(data.content);
         setLastContentHash(data.content_hash);
         setSaveStatus("Updated");
+        flashTabTitle();
         setTimeout(() => setSaveStatus("Ready"), 2000);
       }
     }
-  }, [doc.id, tokenKey, lastContentHash, wsConnected]);
+  }, [doc.id, tokenKey, lastContentHash, wsConnected, flashTabTitle]);
 
   useEffect(() => {
     const interval = setInterval(pollDocument, 3000);

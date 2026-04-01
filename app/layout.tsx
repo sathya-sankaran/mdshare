@@ -16,6 +16,20 @@ export const metadata: Metadata = {
   title: "mdshare — Share markdown instantly",
   description:
     "Zero-login markdown sharing. Upload, get a link, collaborate. No accounts needed.",
+  openGraph: {
+    title: "mdshare — Share markdown instantly",
+    description:
+      "Zero-login markdown sharing. Upload, get a link, collaborate. No accounts needed.",
+    siteName: "mdshare",
+    type: "website",
+    url: "https://mdshare.live",
+  },
+  twitter: {
+    card: "summary",
+    title: "mdshare — Share markdown instantly",
+    description:
+      "Zero-login markdown sharing. Upload, get a link, collaborate. No accounts needed.",
+  },
 };
 
 export default function RootLayout({

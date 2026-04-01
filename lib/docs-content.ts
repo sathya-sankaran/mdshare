@@ -42,8 +42,11 @@ curl -H "Accept: text/markdown" "https://mdshare.live/api/d/{id}?key={key}"
 \`\`\`bash
 curl -X PUT "https://mdshare.live/api/d/{id}?key={edit_or_admin_key}" \\
   -H "Content-Type: text/markdown" \\
+  -H "X-Author: Your Name" \\
   --data-binary @updated.md
 \`\`\`
+
+The \`X-Author\` header is optional. It tags the edit in version history.
 
 ### Generate a share link (admin only)
 
@@ -62,6 +65,8 @@ curl -X POST "https://mdshare.live/api/d/{id}/links?key={admin_key}" \\
   "label": "for-team"
 }
 \`\`\`
+
+Optional: add \`"expires_at": "2026-05-01T00:00:00Z"\` to set an expiry date.
 
 ---
 
@@ -91,18 +96,37 @@ curl -X POST "https://mdshare.live/api/d/{id}/links?key={admin_key}" \\
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| \`POST\` | \`/api/d/:id/links?key=KEY\` | Admin | Create share link |
-| \`GET\` | \`/api/d/:id/links?key=KEY\` | Admin | List all links |
-| \`PATCH\` | \`/api/links/:token?key=KEY\` | Admin | Modify link |
+| \`POST\` | \`/api/d/:id/links?key=KEY\` | Admin | Create share link. Body: \`{permission, label, expires_at}\` |
+| \`GET\` | \`/api/d/:id/links?key=KEY\` | Admin | List all links with URLs |
+| \`PATCH\` | \`/api/links/:token?key=KEY\` | Admin | Modify link permission or status |
 | \`DELETE\` | \`/api/links/:token?key=KEY\` | Admin | Revoke link |
 
 ### Comments
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| \`POST\` | \`/api/d/:id/comments?key=KEY\` | Comment/Edit/Admin | Add comment |
+| \`POST\` | \`/api/d/:id/comments?key=KEY\` | Comment/Edit/Admin | Add comment. Body: \`{content, author_name, anchor_text}\` |
 | \`GET\` | \`/api/d/:id/comments?key=KEY\` | Any | List comments |
-| \`PATCH\` | \`/api/comments/:id?key=KEY\` | Edit/Admin | Resolve comment |
+| \`PATCH\` | \`/api/comments/:id?key=KEY\` | Edit/Admin | Resolve/unresolve comment. Body: \`{resolved: true}\` |
+
+### Presence
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| \`POST\` | \`/api/d/:id/presence?key=KEY\` | Any | Heartbeat. Body: \`{session_id, name}\`. Returns viewers list |
+| \`GET\` | \`/api/d/:id/presence?key=KEY\` | Any | Get who's currently online |
+
+---
+
+## Rate Limits
+
+| Endpoint | Limit |
+|----------|-------|
+| \`POST /api/documents\` | 10 per minute per IP |
+| \`PUT /api/d/:id\` | 30 per minute per IP |
+| \`POST /api/d/:id/comments\` | 20 per minute per IP |
+
+Rate-limited responses return \`429\` with a \`Retry-After\` header.
 
 ---
 
@@ -113,14 +137,16 @@ curl -X POST "https://mdshare.live/api/d/{id}/links?key={admin_key}" \\
 | \`400\` | Invalid content (binary file, empty, too large) |
 | \`403\` | Insufficient permission |
 | \`404\` | Document not found or invalid key |
+| \`429\` | Rate limited |
 
 ---
 
 ## Notes
 
 - Content is sanitized server-side (no raw HTML, XSS protection)
-- Binary files are rejected (magic byte detection)
+- Binary files are rejected (magic byte detection for 24+ formats)
 - Links only allow \`http:\`, \`https:\`, \`mailto:\` protocols
+- Max document size: 10MB
 - All content should be treated as user-generated
 - API responses include \`X-Content-Source: user-generated\` header
 `;

@@ -104,6 +104,27 @@ curl -H "Accept: text/markdown" "https://mdshare.live/api/d/{id}?key={key}"`}</c
             </tbody>
           </table>
 
+          <h3>Presence</h3>
+          <table>
+            <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>POST</code></td><td><code>/api/d/:id/presence?key=KEY</code></td><td>Any</td><td>Heartbeat (body: session_id, name)</td></tr>
+              <tr><td><code>GET</code></td><td><code>/api/d/:id/presence?key=KEY</code></td><td>Any</td><td>Get who&apos;s online</td></tr>
+            </tbody>
+          </table>
+
+          <hr />
+
+          <h2>Rate Limits</h2>
+          <table>
+            <thead><tr><th>Endpoint</th><th>Limit</th></tr></thead>
+            <tbody>
+              <tr><td><code>POST /api/documents</code></td><td>10 per minute per IP</td></tr>
+              <tr><td><code>PUT /api/d/:id</code></td><td>30 per minute per IP</td></tr>
+              <tr><td><code>POST /api/d/:id/comments</code></td><td>20 per minute per IP</td></tr>
+            </tbody>
+          </table>
+
           <hr />
 
           <h2>Errors</h2>
@@ -113,6 +134,7 @@ curl -H "Accept: text/markdown" "https://mdshare.live/api/d/{id}?key={key}"`}</c
               <tr><td><code>400</code></td><td>Invalid content (binary, empty, too large)</td></tr>
               <tr><td><code>403</code></td><td>Insufficient permission</td></tr>
               <tr><td><code>404</code></td><td>Document not found or invalid key</td></tr>
+              <tr><td><code>429</code></td><td>Rate limited (check Retry-After header)</td></tr>
             </tbody>
           </table>
 

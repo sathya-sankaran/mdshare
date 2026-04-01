@@ -14,12 +14,19 @@ Upload a markdown file, get shareable links with different permissions, collabor
 
 - **Zero login** -- everything is link-based, no accounts needed
 - **Four permission levels** -- Admin, Edit, Comment, View -- each with its own shareable link
-- **WYSIWYG editor** -- rich text editing with formatting toolbar
-- **Inline comments** -- select text, leave comments anchored to specific sections
-- **Real-time updates** -- changes appear across all connected browsers
+- **WYSIWYG editor** -- rich text editing with formatting toolbar, tables, code blocks
+- **Inline comments** -- select text, leave comments anchored to specific sections with highlights
+- **Live presence** -- see who's currently viewing the document
+- **Real-time updates** -- changes appear across all connected browsers, tab title flashes on updates
+- **Display names** -- set once, used for comments, edits, and presence
 - **API & AI-friendly** -- full REST API, works with curl and AI chatbots
 - **Content sanitization** -- XSS protection, binary file rejection, protocol whitelist
-- **Mobile responsive** -- works on phones and tablets
+- **Rate limiting** -- abuse prevention on all write endpoints
+- **Link expiry** -- optional expiration dates on share links
+- **Recent documents** -- quickly access previously visited docs from the landing page
+- **Keyboard shortcuts** -- Cmd+B/I/E for formatting, Cmd+\\ for comments, Cmd+D to download
+- **Mobile responsive** -- touch-friendly, collapsible panels, works on phones and tablets
+- **Rich link previews** -- Open Graph tags for Slack, WhatsApp, and social media
 
 ## Quick Start
 
