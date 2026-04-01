@@ -18,6 +18,21 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
+/* Docs page prose */
+.prose-docs h1 { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+.prose-docs h2 { font-size: 1.4rem; font-weight: 600; color: #eee; margin-top: 2rem; margin-bottom: 0.75rem; }
+.prose-docs h3 { font-size: 1.1rem; font-weight: 600; color: #ddd; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+.prose-docs p { color: #aaa; line-height: 1.7; margin-bottom: 0.75rem; }
+.prose-docs .lead { color: #ccc; font-size: 1.05rem; }
+.prose-docs code { background: #1e1e1e; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #e879f9; font-family: var(--font-mono), monospace; }
+.prose-docs pre { background: #111; border: 1px solid #222; border-radius: 8px; padding: 1rem; margin: 0.75rem 0; overflow-x: auto; }
+.prose-docs pre code { background: none; padding: 0; color: #ccc; font-size: 0.85rem; }
+.prose-docs hr { border: none; border-top: 1px solid #222; margin: 2rem 0; }
+.prose-docs table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.875rem; }
+.prose-docs th { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 2px solid #333; color: #999; font-weight: 600; }
+.prose-docs td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #1a1a1a; color: #bbb; }
+.prose-docs strong { color: #eee; }
+
 /* Hide scrollbar for toolbar horizontal scroll */
 .scrollbar-hide {
   -ms-overflow-style: none;

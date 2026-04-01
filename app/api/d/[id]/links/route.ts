@@ -30,9 +30,10 @@ export async function POST(
     return Response.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const body = (await request.json()) as { permission: string; label?: string };
+  const body = (await request.json()) as { permission: string; label?: string; expires_at?: string | null };
   const permission = body.permission as Permission;
   const label = body.label || null;
+  const expiresAt = body.expires_at || null;
 
   if (!VALID_PERMISSIONS.includes(permission)) {
     return Response.json(
@@ -48,10 +49,10 @@ export async function POST(
 
   await db
     .prepare(
-      `INSERT INTO links (id, document_id, token_prefix, token_hash, permission, label, token)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO links (id, document_id, token_prefix, token_hash, permission, label, token, expires_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
     )
-    .bind(linkId, id, prefix, hash, permission, label, token)
+    .bind(linkId, id, prefix, hash, permission, label, token, expiresAt)
     .run();
 
   const baseUrl = new URL(request.url).origin;

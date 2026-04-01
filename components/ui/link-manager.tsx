@@ -7,6 +7,7 @@ interface LinkItem {
   permission: string;
   label: string | null;
   is_active: number;
+  expires_at: string | null;
   created_at: string;
   url: string | null;
 }
@@ -21,6 +22,7 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
   const [loaded, setLoaded] = useState(false);
   const [newPerm, setNewPerm] = useState<"view" | "edit" | "comment">("view");
   const [newLabel, setNewLabel] = useState("");
+  const [newExpiry, setNewExpiry] = useState("");
   const [creating, setCreating] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
@@ -46,6 +48,7 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
         body: JSON.stringify({
           permission: newPerm,
           label: newLabel || null,
+          expires_at: newExpiry ? new Date(newExpiry).toISOString() : null,
         }),
       });
       if (!res.ok) return;
@@ -55,6 +58,7 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
       // Auto-copy the new link
       navigator.clipboard.writeText(data.url);
       setNewLabel("");
+      setNewExpiry("");
 
       // Refetch to get the updated list with URLs
       await fetchLinks();
@@ -134,13 +138,26 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
                 </button>
               )}
 
-              <div className="flex items-center justify-between mt-1.5">
+              <div className="flex items-center justify-between mt-1.5 flex-wrap gap-1">
                 <span className="text-[10px] text-neutral-700">
                   {new Date(link.created_at).toLocaleDateString()}
                 </span>
-                {!link.is_active && (
-                  <span className="text-[10px] text-red-400">Revoked</span>
-                )}
+                <div className="flex gap-1.5">
+                  {link.expires_at && (
+                    <span className={`text-[10px] ${
+                      new Date(link.expires_at) < new Date()
+                        ? "text-red-400"
+                        : "text-amber-500"
+                    }`}>
+                      {new Date(link.expires_at) < new Date()
+                        ? "Expired"
+                        : `Expires ${new Date(link.expires_at).toLocaleDateString()}`}
+                    </span>
+                  )}
+                  {!link.is_active && (
+                    <span className="text-[10px] text-red-400">Revoked</span>
+                  )}
+                </div>
               </div>
             </div>
           );
@@ -174,6 +191,19 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
           placeholder="Label (optional)"
           className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2.5 text-sm text-neutral-300 placeholder-neutral-600 mb-2 touch-manipulation"
         />
+        <div className="relative mb-2">
+          <input
+            type="datetime-local"
+            value={newExpiry}
+            onChange={(e) => setNewExpiry(e.target.value)}
+            className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2.5 text-sm text-neutral-300 touch-manipulation [color-scheme:dark]"
+          />
+          {!newExpiry && (
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-neutral-600 pointer-events-none">
+              Expires (optional)
+            </span>
+          )}
+        </div>
         <button
           onClick={createLink}
           disabled={creating}

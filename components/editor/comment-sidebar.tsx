@@ -37,7 +37,23 @@ export function CommentSidebar({
   const [newComment, setNewComment] = useState("");
   const [authorName, setAuthorName] = useState("");
   const [posting, setPosting] = useState(false);
+  const [showResolved, setShowResolved] = useState(false);
   const commentRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const canResolve = canComment; // edit and admin can resolve
+
+  const toggleResolve = async (commentId: string, currentlyResolved: boolean) => {
+    await fetch(`/api/comments/${commentId}?key=${tokenKey}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ resolved: !currentlyResolved }),
+    });
+    onCommentsChange();
+  };
+
+  const unresolvedComments = comments.filter((c) => !c.resolved);
+  const resolvedComments = comments.filter((c) => c.resolved);
+  const displayComments = showResolved ? comments : unresolvedComments;
 
   // Listen for clicks on highlights in the editor
   useEffect(() => {
@@ -99,14 +115,25 @@ export function CommentSidebar({
 
   return (
     <div className="w-full bg-neutral-950 p-4 overflow-y-auto flex flex-col h-full">
-      <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-4">
-        Comments ({comments.length})
-      </h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
+          Comments ({unresolvedComments.length})
+        </h3>
+        {resolvedComments.length > 0 && (
+          <button
+            onClick={() => setShowResolved(!showResolved)}
+            className="text-[10px] text-neutral-500 hover:text-neutral-300 transition-colors"
+          >
+            {showResolved ? "Hide" : "Show"} resolved ({resolvedComments.length})
+          </button>
+        )}
+      </div>
 
       {/* Comment list */}
       <div className="space-y-3 flex-1 overflow-y-auto mb-4">
-        {comments.map((comment) => {
+        {displayComments.map((comment) => {
           const isActive = activeCommentId === comment.id;
+          const isResolved = !!comment.resolved;
           return (
             <div
               key={comment.id}
@@ -121,6 +148,8 @@ export function CommentSidebar({
               className={`rounded-lg p-3 transition-colors ${
                 comment.anchor_text ? "cursor-pointer" : ""
               } ${
+                isResolved ? "opacity-60" : ""
+              } ${
                 isActive
                   ? "bg-indigo-900/30 ring-1 ring-indigo-500"
                   : "bg-neutral-900 hover:bg-neutral-800/80"
@@ -133,6 +162,9 @@ export function CommentSidebar({
                 <span className="text-[10px] text-neutral-600">
                   {timeAgo(comment.created_at)}
                 </span>
+                {isResolved && (
+                  <span className="text-[10px] text-green-500 font-medium">Resolved</span>
+                )}
               </div>
               {comment.anchor_text && (
                 <p className={`text-[11px] italic mb-1.5 border-l-2 pl-2 ${
@@ -147,12 +179,23 @@ export function CommentSidebar({
               <p className="text-xs text-neutral-400 leading-relaxed">
                 {comment.content}
               </p>
+              {canResolve && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleResolve(comment.id, isResolved);
+                  }}
+                  className="mt-2 text-[10px] text-neutral-500 hover:text-neutral-300 transition-colors"
+                >
+                  {isResolved ? "Unresolve" : "Resolve"}
+                </button>
+              )}
             </div>
           );
         })}
-        {comments.length === 0 && (
+        {displayComments.length === 0 && (
           <p className="text-xs text-neutral-600 text-center py-4">
-            No comments yet
+            {comments.length > 0 ? "All comments resolved" : "No comments yet"}
           </p>
         )}
       </div>

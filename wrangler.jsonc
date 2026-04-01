@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "main": ".open-next/worker.js",
+  "main": "custom-worker.ts",
   "name": "mdshare",
   "compatibility_date": "2026-04-01",
   "compatibility_flags": ["nodejs_compat"],
@@ -19,6 +19,20 @@
       "binding": "DB",
       "database_name": "mdshare-db",
       "database_id": "88a26b65-c21b-4b1a-8971-7393d880ad66"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "DOCUMENT_WS",
+        "class_name": "DocumentWebSocket"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_classes": ["DocumentWebSocket"]
     }
   ]
 }

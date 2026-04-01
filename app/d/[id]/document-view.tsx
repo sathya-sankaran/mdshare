@@ -9,6 +9,7 @@ import { DownloadButton } from "@/components/ui/download-button";
 import type { DocumentRow } from "@/lib/db";
 import type { Permission } from "@/lib/tokens";
 import type { CommentAnchor } from "@/components/editor/comment-highlight";
+import { useDocumentWS } from "@/lib/use-document-ws";
 
 interface DocumentViewProps {
   document: DocumentRow;
@@ -52,9 +53,25 @@ export function DocumentView({
     setOpenPanel((prev) => (prev === panel ? null : panel));
   };
 
-  // Poll for document updates
-  const pollDocument = useCallback(async () => {
+  // Real-time updates via WebSocket (falls back to polling if unavailable)
+  const handleWSUpdate = useCallback((content: string, contentHash: string) => {
     if (isSavingRef.current) return;
+    setLiveContent(content);
+    setLastContentHash(contentHash);
+    setSaveStatus("Updated");
+    setTimeout(() => setSaveStatus("Ready"), 2000);
+  }, []);
+
+  const { broadcastUpdate, presenceCount, connected: wsConnected } = useDocumentWS({
+    documentId: doc.id,
+    tokenKey,
+    onContentUpdate: handleWSUpdate,
+    enabled: true,
+  });
+
+  // Fallback polling when WebSocket is not connected
+  const pollDocument = useCallback(async () => {
+    if (isSavingRef.current || wsConnected) return;
     const res = await fetch(`/api/d/${doc.id}?key=${tokenKey}`);
     if (res.ok) {
       const data = (await res.json()) as {
@@ -68,7 +85,7 @@ export function DocumentView({
         setTimeout(() => setSaveStatus("Ready"), 2000);
       }
     }
-  }, [doc.id, tokenKey, lastContentHash]);
+  }, [doc.id, tokenKey, lastContentHash, wsConnected]);
 
   useEffect(() => {
     const interval = setInterval(pollDocument, 3000);
@@ -132,7 +149,11 @@ export function DocumentView({
         });
         if (res.ok) {
           const data = (await res.json()) as { status: string; content_hash?: string };
-          if (data.content_hash) setLastContentHash(data.content_hash);
+          if (data.content_hash) {
+            setLastContentHash(data.content_hash);
+            // Broadcast to other clients via WebSocket
+            broadcastUpdate(markdown, data.content_hash);
+          }
           setSaveStatus(data.status === "unchanged" ? "No changes" : "Saved");
           setTimeout(() => setSaveStatus("Ready"), 2000);
         } else {
@@ -144,7 +165,7 @@ export function DocumentView({
         isSavingRef.current = false;
       }
     },
-    [doc.id, tokenKey]
+    [doc.id, tokenKey, broadcastUpdate]
   );
 
   return (
@@ -159,6 +180,12 @@ export function DocumentView({
           <span className="text-sm text-neutral-300 truncate hidden sm:inline">
             {doc.title}
           </span>
+          {presenceCount > 1 && (
+            <span className="hidden sm:flex items-center gap-1 text-[10px] text-green-400 shrink-0">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+              {presenceCount} online
+            </span>
+          )}
           <span
             className={`text-[10px] px-2 py-0.5 rounded uppercase font-semibold text-white shrink-0 ${BADGE_COLORS[permission]}`}
           >
