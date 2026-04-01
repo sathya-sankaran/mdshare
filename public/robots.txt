@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Allow: /docs
+
+Disallow: /api/
+Disallow: /d/
+
+Sitemap: https://mdshare.live/sitemap.xml

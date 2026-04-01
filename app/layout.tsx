@@ -43,6 +43,21 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
       <body className="min-h-full flex flex-col bg-neutral-950 text-neutral-200">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "mdshare",
+              "url": "https://mdshare.live",
+              "description": "Zero-login markdown sharing. Upload, get a link, collaborate. No accounts needed.",
+              "applicationCategory": "Productivity",
+              "operatingSystem": "Any",
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+            })
+          }}
+        />
         {children}
       </body>
     </html>

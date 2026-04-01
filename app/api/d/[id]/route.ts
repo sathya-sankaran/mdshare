@@ -49,6 +49,15 @@ export async function GET(
     });
   }
 
+  // Get last editor from versions table
+  const lastVersion = await db
+    .prepare(
+      `SELECT edited_by, edited_via, created_at FROM versions
+       WHERE document_id = ? ORDER BY created_at DESC LIMIT 1`
+    )
+    .bind(id)
+    .first<{ edited_by: string | null; edited_via: string | null; created_at: string }>();
+
   // JSON (default)
   return Response.json({
     document_id: doc.id,
@@ -56,6 +65,9 @@ export async function GET(
     content: doc.content,
     content_hash: doc.content_hash,
     permission: resolved.permission,
+    last_edited_by: lastVersion?.edited_by || null,
+    last_edited_via: lastVersion?.edited_via || null,
+    last_edited_at: lastVersion?.created_at || null,
     created_at: doc.created_at,
     updated_at: doc.updated_at,
   }, {

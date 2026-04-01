@@ -1,0 +1,18 @@
+# mdshare
+> Zero-login markdown sharing. Upload, get a link, collaborate.
+
+## API
+Base URL: https://mdshare.live
+Documentation: https://mdshare.live/docs/raw
+
+## Quick Start
+Upload: POST /api/documents (Content-Type: text/markdown, body: raw markdown)
+Read: GET /api/d/{id}?key={key} (Accept: text/markdown for raw)
+Update: PUT /api/d/{id}?key={edit_key} (Content-Type: text/markdown)
+Links: POST /api/d/{id}/links?key={admin_key} (body: {permission, label})
+Comments: POST /api/d/{id}/comments?key={key} (body: {content, author_name, anchor_text})
+Versions: GET /api/d/{id}/versions?key={key}
+Presence: POST /api/d/{id}/presence?key={key} (body: {session_id, name})
+
+## Permissions
+adm_ = full control | edt_ = read+write | cmt_ = read+comment | viw_ = read only

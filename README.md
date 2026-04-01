@@ -74,6 +74,14 @@ curl -X POST "https://mdshare.live/api/d/{id}/links?key={admin_key}" \
   -d '{"permission": "edit", "label": "for-team"}'
 ```
 
+### View edit history
+
+```bash
+curl "https://mdshare.live/api/d/{id}/versions?key={key}"
+```
+
+Returns who edited, when, and via what (browser/api). The main GET endpoint also includes `last_edited_by` for quick checks.
+
 ## Permissions
 
 | Key prefix | Level | Can do |

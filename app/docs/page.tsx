@@ -1,3 +1,16 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "API Documentation — mdshare",
+  description: "REST API documentation for mdshare. Upload, read, update markdown documents via curl or any HTTP client.",
+  openGraph: {
+    title: "API Documentation — mdshare",
+    description: "REST API documentation for mdshare.",
+    siteName: "mdshare",
+    type: "website",
+  },
+};
+
 export default function DocsPage() {
   return (
     <div className="min-h-screen bg-neutral-950">
@@ -103,6 +116,15 @@ curl -H "Accept: text/markdown" "https://mdshare.live/api/d/{id}?key={key}"`}</c
               <tr><td><code>PATCH</code></td><td><code>/api/comments/:id?key=KEY</code></td><td>Edit/Admin</td><td>Resolve comment</td></tr>
             </tbody>
           </table>
+
+          <h3>Versions (edit history)</h3>
+          <table>
+            <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>GET</code></td><td><code>/api/d/:id/versions?key=KEY</code></td><td>Any</td><td>List edit history (who, when, via what)</td></tr>
+            </tbody>
+          </table>
+          <p>The <code>GET /api/d/:id</code> response also includes <code>last_edited_by</code>, <code>last_edited_via</code>, and <code>last_edited_at</code>.</p>
 
           <h3>Presence</h3>
           <table>

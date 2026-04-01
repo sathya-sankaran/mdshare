@@ -109,6 +109,14 @@ Optional: add \`"expires_at": "2026-05-01T00:00:00Z"\` to set an expiry date.
 | \`GET\` | \`/api/d/:id/comments?key=KEY\` | Any | List comments |
 | \`PATCH\` | \`/api/comments/:id?key=KEY\` | Edit/Admin | Resolve/unresolve comment. Body: \`{resolved: true}\` |
 
+### Versions (edit history)
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| \`GET\` | \`/api/d/:id/versions?key=KEY\` | Any | List edit history (who, when, via what). Last 50 entries |
+
+The \`GET /api/d/:id\` response also includes \`last_edited_by\`, \`last_edited_via\`, and \`last_edited_at\` fields.
+
 ### Presence
 
 | Method | Endpoint | Auth | Description |
