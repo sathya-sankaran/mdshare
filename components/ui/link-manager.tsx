@@ -193,7 +193,7 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
           className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2.5 text-sm text-neutral-300 placeholder-neutral-600 mb-2 touch-manipulation"
         />
         <label className="block mb-2">
-          <span className="text-[11px] text-neutral-600 mb-1 block">Expires (optional)</span>
+          <span className="text-[11px] text-neutral-600 mb-1 block">Expires (leave blank for never)</span>
           <input
             type="datetime-local"
             value={newExpiry}
