@@ -11,6 +11,7 @@ import type { DocumentRow } from "@/lib/db";
 import type { Permission } from "@/lib/tokens";
 import type { CommentAnchor } from "@/components/editor/comment-highlight";
 import { useDocumentWS } from "@/lib/use-document-ws";
+import { useDisplayName } from "@/lib/use-display-name";
 
 interface DocumentViewProps {
   document: DocumentRow;
@@ -47,6 +48,7 @@ export function DocumentView({
   const [liveContent, setLiveContent] = useState(doc.content);
   const [lastContentHash, setLastContentHash] = useState(doc.content_hash);
   const isSavingRef = useRef(false);
+  const { name: displayName, setName: setDisplayName } = useDisplayName();
   const editable = permission === "admin" || permission === "edit";
   const canComment = permission === "admin" || permission === "edit" || permission === "comment";
 
@@ -145,6 +147,7 @@ export function DocumentView({
           headers: {
             "Content-Type": "text/markdown",
             "X-Edited-Via": "browser",
+            "X-Author": displayName,
           },
           body: markdown,
         });
@@ -166,7 +169,7 @@ export function DocumentView({
         isSavingRef.current = false;
       }
     },
-    [doc.id, tokenKey, broadcastUpdate]
+    [doc.id, tokenKey, broadcastUpdate, displayName]
   );
 
   return (
@@ -182,7 +185,7 @@ export function DocumentView({
             {doc.title}
           </span>
           {presenceCount > 1 && (
-            <span className="hidden sm:flex items-center gap-1 text-[10px] text-green-400 shrink-0">
+            <span className="hidden sm:flex items-center gap-1 text-[11px] text-green-400 shrink-0">
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
               {presenceCount} online
             </span>
@@ -273,8 +276,8 @@ export function DocumentView({
             activeCommentId={activeCommentId}
           />
           {/* Status bar */}
-          <div className="flex items-center justify-between px-3 sm:px-5 py-1.5 border-t border-neutral-800 text-[11px] sm:text-xs text-neutral-600 bg-neutral-950">
-            <span className="flex items-center gap-1.5">
+          <div className="flex items-center justify-between px-3 sm:px-5 py-1.5 border-t border-neutral-800 text-[11px] sm:text-xs text-neutral-600 bg-neutral-950 gap-3">
+            <span className="flex items-center gap-1.5 shrink-0">
               <span
                 className={`inline-block w-1.5 h-1.5 rounded-full ${
                   saveStatus === "Saved" || saveStatus === "Ready"
@@ -286,9 +289,10 @@ export function DocumentView({
               />
               {saveStatus}
             </span>
-            <span>
+            <span className="hidden sm:inline">
               {doc.content.split(/\s+/).filter(Boolean).length} words
             </span>
+            <DisplayNameEditor name={displayName} onChangeName={setDisplayName} />
           </div>
         </div>
 
@@ -320,7 +324,7 @@ export function DocumentView({
             </h3>
             <button
               onClick={() => setOpenPanel(null)}
-              className="p-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-400 transition-colors"
+              className="p-2.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-400 transition-colors touch-manipulation"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -341,6 +345,7 @@ export function DocumentView({
                 onCommentsChange={fetchComments}
                 activeCommentId={activeCommentId}
                 onActiveCommentChange={setActiveCommentId}
+                displayName={displayName}
               />
             )}
             {openPanel === "links" && permission === "admin" && (
@@ -350,5 +355,57 @@ export function DocumentView({
         </div>
       </div>
     </div>
+  );
+}
+
+function DisplayNameEditor({
+  name,
+  onChangeName,
+}: {
+  name: string;
+  onChangeName: (name: string) => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(name);
+
+  if (editing) {
+    return (
+      <span className="flex items-center gap-1 shrink-0">
+        <input
+          autoFocus
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              onChangeName(draft);
+              setEditing(false);
+            }
+            if (e.key === "Escape") {
+              setDraft(name);
+              setEditing(false);
+            }
+          }}
+          onBlur={() => {
+            onChangeName(draft);
+            setEditing(false);
+          }}
+          className="bg-neutral-900 border border-neutral-700 rounded px-2 py-1 text-xs text-neutral-300 w-32 focus:outline-none focus:border-indigo-500"
+          placeholder="Your name"
+        />
+      </span>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => {
+        setDraft(name);
+        setEditing(true);
+      }}
+      className="shrink-0 text-neutral-500 hover:text-neutral-300 transition-colors truncate max-w-[150px]"
+      title="Click to change your display name"
+    >
+      {name === "Anonymous" ? "Set your name" : name}
+    </button>
   );
 }

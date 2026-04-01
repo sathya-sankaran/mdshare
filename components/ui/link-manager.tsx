@@ -118,7 +118,7 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
                   {link.label || "Untitled"}
                 </span>
                 <span
-                  className={`text-[10px] px-1.5 py-0.5 rounded uppercase font-semibold shrink-0 ml-2 ${permColor(
+                  className={`text-[11px] px-1.5 py-0.5 rounded uppercase font-semibold shrink-0 ml-2 ${permColor(
                     link.permission
                   )}`}
                 >
@@ -140,12 +140,12 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
               )}
 
               <div className="flex items-center justify-between mt-1.5 flex-wrap gap-1">
-                <span className="text-[10px] text-neutral-700">
+                <span className="text-[11px] text-neutral-700">
                   {new Date(link.created_at).toLocaleDateString()}
                 </span>
                 <div className="flex gap-1.5">
                   {link.expires_at && (
-                    <span className={`text-[10px] ${
+                    <span className={`text-[11px] ${
                       new Date(link.expires_at) < new Date()
                         ? "text-red-400"
                         : "text-amber-500"
@@ -156,7 +156,7 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
                     </span>
                   )}
                   {!link.is_active && (
-                    <span className="text-[10px] text-red-400">Revoked</span>
+                    <span className="text-[11px] text-red-400">Revoked</span>
                   )}
                 </div>
               </div>
@@ -208,7 +208,7 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
         >
           {creating ? <Spinner context="link" /> : "Generate Link"}
         </button>
-        <p className="text-[10px] text-neutral-600 mt-2 text-center">
+        <p className="text-[11px] text-neutral-600 mt-2 text-center">
           Auto-copied to clipboard on creation
         </p>
       </div>

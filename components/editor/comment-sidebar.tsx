@@ -22,6 +22,7 @@ interface CommentSidebarProps {
   onCommentsChange: () => void;
   activeCommentId: string | null;
   onActiveCommentChange: (id: string | null) => void;
+  displayName: string;
 }
 
 export function CommentSidebar({
@@ -34,9 +35,9 @@ export function CommentSidebar({
   onCommentsChange,
   activeCommentId,
   onActiveCommentChange,
+  displayName,
 }: CommentSidebarProps) {
   const [newComment, setNewComment] = useState("");
-  const [authorName, setAuthorName] = useState("");
   const [posting, setPosting] = useState(false);
   const [showResolved, setShowResolved] = useState(false);
   const commentRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -86,7 +87,7 @@ export function CommentSidebar({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             content: newComment,
-            author_name: authorName.trim() || "Anonymous",
+            author_name: displayName,
             anchor_text: selectedText || null,
           }),
         }
@@ -123,7 +124,7 @@ export function CommentSidebar({
         {resolvedComments.length > 0 && (
           <button
             onClick={() => setShowResolved(!showResolved)}
-            className="text-[10px] text-neutral-500 hover:text-neutral-300 transition-colors"
+            className="text-[11px] text-neutral-500 hover:text-neutral-300 transition-colors"
           >
             {showResolved ? "Hide" : "Show"} resolved ({resolvedComments.length})
           </button>
@@ -160,11 +161,11 @@ export function CommentSidebar({
                 <span className="text-xs font-semibold text-neutral-300">
                   {comment.author_name}
                 </span>
-                <span className="text-[10px] text-neutral-600">
+                <span className="text-[11px] text-neutral-600">
                   {timeAgo(comment.created_at)}
                 </span>
                 {isResolved && (
-                  <span className="text-[10px] text-green-500 font-medium">Resolved</span>
+                  <span className="text-[11px] text-green-500 font-medium">Resolved</span>
                 )}
               </div>
               {comment.anchor_text && (
@@ -186,7 +187,7 @@ export function CommentSidebar({
                     e.stopPropagation();
                     toggleResolve(comment.id, isResolved);
                   }}
-                  className="mt-2 text-[10px] text-neutral-500 hover:text-neutral-300 transition-colors"
+                  className="mt-2 text-[11px] text-neutral-500 hover:text-neutral-300 transition-colors"
                 >
                   {isResolved ? "Unresolve" : "Resolve"}
                 </button>
@@ -219,12 +220,9 @@ export function CommentSidebar({
               </button>
             </div>
           )}
-          <input
-            value={authorName}
-            onChange={(e) => setAuthorName(e.target.value)}
-            placeholder="Your name (optional)"
-            className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2.5 text-sm text-neutral-300 placeholder-neutral-600 mb-2 touch-manipulation"
-          />
+          <p className="text-[11px] text-neutral-600 mb-2">
+            Commenting as <span className="text-neutral-400">{displayName}</span>
+          </p>
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}

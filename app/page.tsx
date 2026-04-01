@@ -258,6 +258,10 @@ export default function Home() {
             curl -X POST mdshare.live/api/documents --data-binary @file.md
           </code>
         </p>
+
+        <p className="text-center text-[11px] text-neutral-700 mt-2">
+          Your markdown, your links, your responsibility. No login. No encryption. No takebacks.
+        </p>
       </div>
     </main>
   );

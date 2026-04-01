@@ -4,6 +4,7 @@ import type { DocumentRow } from "@/lib/db";
 import { resolveToken, canPerform } from "@/lib/permissions";
 import { sanitizeMarkdown, contentHash } from "@/lib/sanitize";
 import { nanoid } from "nanoid";
+import { checkRateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -65,11 +66,16 @@ export async function GET(
 /**
  * PUT /api/d/:id?key=TOKEN — Update a document.
  * Requires edit or admin key.
+ * Rate limited: 30 updates per minute per IP.
  */
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const ip = request.headers.get("cf-connecting-ip") || request.headers.get("x-forwarded-for") || "unknown";
+  const limit = checkRateLimit(ip, "update", { max: 30, windowSec: 60 });
+  if (!limit.allowed) return rateLimitResponse(limit);
+
   const { id } = await params;
   const key = request.nextUrl.searchParams.get("key");
   if (!key) {
@@ -120,14 +126,15 @@ export async function PUT(
   // Save current version to history
   const versionId = nanoid(16);
   const editedVia = request.headers.get("x-edited-via") || "api";
+  const editedBy = request.headers.get("x-author") || "Anonymous";
 
   await db.batch([
     db
       .prepare(
-        `INSERT INTO versions (id, document_id, content, content_hash, edited_via)
-         VALUES (?, ?, ?, ?, ?)`
+        `INSERT INTO versions (id, document_id, content, content_hash, edited_via, edited_by)
+         VALUES (?, ?, ?, ?, ?, ?)`
       )
-      .bind(versionId, id, current.content, current.content_hash, editedVia),
+      .bind(versionId, id, current.content, current.content_hash, editedVia, editedBy),
     db
       .prepare(
         `UPDATE documents SET content = ?, content_hash = ?, updated_at = datetime('now')

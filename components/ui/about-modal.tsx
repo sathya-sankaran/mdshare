@@ -17,7 +17,7 @@ export function AboutButton({ variant = "icon" }: { variant?: "icon" | "text" })
       ) : (
         <button
           onClick={() => setOpen(true)}
-          className="p-2 rounded-lg text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800 transition-colors touch-manipulation"
+          className="p-2.5 rounded-lg text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800 transition-colors touch-manipulation"
           title="About mdshare"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -39,7 +39,7 @@ export function AboutButton({ variant = "icon" }: { variant?: "icon" | "text" })
             {/* Close button */}
             <button
               onClick={() => setOpen(false)}
-              className="absolute top-4 right-4 p-1.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-500 hover:text-neutral-300 transition-colors"
+              className="absolute top-4 right-4 p-2.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-500 hover:text-neutral-300 transition-colors touch-manipulation"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

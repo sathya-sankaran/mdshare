@@ -28,7 +28,7 @@ body {
 .prose-docs pre { background: #111; border: 1px solid #222; border-radius: 8px; padding: 1rem; margin: 0.75rem 0; overflow-x: auto; }
 .prose-docs pre code { background: none; padding: 0; color: #ccc; font-size: 0.85rem; }
 .prose-docs hr { border: none; border-top: 1px solid #222; margin: 2rem 0; }
-.prose-docs table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.875rem; }
+.prose-docs table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.875rem; display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .prose-docs th { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 2px solid #333; color: #999; font-weight: 600; }
 .prose-docs td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #1a1a1a; color: #bbb; }
 .prose-docs strong { color: #eee; }

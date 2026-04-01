@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 import { getDB } from "@/lib/db";
 import { generateToken, hashToken, tokenPrefix } from "@/lib/tokens";
 import { sanitizeMarkdown, contentHash, validateIsText } from "@/lib/sanitize";
+import { checkRateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -10,8 +11,13 @@ export const dynamic = "force-dynamic";
  * POST /api/documents — Create a new document.
  * Accepts: text/markdown body or multipart form-data with file field.
  * Returns: admin key + admin URL.
+ * Rate limited: 10 creates per minute per IP.
  */
 export async function POST(request: NextRequest) {
+  const ip = request.headers.get("cf-connecting-ip") || request.headers.get("x-forwarded-for") || "unknown";
+  const limit = checkRateLimit(ip, "create", { max: 10, windowSec: 60 });
+  if (!limit.allowed) return rateLimitResponse(limit);
+
   const db = getDB();
   let rawContent: string;
   let title = "Untitled";

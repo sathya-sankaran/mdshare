@@ -24,7 +24,7 @@ function ToolbarButton({
         onClick();
       }}
       title={title}
-      className={`min-w-[36px] h-9 sm:min-w-[32px] sm:h-8 flex items-center justify-center rounded text-sm font-semibold transition-colors touch-manipulation ${
+      className={`min-w-[44px] h-11 sm:min-w-[32px] sm:h-8 flex items-center justify-center rounded text-sm font-semibold transition-colors touch-manipulation ${
         active
           ? "bg-neutral-700 text-white"
           : "text-neutral-400 hover:bg-neutral-800 hover:text-white active:bg-neutral-700"
