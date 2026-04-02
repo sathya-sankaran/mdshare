@@ -96,8 +96,8 @@ export function AboutButton({ variant = "icon" }: { variant?: "icon" | "text" })
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
                   </svg>
                 }
-                title="API & AI-friendly"
-                desc="Full REST API for programmatic access. Upload, read, and update documents via curl. Perfect for AI chatbot workflows."
+                title="API & MCP for AI"
+                desc="Full REST API + MCP server (npx mdshare-mcp). Works with Claude, ChatGPT/Codex, Gemini CLI, Cursor, and Windsurf. Just say &quot;upload this to mdshare.&quot;"
               />
               <Feature
                 icon={
