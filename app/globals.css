@@ -50,8 +50,9 @@ body {
 }
 
 /* Shared prose styles for editor and viewer */
-.tiptap, .prose-viewer { color: #e5e5e5; line-height: 1.7; overflow-wrap: break-word; word-break: break-word; max-width: 100%; }
-.tiptap .ProseMirror, .prose-viewer { overflow-x: hidden; }
+.tiptap, .prose-viewer { color: #e5e5e5; line-height: 1.7; overflow-wrap: break-word; word-break: break-word; }
+.tiptap .ProseMirror { overflow-x: hidden; width: 100%; max-width: 100%; }
+.prose-viewer { overflow-x: hidden; }
 .prose-viewer { font-size: 0.9375rem; }
 .tiptap { outline: none; }
 
