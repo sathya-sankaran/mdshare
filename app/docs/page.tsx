@@ -175,9 +175,12 @@ curl -H "Accept: text/markdown" "https://mdshare.live/api/d/{id}?key={key}"`}</c
 
           <h2 id="use-with-ai">Use with AI</h2>
 
-          <h3>With Claude (MCP — coming soon)</h3>
+          <h3>MCP Setup (coming soon)</h3>
+          <p>mdshare works as an MCP server with Claude, ChatGPT/Codex, and Gemini CLI.</p>
           <pre><code>npx mdshare-mcp</code></pre>
-          <p>Or add to your Claude config:</p>
+
+          <h4>Claude Desktop / Claude Code</h4>
+          <p>Add to <code>~/.claude/claude_desktop_config.json</code>:</p>
           <pre><code>{`{
   "mcpServers": {
     "mdshare": {
@@ -186,20 +189,44 @@ curl -H "Accept: text/markdown" "https://mdshare.live/api/d/{id}?key={key}"`}</c
     }
   }
 }`}</code></pre>
-          <p>Then just say:</p>
-          <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-400">
+
+          <h4>OpenAI Codex CLI</h4>
+          <p>Add to <code>~/.codex/config.json</code>:</p>
+          <pre><code>{`{
+  "mcpServers": {
+    "mdshare": {
+      "command": "npx",
+      "args": ["mdshare-mcp"]
+    }
+  }
+}`}</code></pre>
+
+          <h4>Gemini CLI</h4>
+          <p>Add to <code>~/.gemini/settings.json</code>:</p>
+          <pre><code>{`{
+  "mcpServers": {
+    "mdshare": {
+      "command": "npx",
+      "args": ["mdshare-mcp"]
+    }
+  }
+}`}</code></pre>
+
+          <h3>What to tell your AI</h3>
+          <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-300">
             <li>&ldquo;Upload my-notes.md to mdshare and give me an edit link&rdquo;</li>
             <li>&ldquo;Read this mdshare document and summarize the comments&rdquo;</li>
             <li>&ldquo;Incorporate the feedback and resolve the comments&rdquo;</li>
             <li>&ldquo;Share this markdown with view-only access&rdquo;</li>
             <li>&ldquo;Who edited this document last?&rdquo;</li>
+            <li>&ldquo;Post a comment on the budget section&rdquo;</li>
           </ul>
 
-          <h3>With any AI chatbot (no MCP needed)</h3>
-          <p>Tell your AI chatbot:</p>
+          <h3>Without MCP (works with any AI)</h3>
+          <p>No setup needed. Just tell your AI chatbot:</p>
           <pre><code>{`Read https://mdshare.live/docs/raw to learn the mdshare API,
 then upload this markdown and give me a share link.`}</code></pre>
-          <p>Works with Claude, ChatGPT, Gemini, or any AI that can make HTTP calls.</p>
+          <p>Works with Claude, ChatGPT, Gemini, Copilot, or any AI that can make HTTP calls.</p>
         </div>
       </main>
     </div>
