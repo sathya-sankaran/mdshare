@@ -9,6 +9,7 @@ export interface Comment {
   content: string;
   anchor_text: string | null;
   resolved: number;
+  parent_id: string | null;
   created_at: string;
 }
 
@@ -40,6 +41,8 @@ export function CommentSidebar({
   const [newComment, setNewComment] = useState("");
   const [posting, setPosting] = useState(false);
   const [showResolved, setShowResolved] = useState(false);
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const [replyText, setReplyText] = useState("");
   const commentRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const canResolve = canComment; // edit and admin can resolve
@@ -75,6 +78,32 @@ export function CommentSidebar({
     window.addEventListener("comment-highlight-click", handler);
     return () => window.removeEventListener("comment-highlight-click", handler);
   }, [onActiveCommentChange]);
+
+  const postReply = async (parentId: string) => {
+    if (!replyText.trim()) return;
+    setPosting(true);
+    try {
+      const res = await fetch(
+        `/api/d/${documentId}/comments?key=${tokenKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content: replyText,
+            author_name: displayName,
+            parent_id: parentId,
+          }),
+        }
+      );
+      if (res.ok) {
+        setReplyText("");
+        setReplyingTo(null);
+        onCommentsChange();
+      }
+    } finally {
+      setPosting(false);
+    }
+  };
 
   const postComment = async () => {
     if (!newComment.trim()) return;
@@ -131,75 +160,149 @@ export function CommentSidebar({
         )}
       </div>
 
-      {/* Comment list */}
+      {/* Comment list — grouped with replies */}
       <div className="space-y-3 flex-1 overflow-y-auto mb-4">
-        {displayComments.map((comment) => {
-          const isActive = activeCommentId === comment.id;
-          const isResolved = !!comment.resolved;
-          return (
-            <div
-              key={comment.id}
-              ref={(el) => { commentRefs.current[comment.id] = el; }}
-              onClick={() => {
-                if (comment.anchor_text) {
-                  onActiveCommentChange(
-                    isActive ? null : comment.id
-                  );
-                }
-              }}
-              className={`rounded-lg p-3 transition-colors ${
-                comment.anchor_text ? "cursor-pointer" : ""
-              } ${
-                isResolved ? "opacity-60" : ""
-              } ${
-                isActive
-                  ? "bg-indigo-900/30 ring-1 ring-indigo-500"
-                  : "bg-neutral-900 hover:bg-neutral-800/80"
-              }`}
-            >
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-xs font-semibold text-neutral-300">
-                  {comment.author_name}
-                </span>
-                <span className="text-[11px] text-neutral-600">
-                  {timeAgo(comment.created_at)}
-                </span>
-                {isResolved && (
-                  <span className="text-[11px] text-green-500 font-medium">Resolved</span>
+        {(() => {
+          // Group: top-level comments with their replies
+          const topLevel = displayComments.filter(c => !c.parent_id);
+          const repliesMap = new Map<string, Comment[]>();
+          for (const c of displayComments) {
+            if (c.parent_id) {
+              if (!repliesMap.has(c.parent_id)) repliesMap.set(c.parent_id, []);
+              repliesMap.get(c.parent_id)!.push(c);
+            }
+          }
+
+          if (topLevel.length === 0 && displayComments.length === 0) {
+            return (
+              <p className="text-xs text-neutral-600 text-center py-4">
+                {comments.length > 0 ? "All comments resolved" : "Select text in the document to leave a comment"}
+              </p>
+            );
+          }
+
+          return topLevel.map((comment) => {
+            const isActive = activeCommentId === comment.id;
+            const isResolved = !!comment.resolved;
+            const replies = repliesMap.get(comment.id) || [];
+
+            return (
+              <div key={comment.id}>
+                {/* Parent comment */}
+                <div
+                  ref={(el) => { commentRefs.current[comment.id] = el; }}
+                  onClick={() => {
+                    if (comment.anchor_text) {
+                      onActiveCommentChange(isActive ? null : comment.id);
+                    }
+                  }}
+                  className={`rounded-lg p-3 transition-colors ${
+                    comment.anchor_text ? "cursor-pointer" : ""
+                  } ${isResolved ? "opacity-60" : ""} ${
+                    isActive
+                      ? "bg-indigo-900/30 ring-1 ring-indigo-500"
+                      : "bg-neutral-900 hover:bg-neutral-800/80"
+                  }`}
+                >
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-semibold text-neutral-300">
+                      {comment.author_name}
+                    </span>
+                    <span className="text-[11px] text-neutral-600">
+                      {timeAgo(comment.created_at)}
+                    </span>
+                    {isResolved && (
+                      <span className="text-[11px] text-green-500 font-medium">Resolved</span>
+                    )}
+                  </div>
+                  {comment.anchor_text && (
+                    <p className={`text-[11px] italic mb-1.5 border-l-2 pl-2 ${
+                      isActive ? "text-indigo-300 border-indigo-400" : "text-indigo-400 border-indigo-500"
+                    }`}>
+                      &ldquo;{comment.anchor_text.slice(0, 80)}
+                      {comment.anchor_text.length > 80 ? "..." : ""}&rdquo;
+                    </p>
+                  )}
+                  <p className="text-xs text-neutral-400 leading-relaxed">
+                    {comment.content}
+                  </p>
+                  <div className="flex gap-3 mt-2">
+                    {canResolve && (
+                      <button
+                        onClick={(e) => { e.stopPropagation(); toggleResolve(comment.id, isResolved); }}
+                        className="text-[11px] text-neutral-500 hover:text-neutral-300 transition-colors"
+                      >
+                        {isResolved ? "Unresolve" : "Resolve"}
+                      </button>
+                    )}
+                    {canComment && !isResolved && (
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setReplyingTo(replyingTo === comment.id ? null : comment.id); setReplyText(""); }}
+                        className="text-[11px] text-neutral-500 hover:text-neutral-300 transition-colors"
+                      >
+                        Reply
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Replies */}
+                {replies.length > 0 && (
+                  <div className="ml-4 mt-1 space-y-1 border-l-2 border-neutral-800 pl-3">
+                    {replies.map((reply) => (
+                      <div
+                        key={reply.id}
+                        ref={(el) => { commentRefs.current[reply.id] = el; }}
+                        className="rounded-lg p-2 bg-neutral-900/50"
+                      >
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className="text-[11px] font-semibold text-neutral-400">
+                            {reply.author_name}
+                          </span>
+                          <span className="text-[11px] text-neutral-600">
+                            {timeAgo(reply.created_at)}
+                          </span>
+                        </div>
+                        <p className="text-xs text-neutral-400 leading-relaxed">
+                          {reply.content}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Reply form */}
+                {replyingTo === comment.id && (
+                  <div className="ml-4 mt-1 border-l-2 border-indigo-500/30 pl-3">
+                    <textarea
+                      autoFocus
+                      value={replyText}
+                      onChange={(e) => setReplyText(e.target.value)}
+                      placeholder={`Reply to ${comment.author_name}...`}
+                      rows={2}
+                      className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-xs text-neutral-300 placeholder-neutral-600 resize-none mb-1 touch-manipulation"
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => postReply(comment.id)}
+                        disabled={posting || !replyText.trim()}
+                        className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 disabled:bg-neutral-800 disabled:text-neutral-600 text-white text-xs rounded-lg transition-colors touch-manipulation"
+                      >
+                        {posting ? "..." : "Reply"}
+                      </button>
+                      <button
+                        onClick={() => { setReplyingTo(null); setReplyText(""); }}
+                        className="px-3 py-1.5 text-xs text-neutral-500 hover:text-neutral-300 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
                 )}
               </div>
-              {comment.anchor_text && (
-                <p className={`text-[11px] italic mb-1.5 border-l-2 pl-2 ${
-                  isActive
-                    ? "text-indigo-300 border-indigo-400"
-                    : "text-indigo-400 border-indigo-500"
-                }`}>
-                  &ldquo;{comment.anchor_text.slice(0, 80)}
-                  {comment.anchor_text.length > 80 ? "..." : ""}&rdquo;
-                </p>
-              )}
-              <p className="text-xs text-neutral-400 leading-relaxed">
-                {comment.content}
-              </p>
-              {canResolve && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleResolve(comment.id, isResolved);
-                  }}
-                  className="mt-2 text-[11px] text-neutral-500 hover:text-neutral-300 transition-colors"
-                >
-                  {isResolved ? "Unresolve" : "Resolve"}
-                </button>
-              )}
-            </div>
-          );
-        })}
-        {displayComments.length === 0 && (
-          <p className="text-xs text-neutral-600 text-center py-4">
-            {comments.length > 0 ? "All comments resolved" : "Select text in the document to leave a comment"}
-          </p>
-        )}
+            );
+          });
+        })()}
       </div>
 
       {/* Add comment form */}

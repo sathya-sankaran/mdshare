@@ -42,18 +42,35 @@ export async function POST(
     anchor_text?: string;
     anchor_start?: number;
     anchor_end?: number;
+    parent_id?: string;
   };
 
   if (!body.content?.trim()) {
     return Response.json({ error: "Comment content required" }, { status: 400 });
   }
 
+  // Replies can only go one level deep
+  let parentId = body.parent_id || null;
+  if (parentId) {
+    const parent = await db
+      .prepare("SELECT parent_id FROM comments WHERE id = ? AND document_id = ?")
+      .bind(parentId, id)
+      .first<{ parent_id: string | null }>();
+    if (!parent) {
+      return Response.json({ error: "Parent comment not found" }, { status: 400 });
+    }
+    // If replying to a reply, attach to the root parent instead
+    if (parent.parent_id) {
+      parentId = parent.parent_id;
+    }
+  }
+
   const commentId = nanoid(16);
 
   await db
     .prepare(
-      `INSERT INTO comments (id, document_id, author_name, content, anchor_text, anchor_start, anchor_end)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO comments (id, document_id, author_name, content, anchor_text, anchor_start, anchor_end, parent_id)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .bind(
       commentId,
@@ -62,7 +79,8 @@ export async function POST(
       body.content.trim(),
       body.anchor_text || null,
       body.anchor_start ?? null,
-      body.anchor_end ?? null
+      body.anchor_end ?? null,
+      parentId
     )
     .run();
 
@@ -105,10 +123,10 @@ export async function GET(
 
   const comments = await db
     .prepare(
-      `SELECT id, author_name, content, anchor_text, anchor_start, anchor_end, resolved, created_at
+      `SELECT id, author_name, content, anchor_text, anchor_start, anchor_end, resolved, parent_id, created_at
        FROM comments
        WHERE document_id = ?
-       ORDER BY created_at DESC`
+       ORDER BY created_at ASC`
     )
     .bind(id)
     .all();
