@@ -58,7 +58,6 @@ export function DocumentView({
     setOpenPanel((prev) => (prev === panel ? null : panel));
   }, []);
 
-  // Save to recent documents
   useEffect(() => {
     saveRecentDoc({
       id: doc.id,
@@ -68,7 +67,6 @@ export function DocumentView({
     });
   }, [doc.id, doc.title, tokenKey, permission]);
 
-  // Combined polling — single request for content, comments, and presence
   const [viewers, setViewers] = useState<{ name: string }[]>([]);
   const sessionIdRef = useRef(Math.random().toString(36).slice(2));
 
@@ -78,7 +76,7 @@ export function DocumentView({
     setTimeout(() => { document.title = original; }, 3000);
   }, []);
 
-  // WebSocket for instant updates (falls back to polling)
+  // WebSocket for instant updates; poll is the fallback
   const handleWSUpdate = useCallback((content: string, contentHash: string) => {
     if (isSavingRef.current) return;
     setLiveContent(content);
@@ -95,7 +93,14 @@ export function DocumentView({
     enabled: true,
   });
 
-  // Single poll loop — replaces 3 separate intervals
+  // Use refs for values that change often to avoid recreating the poll callback
+  const lastContentHashRef = useRef(lastContentHash);
+  lastContentHashRef.current = lastContentHash;
+  const displayNameRef = useRef(displayName);
+  displayNameRef.current = displayName;
+  const wsConnectedRef = useRef(wsConnected);
+  wsConnectedRef.current = wsConnected;
+
   const poll = useCallback(async () => {
     if (isSavingRef.current) return;
     try {
@@ -104,8 +109,8 @@ export function DocumentView({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           session_id: sessionIdRef.current,
-          name: displayName,
-          content_hash: wsConnected ? undefined : lastContentHash,
+          name: displayNameRef.current,
+          content_hash: wsConnectedRef.current ? undefined : lastContentHashRef.current,
         }),
       });
       if (!res.ok) return;
@@ -116,14 +121,10 @@ export function DocumentView({
         viewers: { name: string }[];
       };
 
-      // Update presence
       setViewers(data.viewers);
-
-      // Update comments
       setComments(data.comments);
 
-      // Update content (only if changed and not using WebSocket)
-      if (!wsConnected && data.content && data.content_hash !== lastContentHash) {
+      if (!wsConnectedRef.current && data.content && data.content_hash !== lastContentHashRef.current) {
         setLiveContent(data.content);
         setLastContentHash(data.content_hash);
         setSaveStatus("Updated");
@@ -131,7 +132,7 @@ export function DocumentView({
         setTimeout(() => setSaveStatus("Ready"), 2000);
       }
     } catch {}
-  }, [doc.id, tokenKey, displayName, lastContentHash, wsConnected, flashTabTitle]);
+  }, [doc.id, tokenKey, flashTabTitle]);
 
   useEffect(() => {
     poll();
@@ -139,7 +140,7 @@ export function DocumentView({
     return () => clearInterval(interval);
   }, [poll]);
 
-  // Manual comment refetch (after posting a new comment)
+  // Immediate refetch after posting a comment (don't wait for next poll)
   const fetchComments = useCallback(async () => {
     const res = await fetch(`/api/d/${doc.id}/comments?key=${tokenKey}`);
     if (res.ok) {

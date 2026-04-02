@@ -1,7 +1,7 @@
 /**
- * Simple in-memory presence tracker.
- * Tracks who is viewing each document with a heartbeat model.
+ * In-memory presence tracker with heartbeat model.
  * Entries expire after 45 seconds of no heartbeat.
+ * Cleanup runs at most once per 10 seconds to avoid per-request overhead.
  */
 
 interface PresenceEntry {
@@ -9,15 +9,18 @@ interface PresenceEntry {
   lastSeen: number;
 }
 
-// Map of documentId -> Map of sessionId -> PresenceEntry
 const store = new Map<string, Map<string, PresenceEntry>>();
+const EXPIRY_MS = 45_000;
 
-const EXPIRY_MS = 45_000; // 45 seconds
+let lastCleanup = 0;
 
-function cleanup(docId: string) {
+function cleanupIfNeeded(docId: string) {
+  const now = Date.now();
+  if (now - lastCleanup < 10_000) return;
+  lastCleanup = now;
+
   const doc = store.get(docId);
   if (!doc) return;
-  const now = Date.now();
   for (const [sessionId, entry] of doc) {
     if (now - entry.lastSeen > EXPIRY_MS) doc.delete(sessionId);
   }
@@ -27,14 +30,13 @@ function cleanup(docId: string) {
 export function heartbeat(docId: string, sessionId: string, name: string) {
   if (!store.has(docId)) store.set(docId, new Map());
   store.get(docId)!.set(sessionId, { name, lastSeen: Date.now() });
-  cleanup(docId);
+  cleanupIfNeeded(docId);
 }
 
 export function getPresence(docId: string): { name: string }[] {
-  cleanup(docId);
+  cleanupIfNeeded(docId);
   const doc = store.get(docId);
   if (!doc) return [];
-  // Deduplicate by name
   const seen = new Set<string>();
   const result: { name: string }[] = [];
   for (const entry of doc.values()) {

@@ -11,9 +11,9 @@ import { TableHeader } from "@tiptap/extension-table-header";
 import { CodeBlockLowlight } from "@tiptap/extension-code-block-lowlight";
 import { common, createLowlight } from "lowlight";
 import { Markdown } from "tiptap-markdown";
+import { useEffect, useRef } from "react";
 
 const lowlight = createLowlight(common);
-import { useEffect, useRef } from "react";
 import { Toolbar } from "./toolbar";
 import { CommentHighlight } from "./comment-highlight";
 import type { CommentAnchor } from "./comment-highlight";

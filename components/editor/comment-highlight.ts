@@ -51,6 +51,8 @@ export const CommentHighlight = Extension.create({
     return {
       anchors: [] as CommentAnchor[],
       activeCommentId: null as string | null,
+      _prevActiveId: null as string | null,
+      _prevAnchorCount: 0,
     };
   },
 
