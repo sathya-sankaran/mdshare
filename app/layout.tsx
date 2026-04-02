@@ -51,10 +51,11 @@ export default function RootLayout({
               "@type": "WebApplication",
               "name": "mdshare",
               "url": "https://mdshare.live",
-              "description": "Free markdown sharing. Upload, get a link, collaborate. No login, no accounts, no cost.",
+              "description": "Free markdown sharing with MCP integration. Upload, get a link, collaborate. Works with Claude, ChatGPT, Gemini, Cursor, Windsurf.",
               "applicationCategory": "Productivity",
               "operatingSystem": "Any",
-              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+              "keywords": "markdown, sharing, MCP, model context protocol, collaboration, free"
             })
           }}
         />
