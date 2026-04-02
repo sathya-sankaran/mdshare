@@ -33,7 +33,7 @@ export function AboutButton({ variant = "icon" }: { variant?: "icon" | "text" })
         >
           <div className="fixed inset-0 bg-black/60" />
           <div
-            className="relative bg-neutral-950 border border-neutral-800 rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl"
+            className="relative bg-neutral-950 border border-neutral-800 rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto scrollbar-thin p-6 sm:p-8 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
