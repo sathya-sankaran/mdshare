@@ -142,9 +142,8 @@ export function Toolbar({ editor }: ToolbarProps) {
         &#8618;
       </ToolbarButton>
 
-      <div className="ml-auto">
-        <ShortcutsHelp />
-      </div>
+      <Separator />
+      <ShortcutsHelp />
     </div>
   );
 }
