@@ -1,6 +1,7 @@
 "use client";
 
 import type { Editor } from "@tiptap/react";
+import { ShortcutsHelp } from "@/components/ui/shortcuts-help";
 
 interface ToolbarProps {
   editor: Editor;
@@ -140,6 +141,10 @@ export function Toolbar({ editor }: ToolbarProps) {
       >
         &#8618;
       </ToolbarButton>
+
+      <div className="ml-auto">
+        <ShortcutsHelp />
+      </div>
     </div>
   );
 }

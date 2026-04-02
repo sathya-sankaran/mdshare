@@ -7,7 +7,7 @@ import { CommentSidebar } from "@/components/editor/comment-sidebar";
 import type { Comment } from "@/components/editor/comment-sidebar";
 import { DownloadButton } from "@/components/ui/download-button";
 import { AboutButton } from "@/components/ui/about-modal";
-import { ShortcutsHelp } from "@/components/ui/shortcuts-help";
+import { MarkdownViewer } from "@/components/editor/markdown-viewer";
 import type { DocumentRow } from "@/lib/db";
 import type { Permission } from "@/lib/tokens";
 import type { CommentAnchor } from "@/components/editor/comment-highlight";
@@ -328,7 +328,6 @@ export function DocumentView({
             tokenKey={tokenKey}
             title={doc.title}
           />
-          <ShortcutsHelp isAdmin={permission === "admin"} />
           <AboutButton />
         </div>
       </header>
@@ -355,13 +354,17 @@ export function DocumentView({
       <div className="flex flex-1 min-h-0 overflow-hidden relative">
         {/* Editor — always rendered, flex-1 */}
         <div className="flex flex-col flex-1 min-h-0">
-          <TiptapEditor
-            content={liveContent}
-            editable={editable}
-            onUpdate={editable ? handleUpdate : undefined}
-            commentAnchors={commentAnchors}
-            activeCommentId={activeCommentId}
-          />
+          {editable ? (
+            <TiptapEditor
+              content={liveContent}
+              editable={editable}
+              onUpdate={handleUpdate}
+              commentAnchors={commentAnchors}
+              activeCommentId={activeCommentId}
+            />
+          ) : (
+            <MarkdownViewer content={liveContent} />
+          )}
           {/* Status bar */}
           <div className="flex items-center justify-between px-3 sm:px-5 py-1.5 border-t border-neutral-800 text-[11px] sm:text-xs text-neutral-600 bg-neutral-950 gap-3">
             <span className="flex items-center gap-1.5 shrink-0">

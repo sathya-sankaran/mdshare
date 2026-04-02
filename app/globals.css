@@ -173,6 +173,33 @@ body {
   border-radius: 0.5rem;
 }
 
+/* Direct markdown viewer (read-only, better rendering than Tiptap) */
+.prose-viewer { color: #d4d4d4; line-height: 1.7; font-size: 0.9375rem; }
+.prose-viewer h1 { font-size: 1.75rem; font-weight: 700; color: #fff; margin: 0 0 0.75rem; line-height: 1.3; }
+.prose-viewer h2 { font-size: 1.35rem; font-weight: 600; color: #eee; margin: 1.5rem 0 0.5rem; }
+.prose-viewer h3 { font-size: 1.1rem; font-weight: 600; color: #ddd; margin: 1.25rem 0 0.5rem; }
+.prose-viewer h4 { font-size: 1rem; font-weight: 600; color: #ccc; margin: 1rem 0 0.4rem; }
+.prose-viewer p { margin-bottom: 0.75rem; }
+.prose-viewer ul, .prose-viewer ol { margin: 0.5rem 0 0.75rem 1.25rem; }
+.prose-viewer ul { list-style: disc; }
+.prose-viewer ol { list-style: decimal; }
+.prose-viewer li { margin-bottom: 0.25rem; }
+.prose-viewer li > ul, .prose-viewer li > ol { margin-top: 0.25rem; }
+.prose-viewer blockquote { border-left: 3px solid #6366f1; padding-left: 1rem; color: #999; margin: 0.75rem 0; }
+.prose-viewer code { background: #1e1e1e; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #e879f9; font-family: 'Menlo', 'Cascadia Code', 'Fira Code', var(--font-mono), monospace; }
+.prose-viewer pre { background: #111; border: 1px solid #2a2a2a; border-radius: 0.5rem; padding: 1rem; margin: 0.75rem 0; overflow-x: auto; }
+.prose-viewer pre code { background: none; padding: 0; color: #ccc; font-size: 0.8rem; line-height: 1.45; display: block; }
+.prose-viewer a { color: #818cf8; text-decoration: underline; }
+.prose-viewer hr { border: none; border-top: 1px solid #333; margin: 1.5rem 0; }
+.prose-viewer img { max-width: 100%; border-radius: 0.5rem; }
+.prose-viewer strong { color: #eee; }
+.prose-viewer table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.875rem; display: block; overflow-x: auto; }
+.prose-viewer th { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 2px solid #333; color: #eee; font-weight: 600; background: #1a1a1a; }
+.prose-viewer td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #1a1a1a; }
+.prose-viewer tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+.prose-viewer input[type="checkbox"] { margin-right: 0.5rem; }
+.prose-viewer del { color: #888; }
+
 /* Comment highlights */
 .comment-highlight {
   background: rgba(251, 191, 36, 0.15);
