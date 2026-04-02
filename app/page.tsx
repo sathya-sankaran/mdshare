@@ -224,7 +224,7 @@ export default function Home() {
               href="/docs#use-with-ai"
               className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-400/30 hover:decoration-indigo-300/50 transition-colors"
             >
-              Use with Claude
+              Use with AI
             </a>
           </div>
         </div>
