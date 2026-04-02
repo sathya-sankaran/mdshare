@@ -353,7 +353,7 @@ export function DocumentView({
             <MarkdownViewer content={liveContent} />
           )}
           {/* Status bar */}
-          <div className="flex items-center justify-between px-3 sm:px-5 py-1.5 border-t border-neutral-800 text-[11px] sm:text-xs text-neutral-600 bg-neutral-950 gap-3">
+          <div className="flex items-center justify-between px-3 sm:px-5 py-1.5 border-t border-neutral-800 text-xs text-neutral-300 bg-neutral-950 gap-2">
             <span className="flex items-center gap-1.5 shrink-0">
               <span
                 className={`inline-block w-1.5 h-1.5 rounded-full ${
@@ -366,7 +366,7 @@ export function DocumentView({
               />
               {saveStatus}
             </span>
-            <span className="hidden sm:inline">
+            <span className="hidden sm:inline text-neutral-500">
               {doc.content.split(/\s+/).filter(Boolean).length} words
             </span>
             <DisplayNameEditor name={displayName} onChangeName={setDisplayName} />
@@ -466,7 +466,7 @@ function DisplayNameEditor({
             onChangeName(draft);
             setEditing(false);
           }}
-          className="bg-neutral-900 border border-neutral-700 rounded px-2 py-1 text-xs text-neutral-300 w-32 focus:outline-none focus:border-indigo-500"
+          className="bg-neutral-900 border border-neutral-700 rounded px-2 py-1 text-xs text-white w-28 sm:w-32 focus:outline-none focus:border-indigo-500 touch-manipulation"
           placeholder="Your name"
         />
       </span>
@@ -479,10 +479,10 @@ function DisplayNameEditor({
         setDraft(name);
         setEditing(true);
       }}
-      className="shrink-0 text-neutral-500 hover:text-neutral-300 transition-colors truncate max-w-[150px]"
+      className="shrink-0 text-indigo-400 hover:text-indigo-300 transition-colors truncate max-w-[120px] sm:max-w-[150px] text-xs"
       title="Click to change your display name"
     >
-      {name === "Anonymous" ? "Set your name" : name}
+      {name === "Anonymous" ? "Set name" : name}
     </button>
   );
 }
