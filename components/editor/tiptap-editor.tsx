@@ -8,7 +8,11 @@ import { Table } from "@tiptap/extension-table";
 import { TableRow } from "@tiptap/extension-table-row";
 import { TableCell } from "@tiptap/extension-table-cell";
 import { TableHeader } from "@tiptap/extension-table-header";
+import { CodeBlockLowlight } from "@tiptap/extension-code-block-lowlight";
+import { common, createLowlight } from "lowlight";
 import { Markdown } from "tiptap-markdown";
+
+const lowlight = createLowlight(common);
 import { useEffect, useRef } from "react";
 import { Toolbar } from "./toolbar";
 import { CommentHighlight } from "./comment-highlight";
@@ -37,9 +41,11 @@ export function TiptapEditor({
     immediatelyRender: false,
     extensions: [
       StarterKit.configure({
-        codeBlock: {
-          HTMLAttributes: { class: "bg-neutral-900 rounded-lg p-4 font-mono text-sm" },
-        },
+        codeBlock: false,
+      }),
+      CodeBlockLowlight.configure({
+        lowlight,
+        HTMLAttributes: { class: "hljs" },
       }),
       Placeholder.configure({
         placeholder: "Start writing...",

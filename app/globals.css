@@ -200,6 +200,27 @@ body {
 .prose-viewer input[type="checkbox"] { margin-right: 0.5rem; }
 .prose-viewer del { color: #888; }
 
+/* Syntax highlighting (highlight.js dark theme) */
+.hljs { background: #111; color: #ccc; }
+.hljs-keyword, .hljs-selector-tag, .hljs-built_in, .hljs-name { color: #c792ea; }
+.hljs-string, .hljs-attr { color: #c3e88d; }
+.hljs-number, .hljs-literal { color: #f78c6c; }
+.hljs-comment, .hljs-quote { color: #546e7a; font-style: italic; }
+.hljs-function .hljs-title, .hljs-title.function_ { color: #82aaff; }
+.hljs-type, .hljs-class .hljs-title { color: #ffcb6b; }
+.hljs-variable, .hljs-template-variable { color: #f07178; }
+.hljs-params { color: #89ddff; }
+.hljs-regexp { color: #89ddff; }
+.hljs-meta { color: #546e7a; }
+.hljs-tag { color: #89ddff; }
+.hljs-attribute { color: #c792ea; }
+.hljs-symbol, .hljs-bullet { color: #c3e88d; }
+.hljs-addition { color: #c3e88d; background: rgba(195, 232, 141, 0.1); }
+.hljs-deletion { color: #f07178; background: rgba(240, 113, 120, 0.1); }
+.hljs-section { color: #82aaff; font-weight: bold; }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: bold; }
+
 /* Comment highlights */
 .comment-highlight {
   background: rgba(251, 191, 36, 0.15);

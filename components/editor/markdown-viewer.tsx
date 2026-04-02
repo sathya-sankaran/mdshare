@@ -5,8 +5,19 @@ import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
-import rehypeSanitize from "rehype-sanitize";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
+import rehypeHighlight from "rehype-highlight";
 import rehypeStringify from "rehype-stringify";
+
+// Extend sanitize schema to allow highlight.js class names on code/span
+const sanitizeSchema = {
+  ...defaultSchema,
+  attributes: {
+    ...defaultSchema.attributes,
+    code: [...(defaultSchema.attributes?.code || []), "className"],
+    span: [...(defaultSchema.attributes?.span || []), "className"],
+  },
+};
 
 interface MarkdownViewerProps {
   content: string;
@@ -20,7 +31,8 @@ export function MarkdownViewer({ content, className = "" }: MarkdownViewerProps)
         .use(remarkParse)
         .use(remarkGfm)
         .use(remarkRehype)
-        .use(rehypeSanitize)
+        .use(rehypeHighlight, { detect: true, ignoreMissing: true })
+        .use(rehypeSanitize, sanitizeSchema)
         .use(rehypeStringify)
         .processSync(content);
       return String(result);
