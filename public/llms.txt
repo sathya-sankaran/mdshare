@@ -1,5 +1,5 @@
 # mdshare
-> Zero-login markdown sharing. Upload, get a link, collaborate.
+> Free markdown sharing. Upload, get a link, collaborate. No login needed.
 
 ## API
 Base URL: https://mdshare.live

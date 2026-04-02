@@ -13,22 +13,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "mdshare — Share markdown instantly",
+  title: "mdshare — Share markdown instantly, free",
   description:
-    "Zero-login markdown sharing. Upload, get a link, collaborate. No accounts needed.",
+    "Free markdown sharing. Upload, get a link, collaborate. No login, no accounts, no cost.",
   openGraph: {
-    title: "mdshare — Share markdown instantly",
+    title: "mdshare — Share markdown instantly, free",
     description:
-      "Zero-login markdown sharing. Upload, get a link, collaborate. No accounts needed.",
+      "Free markdown sharing. Upload, get a link, collaborate. No login, no accounts, no cost.",
     siteName: "mdshare",
     type: "website",
     url: "https://mdshare.live",
   },
   twitter: {
     card: "summary",
-    title: "mdshare — Share markdown instantly",
+    title: "mdshare — Share markdown instantly, free",
     description:
-      "Zero-login markdown sharing. Upload, get a link, collaborate. No accounts needed.",
+      "Free markdown sharing. Upload, get a link, collaborate. No login, no accounts, no cost.",
   },
 };
 
@@ -51,7 +51,7 @@ export default function RootLayout({
               "@type": "WebApplication",
               "name": "mdshare",
               "url": "https://mdshare.live",
-              "description": "Zero-login markdown sharing. Upload, get a link, collaborate. No accounts needed.",
+              "description": "Free markdown sharing. Upload, get a link, collaborate. No login, no accounts, no cost.",
               "applicationCategory": "Productivity",
               "operatingSystem": "Any",
               "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }

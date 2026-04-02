@@ -1,6 +1,6 @@
 # mdshare
 
-Share markdown instantly. No login required.
+Share markdown instantly. Free. No login required.
 
 **Live:** [mdshare.live](https://mdshare.live) | **API Docs:** [mdshare.live/docs](https://mdshare.live/docs)
 
