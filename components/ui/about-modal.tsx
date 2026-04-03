@@ -114,6 +114,9 @@ export function AboutButton({ variant = "icon" }: { variant?: "icon" | "text" })
               <p className="text-[11px] text-neutral-600 leading-relaxed mb-4">
                 <span className="text-neutral-400">Fine print:</span> You own your content — we just host it. Don&apos;t upload anything illegal or sensitive. Links are keys — anyone with a link can access the document. Documents expire in 90 days. No guarantees on uptime, availability, or data recovery. Service is free, provided as-is.
               </p>
+              <p className="text-[11px] text-neutral-700 mb-3">
+                Built by Sathya Sankaran &middot; <a href="mailto:contact@urbanmorph.com" className="text-neutral-500 hover:text-neutral-300 transition-colors">contact@urbanmorph.com</a>
+              </p>
               <div className="flex items-center justify-between">
                 <a
                   href="/docs"
