@@ -115,7 +115,7 @@ export function AboutButton({ variant = "icon" }: { variant?: "icon" | "text" })
                 <span className="text-neutral-400">Fine print:</span> You own your content — we just host it. Don&apos;t upload anything illegal or sensitive. Links are keys — anyone with a link can access the document. Documents expire in 90 days. No guarantees on uptime, availability, or data recovery. Service is free, provided as-is.
               </p>
               <div className="flex items-center justify-between flex-wrap gap-2">
-                <a href="/docs" className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors">API Docs</a>
+                <a href="/docs" className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors">API &amp; AI Docs</a>
                 <a href="https://github.com/urbanmorph/mdshare" target="_blank" rel="noopener noreferrer" className="text-sm text-amber-400 hover:text-amber-300 transition-colors">&#9733; Star on GitHub</a>
                 <span className="text-[11px]"><span className="text-neutral-300">Built by Sathya Sankaran</span> &middot; <a href="mailto:contact@urbanmorph.com" className="text-indigo-400 hover:text-indigo-300 transition-colors">contact@urbanmorph.com</a></span>
               </div>
