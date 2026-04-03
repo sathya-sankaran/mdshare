@@ -117,7 +117,7 @@ export function AboutButton({ variant = "icon" }: { variant?: "icon" | "text" })
               <div className="flex items-center justify-between flex-wrap gap-2">
                 <a href="/docs" className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors">API Docs</a>
                 <a href="https://github.com/urbanmorph/mdshare" target="_blank" rel="noopener noreferrer" className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors">GitHub</a>
-                <span className="text-[11px] text-neutral-600">Built by Sathya Sankaran &middot; <a href="mailto:contact@urbanmorph.com" className="hover:text-neutral-400 transition-colors">contact@urbanmorph.com</a></span>
+                <span className="text-[11px]"><span className="text-neutral-300">Built by Sathya Sankaran</span> &middot; <a href="mailto:contact@urbanmorph.com" className="text-indigo-400 hover:text-indigo-300 transition-colors">contact@urbanmorph.com</a></span>
               </div>
             </div>
           </div>
