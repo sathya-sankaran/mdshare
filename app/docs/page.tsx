@@ -20,7 +20,7 @@ export default function DocsPage() {
             md<span className="text-indigo-400">share</span>
           </a>
           <span className="text-xs text-neutral-500 bg-neutral-900 px-2 py-1 rounded">
-            API Docs
+            Docs
           </span>
         </div>
       </header>
@@ -266,6 +266,34 @@ then upload this markdown and give me a share link.`}</code></pre>
           <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-300">
             <li><strong>Share a file:</strong> Right-click a <code>.md</code> file in the Explorer &rarr; &ldquo;Share on mdshare&rdquo;</li>
             <li><strong>Share a selection:</strong> Select text in any editor &rarr; right-click &rarr; &ldquo;Share Selection on mdshare&rdquo;</li>
+          </ul>
+          <p className="text-sm text-neutral-400">The admin URL is automatically copied to your clipboard.</p>
+
+          <hr />
+
+          <h2 id="obsidian">Obsidian Plugin</h2>
+          <p>Share markdown files directly from Obsidian. Right-click any file, select text, or use the command palette.</p>
+
+          <h3>Install via BRAT (recommended)</h3>
+          <ol className="list-decimal pl-5 space-y-1 text-sm text-neutral-300">
+            <li>Install <a href="https://github.com/TfTHacker/obsidian42-brat" className="text-indigo-400 hover:text-indigo-300 underline" target="_blank" rel="noopener noreferrer">BRAT</a> from Community Plugins</li>
+            <li>In BRAT settings, click &ldquo;Add Beta Plugin&rdquo;</li>
+            <li>Enter: <code>urbanmorph/obsidian-mdshare</code></li>
+          </ol>
+
+          <h3>Manual install</h3>
+          <ol className="list-decimal pl-5 space-y-1 text-sm text-neutral-300">
+            <li>Download <a href="/obsidian-mdshare-main.js" className="text-indigo-400 hover:text-indigo-300 underline" download="main.js">main.js</a> and <a href="/obsidian-mdshare-manifest.json" className="text-indigo-400 hover:text-indigo-300 underline" download="manifest.json">manifest.json</a></li>
+            <li>Create a folder: <code>&lt;your-vault&gt;/.obsidian/plugins/mdshare/</code></li>
+            <li>Copy both files into that folder</li>
+            <li>Enable in Settings &rarr; Community Plugins</li>
+          </ol>
+
+          <h3>Usage</h3>
+          <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-300">
+            <li><strong>Share a file:</strong> Right-click a file in the explorer &rarr; &ldquo;Share on mdshare&rdquo;</li>
+            <li><strong>Share a selection:</strong> Select text &rarr; right-click &rarr; &ldquo;Share selection on mdshare&rdquo;</li>
+            <li><strong>Command palette:</strong> <code>Cmd/Ctrl+P</code> &rarr; &ldquo;Share current file on mdshare&rdquo;</li>
           </ul>
           <p className="text-sm text-neutral-400">The admin URL is automatically copied to your clipboard.</p>
         </div>

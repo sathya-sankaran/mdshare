@@ -233,6 +233,13 @@ export default function Home() {
             >
               VS Code
             </a>
+            <span className="text-neutral-700">|</span>
+            <a
+              href="/docs#obsidian"
+              className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-400/30 hover:decoration-indigo-300/50 transition-colors"
+            >
+              Obsidian
+            </a>
           </div>
         </div>
 
