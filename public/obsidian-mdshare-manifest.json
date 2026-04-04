@@ -3,7 +3,7 @@
   "name": "mdshare",
   "version": "1.0.0",
   "minAppVersion": "0.15.0",
-  "description": "Share markdown files instantly via mdshare.live",
+  "description": "Share markdown files instantly via mdshare.live.",
   "author": "Urban Morph",
   "authorUrl": "https://mdshare.live",
   "isDesktopOnly": false

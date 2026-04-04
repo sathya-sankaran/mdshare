@@ -26,12 +26,12 @@ module.exports = __toCommonJS(main_exports);
 var import_obsidian = require("obsidian");
 var API_URL = "https://mdshare.live/api/documents";
 var MdsharePlugin = class extends import_obsidian.Plugin {
-  async onload() {
+  onload() {
     this.registerEvent(
       this.app.workspace.on("file-menu", (menu, file) => {
         if (file instanceof import_obsidian.TFile && file.extension === "md") {
           menu.addItem((item) => {
-            item.setTitle("Share on mdshare").setIcon("share").onClick(() => this.shareFile(file));
+            item.setTitle("Share on mdshare").setIcon("share").onClick(() => void this.shareFile(file));
           });
         }
       })
@@ -40,18 +40,18 @@ var MdsharePlugin = class extends import_obsidian.Plugin {
       this.app.workspace.on("editor-menu", (menu, editor) => {
         if (editor.getSelection()) {
           menu.addItem((item) => {
-            item.setTitle("Share selection on mdshare").setIcon("share").onClick(() => this.uploadContent(editor.getSelection()));
+            item.setTitle("Share selection on mdshare").setIcon("share").onClick(() => void this.uploadContent(editor.getSelection()));
           });
         }
       })
     );
     this.addCommand({
       id: "share-file",
-      name: "Share current file on mdshare",
+      name: "Share current file",
       checkCallback: (checking) => {
         const file = this.app.workspace.getActiveFile();
         if (file && file.extension === "md") {
-          if (!checking) this.shareFile(file);
+          if (!checking) void this.shareFile(file);
           return true;
         }
         return false;
