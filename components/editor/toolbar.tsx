@@ -5,6 +5,8 @@ import { ShortcutsHelp } from "@/components/ui/shortcuts-help";
 
 interface ToolbarProps {
   editor: Editor;
+  lightMode?: boolean;
+  onToggleLight?: () => void;
 }
 
 function ToolbarButton({
@@ -40,7 +42,7 @@ function Separator() {
   return <div className="w-px h-5 bg-neutral-800 mx-0.5 sm:mx-1 shrink-0" />;
 }
 
-export function Toolbar({ editor }: ToolbarProps) {
+export function Toolbar({ editor, lightMode, onToggleLight }: ToolbarProps) {
   return (
     <div className="flex items-center gap-0.5 px-2 sm:px-4 py-1.5 sm:py-2 border-b border-neutral-800 bg-neutral-950 flex-wrap sm:flex-nowrap sm:overflow-x-auto sm:scrollbar-thin">
       <ToolbarButton
@@ -144,6 +146,19 @@ export function Toolbar({ editor }: ToolbarProps) {
 
       <Separator />
       <ShortcutsHelp />
+
+      {onToggleLight && (
+        <>
+          <Separator />
+          <ToolbarButton
+            onClick={onToggleLight}
+            active={!!lightMode}
+            title={lightMode ? "Switch to dark editor" : "Switch to light editor"}
+          >
+            <span className="text-xs">{lightMode ? "\u263E" : "\u2600"}</span>
+          </ToolbarButton>
+        </>
+      )}
     </div>
   );
 }

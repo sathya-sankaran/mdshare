@@ -48,6 +48,7 @@ export function DocumentView({
   const [comments, setComments] = useState<Comment[]>([]);
   const [activeCommentId, setActiveCommentId] = useState<string | null>(null);
   const [liveContent, setLiveContent] = useState(doc.content);
+  const [lightEditor, setLightEditor] = useState(false);
   const [lastContentHash, setLastContentHash] = useState(doc.content_hash);
   const isSavingRef = useRef(false);
   const { name: displayName, setName: setDisplayName } = useDisplayName();
@@ -330,19 +331,26 @@ export function DocumentView({
 
       {/* Read-only bar */}
       {!editable && (
-        <div className="flex items-center gap-2 px-3 sm:px-5 py-2 bg-neutral-950 border-b border-neutral-800 text-xs text-neutral-500">
+        <div className="flex items-center justify-between px-3 sm:px-5 py-2 bg-neutral-950 border-b border-neutral-800 text-xs text-neutral-500">
           <span>
             {permission === "comment"
               ? "Read-only · Select text then add a comment"
               : "View only"}
           </span>
+          <button
+            onClick={() => setLightEditor((v) => !v)}
+            className="px-2 py-1 rounded text-neutral-400 hover:bg-neutral-800 transition-colors"
+            title={lightEditor ? "Switch to dark" : "Switch to light"}
+          >
+            {lightEditor ? "\u263E" : "\u2600"}
+          </button>
         </div>
       )}
 
       {/* Main content area */}
       <div className="flex flex-1 min-h-0 overflow-hidden relative">
         {/* Editor — always rendered, flex-1 */}
-        <div className="flex flex-col flex-1 min-h-0 min-w-0">
+        <div className={`flex flex-col flex-1 min-h-0 min-w-0 editor-area${lightEditor ? " editor-light" : ""}`}>
           {editable ? (
             <TiptapEditor
               content={liveContent}
@@ -350,6 +358,8 @@ export function DocumentView({
               onUpdate={handleUpdate}
               commentAnchors={commentAnchors}
               activeCommentId={activeCommentId}
+              lightMode={lightEditor}
+              onToggleLight={() => setLightEditor((v) => !v)}
             />
           ) : (
             <MarkdownViewer content={liveContent} />
