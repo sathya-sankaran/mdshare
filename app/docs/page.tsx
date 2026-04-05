@@ -63,6 +63,23 @@ curl -H "Accept: text/markdown" "https://mdshare.live/api/d/{id}?key={key}"`}</c
   -H "Content-Type: text/markdown" \\
   --data-binary @updated.md`}</code></pre>
 
+          <h3>Patch a document (find/replace)</h3>
+          <pre><code>{`curl -X PATCH "https://mdshare.live/api/d/{id}?key={edit_or_admin_key}" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "operations": [
+      { "find": "old text", "replace": "new text" }
+    ],
+    "author": "Your Name"
+  }'`}</code></pre>
+          <p>Response:</p>
+          <pre><code>{`{
+  "applied": 1,
+  "operations": [{ "index": 0, "status": "ok" }],
+  "content_hash": "abc123..."
+}`}</code></pre>
+          <p>Each <code>find</code> must be unique in the document. Set <code>replace_all: true</code> to replace all occurrences. Statuses: <code>ok</code>, <code>not_found</code>, <code>ambiguous</code>, <code>invalid</code>.</p>
+
           <h3>Generate a share link (admin only)</h3>
           <pre><code>{`curl -X POST "https://mdshare.live/api/d/{id}/links?key={admin_key}" \\
   -H "Content-Type: application/json" \\
@@ -91,7 +108,8 @@ curl -H "Accept: text/markdown" "https://mdshare.live/api/d/{id}?key={key}"`}</c
             <tbody>
               <tr><td><code>POST</code></td><td><code>/api/documents</code></td><td>None</td><td>Create document</td></tr>
               <tr><td><code>GET</code></td><td><code>/api/d/:id?key=KEY</code></td><td>Any</td><td>Read document</td></tr>
-              <tr><td><code>PUT</code></td><td><code>/api/d/:id?key=KEY</code></td><td>Edit/Admin</td><td>Update document</td></tr>
+              <tr><td><code>PUT</code></td><td><code>/api/d/:id?key=KEY</code></td><td>Edit/Admin</td><td>Update document (full rewrite)</td></tr>
+              <tr><td><code>PATCH</code></td><td><code>/api/d/:id?key=KEY</code></td><td>Edit/Admin</td><td>Patch document (find/replace)</td></tr>
               <tr><td><code>DELETE</code></td><td><code>/api/d/:id?key=KEY</code></td><td>Admin</td><td>Delete document</td></tr>
             </tbody>
           </table>

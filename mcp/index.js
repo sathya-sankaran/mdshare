@@ -51,6 +51,33 @@ const TOOLS = [
     },
   },
   {
+    name: "patch_document",
+    description:
+      "Apply find/replace operations to a document without rewriting the full content. More efficient than update_document for small edits to large documents. Each find string must be unique unless replace_all is set.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        document_id: { type: "string", description: "Document ID" },
+        key: { type: "string", description: "Edit or admin key" },
+        operations: {
+          type: "array",
+          description: "Find/replace operations to apply sequentially",
+          items: {
+            type: "object",
+            properties: {
+              find: { type: "string", description: "Text to find (must be unique in document)" },
+              replace: { type: "string", description: "Text to replace with" },
+              replace_all: { type: "boolean", description: "Replace all occurrences (default false)" },
+            },
+            required: ["find", "replace"],
+          },
+        },
+        author: { type: "string", description: "Your name (for edit attribution)" },
+      },
+      required: ["document_id", "key", "operations"],
+    },
+  },
+  {
     name: "generate_link",
     description:
       "Generate a share link for a document with specific permissions. Requires admin key.",
@@ -169,6 +196,16 @@ async function handleTool(name, args) {
       const { data } = await callApi(
         `/api/d/${args.document_id}?key=${args.key}`,
         { method: "PUT", contentType: "text/markdown", body: args.content, headers }
+      );
+      return JSON.stringify(data, null, 2);
+    }
+
+    case "patch_document": {
+      const body = { operations: args.operations };
+      if (args.author) body.author = args.author;
+      const { data } = await callApi(
+        `/api/d/${args.document_id}?key=${args.key}`,
+        { method: "PATCH", body: JSON.stringify(body) }
       );
       return JSON.stringify(data, null, 2);
     }

@@ -1,6 +1,6 @@
 {
   "name": "mdshare-mcp",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "mcpName": "io.github.sathya-sankaran/mdshare",
   "description": "MCP server for mdshare — share markdown instantly via AI",
   "type": "module",
