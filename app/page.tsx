@@ -201,12 +201,12 @@ export default function Home() {
           </p>
           {stats && (stats.documents_shared > 0 || stats.comments_posted > 0) && (
             <p className="mt-4 text-sm text-neutral-400 tracking-wide">
-              <span className="text-neutral-300 font-semibold">{stats.documents_shared.toLocaleString()}</span> documents shared
+              <span className="text-neutral-300 font-semibold">{Intl.NumberFormat("en", { notation: "compact" }).format(stats.documents_shared)}</span> documents shared
               {stats.comments_posted > 0 && (
-                <> <span className="text-neutral-700 mx-1">&middot;</span> <span className="text-neutral-300 font-semibold">{stats.comments_posted.toLocaleString()}</span> comments</>
+                <> <span className="text-neutral-700 mx-1">&middot;</span> <span className="text-neutral-300 font-semibold">{Intl.NumberFormat("en", { notation: "compact" }).format(stats.comments_posted)}</span> comments</>
               )}
               {stats.collaborators > 0 && (
-                <> <span className="text-neutral-700 mx-1">&middot;</span> <span className="text-neutral-300 font-semibold">{stats.collaborators.toLocaleString()}</span> collaborators</>
+                <> <span className="text-neutral-700 mx-1">&middot;</span> <span className="text-neutral-300 font-semibold">{Intl.NumberFormat("en", { notation: "compact" }).format(stats.collaborators)}</span> collaborators</>
               )}
             </p>
           )}
