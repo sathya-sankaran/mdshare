@@ -120,8 +120,8 @@ curl -H "Accept: text/markdown" "https://mdshare.live/api/d/{id}?key={key}"`}</c
             <tbody>
               <tr><td><code>POST</code></td><td><code>/api/d/:id/links?key=KEY</code></td><td>Admin</td><td>Create share link</td></tr>
               <tr><td><code>GET</code></td><td><code>/api/d/:id/links?key=KEY</code></td><td>Admin</td><td>List all links</td></tr>
-              <tr><td><code>PATCH</code></td><td><code>/api/links/:token?key=KEY</code></td><td>Admin</td><td>Modify link</td></tr>
-              <tr><td><code>DELETE</code></td><td><code>/api/links/:token?key=KEY</code></td><td>Admin</td><td>Revoke link</td></tr>
+              <tr><td><code>PATCH</code></td><td><code>/api/links/:token?key=KEY</code></td><td>Admin</td><td>Modify or revoke link (set is_active, permission, label)</td></tr>
+              <tr><td><code>DELETE</code></td><td><code>/api/links/:token?key=KEY</code></td><td>Admin</td><td>Delete link permanently</td></tr>
             </tbody>
           </table>
 
@@ -260,6 +260,8 @@ curl -H "Accept: text/markdown" "https://mdshare.live/api/d/{id}?key={key}"`}</c
             <li>&ldquo;Share this markdown with view-only access&rdquo;</li>
             <li>&ldquo;Who edited this document last?&rdquo;</li>
             <li>&ldquo;Post a comment on the budget section&rdquo;</li>
+            <li>&ldquo;List all links for this document&rdquo;</li>
+            <li>&ldquo;Revoke the edit link I shared with the team&rdquo;</li>
           </ul>
 
           <h3>Without MCP (works with any AI)</h3>

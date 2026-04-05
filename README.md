@@ -22,7 +22,7 @@ Upload a markdown file, get shareable links with different permissions, collabor
 - **API & AI-friendly** -- full REST API, works with curl and AI chatbots
 - **Content sanitization** -- XSS protection, binary file rejection, protocol whitelist
 - **Rate limiting** -- abuse prevention on all write endpoints
-- **Link expiry** -- optional expiration dates on share links
+- **Link management** -- revoke links instantly, optional expiration dates, 50-link cap per document
 - **Recent documents** -- quickly access previously visited docs from the landing page
 - **Keyboard shortcuts** -- Cmd+B/I/E for formatting, Cmd+\\ for comments, Cmd+D to download
 - **Mobile responsive** -- touch-friendly, collapsible panels, works on phones and tablets

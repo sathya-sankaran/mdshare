@@ -5,7 +5,7 @@
 Package: npx mdshare-mcp
 Registry: io.github.sathya-sankaran/mdshare
 Works with: Claude, ChatGPT/Codex, Gemini CLI, Cursor, Windsurf
-Tools: upload_markdown, read_document, update_document, generate_link, list_comments, post_comment, resolve_comment, get_versions
+Tools: upload_markdown, read_document, update_document, patch_document, generate_link, list_links, revoke_link, list_comments, post_comment, resolve_comment, get_versions
 
 ## API
 Base URL: https://mdshare.live
@@ -29,6 +29,7 @@ adm_ = full control | edt_ = read+write | cmt_ = read+comment | viw_ = read only
 - 10 creates per minute, 50 per day per IP
 - 30 updates per minute per IP
 - 20 comments per minute per IP
+- Max 50 share links per document (excluding admin link)
 - Max document size: 10MB
 - 429 responses include Retry-After header
 - Expired documents return 410 Gone

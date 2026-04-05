@@ -97,6 +97,33 @@ const TOOLS = [
     },
   },
   {
+    name: "list_links",
+    description:
+      "List all share links for a document, including status (active/revoked), permission, and label. Requires admin key.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        document_id: { type: "string", description: "Document ID" },
+        key: { type: "string", description: "Admin key" },
+      },
+      required: ["document_id", "key"],
+    },
+  },
+  {
+    name: "revoke_link",
+    description:
+      "Revoke a share link, making it permanently inactive. Use list_links first to find the token of the link to revoke. Requires admin key.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        document_id: { type: "string", description: "Document ID (for context)" },
+        key: { type: "string", description: "Admin key" },
+        link_token: { type: "string", description: "The token of the link to revoke (from list_links)" },
+      },
+      required: ["document_id", "key", "link_token"],
+    },
+  },
+  {
     name: "list_comments",
     description:
       "List all comments on a document, including replies and resolution status.",
@@ -224,6 +251,24 @@ async function handleTool(name, args) {
       return JSON.stringify(data, null, 2);
     }
 
+    case "list_links": {
+      const { data } = await callApi(
+        `/api/d/${args.document_id}/links?key=${args.key}`
+      );
+      return JSON.stringify(data, null, 2);
+    }
+
+    case "revoke_link": {
+      const { data } = await callApi(
+        `/api/links/${args.link_token}?key=${args.key}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({ is_active: false }),
+        }
+      );
+      return JSON.stringify(data, null, 2);
+    }
+
     case "list_comments": {
       const { data } = await callApi(
         `/api/d/${args.document_id}/comments?key=${args.key}`
@@ -270,7 +315,7 @@ async function handleTool(name, args) {
 
 // Start server
 const server = new Server(
-  { name: "mdshare", version: "1.0.0" },
+  { name: "mdshare", version: "1.1.0" },
   { capabilities: { tools: {} } }
 );
 

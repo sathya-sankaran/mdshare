@@ -89,7 +89,8 @@ Optional: add \`"expires_at": "2026-05-01T00:00:00Z"\` to set an expiry date.
 |--------|----------|------|-------------|
 | \`POST\` | \`/api/documents\` | None | Create document. Body: raw markdown |
 | \`GET\` | \`/api/d/:id?key=KEY\` | Any | Read document |
-| \`PUT\` | \`/api/d/:id?key=KEY\` | Edit/Admin | Update document |
+| \`PUT\` | \`/api/d/:id?key=KEY\` | Edit/Admin | Update document (full rewrite) |
+| \`PATCH\` | \`/api/d/:id?key=KEY\` | Edit/Admin | Patch document (find/replace). Body: \`{operations: [{find, replace, replace_all?}], author?}\` |
 | \`DELETE\` | \`/api/d/:id?key=KEY\` | Admin | Delete document |
 
 ### Links (admin only)
@@ -98,8 +99,10 @@ Optional: add \`"expires_at": "2026-05-01T00:00:00Z"\` to set an expiry date.
 |--------|----------|------|-------------|
 | \`POST\` | \`/api/d/:id/links?key=KEY\` | Admin | Create share link. Body: \`{permission, label, expires_at}\` |
 | \`GET\` | \`/api/d/:id/links?key=KEY\` | Admin | List all links with URLs |
-| \`PATCH\` | \`/api/links/:token?key=KEY\` | Admin | Modify link permission or status |
-| \`DELETE\` | \`/api/links/:token?key=KEY\` | Admin | Revoke link |
+| \`PATCH\` | \`/api/links/:token?key=KEY\` | Admin | Modify or revoke link (set is_active, permission, label) |
+| \`DELETE\` | \`/api/links/:token?key=KEY\` | Admin | Delete link permanently |
+
+Maximum **50 share links** per document (excluding admin link).
 
 ### Comments
 

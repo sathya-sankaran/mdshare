@@ -37,7 +37,10 @@ Config file locations:
 | `upload_markdown` | Upload markdown, get shareable admin URL |
 | `read_document` | Read a document by ID + key |
 | `update_document` | Update content (edit/admin key) |
+| `patch_document` | Find/replace operations without rewriting the full document |
 | `generate_link` | Create view/edit/comment link (admin key) |
+| `list_links` | List all share links with status (admin key) |
+| `revoke_link` | Revoke a share link permanently (admin key) |
 | `list_comments` | See all comments and replies |
 | `post_comment` | Add a comment, optionally anchored to text |
 | `resolve_comment` | Resolve or unresolve a comment |
@@ -49,6 +52,8 @@ Config file locations:
 - "Read this mdshare document and summarize the comments"
 - "Incorporate the feedback and resolve the comments"
 - "Share this markdown with view-only access"
+- "Revoke the edit link I shared earlier"
+- "List all links for this document"
 - "Who edited this document last?"
 
 ## Without MCP

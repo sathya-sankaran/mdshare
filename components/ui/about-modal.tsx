@@ -88,7 +88,7 @@ export function AboutButton({ variant = "icon" }: { variant?: "icon" | "text" })
                   </svg>
                 }
                 title="Four permission levels"
-                desc="Admin (full control), Edit (read/write), Comment (read + comment), View (read only). Each gets its own shareable link."
+                desc="Admin (full control), Edit (read/write), Comment (read + comment), View (read only). Each gets its own shareable link. Revoke any link instantly if it gets into the wrong hands."
               />
               <Feature
                 icon={

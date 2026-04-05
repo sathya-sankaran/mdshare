@@ -5,6 +5,7 @@ import { Spinner } from "@/components/ui/spinner";
 
 interface LinkItem {
   id: string;
+  token: string | null;
   permission: string;
   label: string | null;
   is_active: number;
@@ -26,6 +27,8 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
   const [newExpiry, setNewExpiry] = useState("");
   const [creating, setCreating] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [revokingId, setRevokingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchLinks = useCallback(async () => {
     const res = await fetch(`/api/d/${documentId}/links?key=${adminKey}`);
@@ -52,7 +55,12 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
           expires_at: newExpiry ? new Date(newExpiry).toISOString() : null,
         }),
       });
-      if (!res.ok) return;
+      if (!res.ok) {
+        const err = (await res.json()) as { error?: string };
+        setError(err.error || "Failed to create link");
+        return;
+      }
+      setError(null);
 
       const data = (await res.json()) as { url: string };
 
@@ -83,6 +91,21 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
+  const revokeLink = async (link: LinkItem) => {
+    if (!link.token) return;
+    setRevokingId(link.id);
+    try {
+      const res = await fetch(`/api/links/${link.token}?key=${adminKey}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ is_active: false }),
+      });
+      if (res.ok) await fetchLinks();
+    } finally {
+      setRevokingId(null);
+    }
+  };
+
   const permColor = (perm: string) => {
     switch (perm) {
       case "edit":
@@ -110,11 +133,11 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
           return (
             <div
               key={link.id}
-              className="bg-neutral-900 rounded-lg p-3"
+              className={`bg-neutral-900 rounded-lg p-3 ${!link.is_active ? "opacity-50" : ""}`}
               {...(i === 0 ? { "data-newest-link": "" } : {})}
             >
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-xs text-neutral-300 font-medium truncate">
+                <span className={`text-xs text-neutral-300 font-medium truncate ${!link.is_active ? "line-through" : ""}`}>
                   {link.label || "Untitled"}
                 </span>
                 <span
@@ -126,21 +149,30 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
                 </span>
               </div>
 
-              {link.url && (
-                <button
-                  onClick={() => copyUrl(link.id, link.url!)}
-                  className={`w-full px-2 py-1.5 text-xs rounded transition-colors ${
-                    isCopied
-                      ? "bg-green-800 text-green-200"
-                      : "bg-neutral-800 hover:bg-neutral-700 text-neutral-300"
-                  }`}
-                >
-                  {isCopied ? "Copied!" : "Copy Link"}
-                </button>
+              {!!link.is_active && link.url && (
+                <div className="flex gap-1.5">
+                  <button
+                    onClick={() => copyUrl(link.id, link.url!)}
+                    className={`flex-1 px-2 py-1.5 text-xs rounded transition-colors ${
+                      isCopied
+                        ? "bg-green-800 text-green-200"
+                        : "bg-neutral-800 hover:bg-neutral-700 text-neutral-300"
+                    }`}
+                  >
+                    {isCopied ? "Copied!" : "Copy Link"}
+                  </button>
+                  <button
+                    onClick={() => revokeLink(link)}
+                    disabled={revokingId === link.id}
+                    className="px-2 py-1.5 text-xs rounded bg-red-900/50 hover:bg-red-800/60 text-red-300 transition-colors disabled:opacity-50"
+                  >
+                    {revokingId === link.id ? "..." : "Revoke"}
+                  </button>
+                </div>
               )}
 
               <div className="flex items-center justify-between mt-1.5 flex-wrap gap-1">
-                <span className="text-[11px] text-neutral-700">
+                <span className="text-[11px] text-neutral-500">
                   {new Date(link.created_at).toLocaleDateString()}
                 </span>
                 <div className="flex gap-1.5">
@@ -208,6 +240,9 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
         >
           {creating ? <Spinner context="link" /> : "Generate Link"}
         </button>
+        {error && (
+          <p className="text-[11px] text-red-400 mt-2 text-center">{error}</p>
+        )}
         <p className="text-[11px] text-neutral-600 mt-2 text-center">
           Auto-copied to clipboard on creation
         </p>

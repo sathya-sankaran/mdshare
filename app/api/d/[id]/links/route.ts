@@ -43,6 +43,18 @@ export async function POST(
     );
   }
 
+  // Enforce 50-link limit per document (excludes admin link)
+  const linkCount50 = await db
+    .prepare("SELECT COUNT(*) as cnt FROM links WHERE document_id = ? AND permission != 'admin'")
+    .bind(id)
+    .first<{ cnt: number }>();
+  if (linkCount50 && linkCount50.cnt >= 50) {
+    return Response.json(
+      { error: "Link limit reached. Maximum 50 share links per document." },
+      { status: 400 }
+    );
+  }
+
   const token = generateToken(permission);
   const hash = await hashToken(token);
   const prefix = tokenPrefix(token);
