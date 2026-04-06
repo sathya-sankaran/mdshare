@@ -49,6 +49,10 @@ export function DocumentView({
   const [activeCommentId, setActiveCommentId] = useState<string | null>(null);
   const [liveContent, setLiveContent] = useState(doc.content);
   const [lightEditor, setLightEditor] = useState(false);
+  useEffect(() => {
+    const saved = localStorage.getItem("editorLight");
+    if (saved === "true") setLightEditor(true);
+  }, []);
   const [lastContentHash, setLastContentHash] = useState(doc.content_hash);
   const isSavingRef = useRef(false);
   const { name: displayName, setName: setDisplayName } = useDisplayName();
@@ -63,7 +67,10 @@ export function DocumentView({
     const handler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === "j") {
         e.preventDefault();
-        setLightEditor((v) => !v);
+        setLightEditor((v) => {
+          localStorage.setItem("editorLight", String(!v));
+          return !v;
+        });
       }
     };
     document.addEventListener("keydown", handler);
@@ -350,7 +357,10 @@ export function DocumentView({
               : "View only"}
           </span>
           <button
-            onClick={() => setLightEditor((v) => !v)}
+            onClick={() => setLightEditor((v) => {
+              localStorage.setItem("editorLight", String(!v));
+              return !v;
+            })}
             className="px-2 py-1 rounded text-neutral-400 hover:bg-neutral-800 transition-colors"
             title={lightEditor ? "Switch to dark" : "Switch to light"}
           >
@@ -371,7 +381,10 @@ export function DocumentView({
               commentAnchors={commentAnchors}
               activeCommentId={activeCommentId}
               lightMode={lightEditor}
-              onToggleLight={() => setLightEditor((v) => !v)}
+              onToggleLight={() => setLightEditor((v) => {
+                localStorage.setItem("editorLight", String(!v));
+                return !v;
+              })}
               isAdmin={permission === "admin"}
             />
           ) : (
