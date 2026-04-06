@@ -80,16 +80,21 @@ export default {
     return handler.fetch(request, env, ctx);
   },
 
-  // Daily cron: clean up expired documents
   async scheduled(event: ScheduledEvent, env: Record<string, unknown>, ctx: ExecutionContext) {
-    const db = env.DB as D1Database;
-    if (!db) return;
+    if (event.cron === "0 3 * * *") {
+      // Daily cron: clean up expired documents
+      const db = env.DB as D1Database;
+      if (!db) return;
 
-    const result = await db
-      .prepare("DELETE FROM documents WHERE expires_at IS NOT NULL AND expires_at < datetime('now')")
-      .run();
+      const result = await db
+        .prepare("DELETE FROM documents WHERE expires_at IS NOT NULL AND expires_at < datetime('now')")
+        .run();
 
-    console.log(`Cron cleanup: deleted ${result.meta?.changes || 0} expired documents`);
+      console.log(`Cron cleanup: deleted ${result.meta?.changes || 0} expired documents`);
+    } else {
+      // Every 5 minutes: keep worker warm
+      console.log("Keep-warm ping");
+    }
   },
 };
 

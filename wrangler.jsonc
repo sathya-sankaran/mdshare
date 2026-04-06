@@ -33,7 +33,7 @@
     ]
   },
   "triggers": {
-    "crons": ["0 3 * * *"]
+    "crons": ["0 3 * * *", "*/5 * * * *"]
   },
   "migrations": [
     {
