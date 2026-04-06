@@ -49,11 +49,11 @@ export function AboutButton({ variant = "icon" }: { variant?: "icon" | "text" })
             <h2 className="text-xl font-bold text-white mb-1">
               md<span className="text-indigo-400">share</span>
             </h2>
-            <p className="text-sm text-neutral-500 mb-6">
+            <p className="text-sm text-neutral-500 mb-4">
               Share markdown instantly. No login required.
             </p>
 
-            <div className="space-y-5">
+            <div className="space-y-3.5">
               <Feature
                 icon={
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -61,7 +61,7 @@ export function AboutButton({ variant = "icon" }: { variant?: "icon" | "text" })
                   </svg>
                 }
                 title="Link-based sharing"
-                desc="Upload a markdown and get shareable links with different permissions. No accounts needed — anyone with the link can access the document."
+                desc="Upload markdown, get shareable links with different permissions. No accounts needed."
               />
               <Feature
                 icon={
@@ -70,7 +70,7 @@ export function AboutButton({ variant = "icon" }: { variant?: "icon" | "text" })
                   </svg>
                 }
                 title="WYSIWYG editor"
-                desc="Rich text editing with formatting toolbar, syntax-highlighted code blocks, tables, and keyboard shortcuts. Viewers get a clean rendered markdown."
+                desc="Formatting toolbar, code blocks, tables, and keyboard shortcuts. Viewers get clean rendered markdown."
               />
               <Feature
                 icon={
@@ -79,7 +79,7 @@ export function AboutButton({ variant = "icon" }: { variant?: "icon" | "text" })
                   </svg>
                 }
                 title="Inline comments & replies"
-                desc="Select text and leave comments anchored to specific sections. Reply to comments, resolve them. Click a comment to jump to the highlighted text."
+                desc="Anchor comments to specific text, reply, and resolve. Click a comment to jump to the highlight."
               />
               <Feature
                 icon={
@@ -88,7 +88,7 @@ export function AboutButton({ variant = "icon" }: { variant?: "icon" | "text" })
                   </svg>
                 }
                 title="Four permission levels"
-                desc="Admin (full control), Edit (read/write), Comment (read + comment), View (read only). Each gets its own shareable link. Revoke any link instantly if it gets into the wrong hands."
+                desc="Admin, Edit, Comment, View — each with its own link. Revoke any link instantly."
               />
               <Feature
                 icon={
@@ -97,7 +97,7 @@ export function AboutButton({ variant = "icon" }: { variant?: "icon" | "text" })
                   </svg>
                 }
                 title="API & MCP for AI"
-                desc="Full REST API + MCP server (npx mdshare-mcp). Works with Claude, ChatGPT/Codex, Gemini CLI, Cursor, and Windsurf. Just say &quot;upload this to mdshare.&quot;"
+                desc="REST API + MCP server. VS Code and Obsidian plugins. Works with Claude, ChatGPT, Gemini, Cursor, and Windsurf."
               />
               <Feature
                 icon={
@@ -106,11 +106,11 @@ export function AboutButton({ variant = "icon" }: { variant?: "icon" | "text" })
                   </svg>
                 }
                 title="Real-time & mobile"
-                desc="See who's online, changes appear within seconds, tab title flashes on updates. Mobile-friendly with native share tray."
+                desc="See who's online, changes sync in real-time. Mobile-friendly with native share."
               />
             </div>
 
-            <div className="mt-6 pt-5 border-t border-neutral-800">
+            <div className="mt-4 pt-4 border-t border-neutral-800">
               <p className="text-[11px] text-neutral-600 leading-relaxed mb-4">
                 <span className="text-neutral-400">Fine print:</span> You own your content — we just host it. Don&apos;t upload anything illegal or sensitive. Links are keys — anyone with a link can access the document. Documents expire in 90 days. No guarantees on uptime, availability, or data recovery. Service is free, provided as-is.
               </p>
