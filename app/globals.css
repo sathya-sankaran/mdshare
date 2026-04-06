@@ -128,8 +128,10 @@ body {
 .tiptap strong, .prose-viewer strong { color: var(--ed-strong); }
 
 /* Tables */
-.tiptap table, .tiptap .md-table, .prose-viewer table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.875rem; display: block; overflow-x: auto; }
+.tiptap table, .tiptap .md-table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.875rem; }
+.prose-viewer table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.875rem; display: block; overflow-x: auto; }
 .tiptap table th, .tiptap table td, .prose-viewer th, .prose-viewer td { text-align: left; padding: 0.5rem 0.75rem; border: 1px solid var(--ed-td-border); color: var(--ed-td-text); }
+.tiptap table td p, .tiptap table th p { min-height: 1.25em; }
 .tiptap table th, .prose-viewer th { background: var(--ed-th-bg); font-weight: 600; color: var(--ed-th-text); border-bottom: 2px solid var(--ed-th-border); }
 .tiptap table tr:nth-child(even), .prose-viewer tr:nth-child(even) { background: var(--ed-even-row); }
 .tiptap table td.selectedCell, .tiptap table th.selectedCell { background: rgba(99, 102, 241, 0.15); }

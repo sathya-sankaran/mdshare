@@ -10,14 +10,15 @@ const SHORTCUTS = [
   { keys: `${mod}+I`, action: "Italic" },
   { keys: `${mod}+Shift+X`, action: "Strikethrough" },
   { keys: `${mod}+E`, action: "Code" },
-  { keys: `${mod}+Shift+7`, action: "Ordered list" },
   { keys: `${mod}+Shift+8`, action: "Bullet list" },
+  { keys: `${mod}+Shift+7`, action: "Ordered list" },
   { keys: `${mod}+Shift+B`, action: "Blockquote" },
+  { keys: `${mod}+K`, action: "Insert/edit link" },
   { keys: `${mod}+Z`, action: "Undo" },
   { keys: `${mod}+Shift+Z`, action: "Redo" },
+  { keys: `${mod}+Shift+J`, action: "Toggle light/dark editor" },
   { keys: `${mod}+\\`, action: "Toggle comments" },
   { keys: `${mod}+D`, action: "Download .md" },
-  { keys: `${mod}+Shift+J`, action: "Toggle light/dark editor" },
 ];
 
 const ADMIN_SHORTCUTS = [

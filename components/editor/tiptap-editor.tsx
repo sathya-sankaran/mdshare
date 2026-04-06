@@ -124,6 +124,31 @@ export function TiptapEditor({
     }
   }, [content, editor]);
 
+  // Cmd+K shortcut for link insertion
+  useEffect(() => {
+    if (!editor || !editable) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        if (editor.isActive("link")) {
+          const currentUrl = editor.getAttributes("link").href || "";
+          const url = prompt("Edit or clear URL (empty to remove):", currentUrl);
+          if (url === null) return;
+          if (url === "") {
+            editor.chain().focus().unsetLink().run();
+          } else {
+            editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+          }
+        } else {
+          const url = prompt("Enter URL:", "https://");
+          if (url) editor.chain().focus().toggleLink({ href: url }).run();
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [editor, editable]);
+
   // Cleanup debounce on unmount
   useEffect(() => {
     return () => {

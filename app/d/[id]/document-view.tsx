@@ -171,8 +171,9 @@ export function DocumentView({
     [comments]
   );
 
-  // Text selection tracking
+  // Text selection tracking — only when comments panel is open
   useEffect(() => {
+    if (openPanel !== "comments") return;
     const handleSelection = (e: Event) => {
       const editorContainer = document.getElementById("editor-scroll-container");
       if (!editorContainer || !editorContainer.contains(e.target as Node)) return;
@@ -186,7 +187,7 @@ export function DocumentView({
       document.removeEventListener("mouseup", handleSelection);
       document.removeEventListener("touchend", handleSelection);
     };
-  }, []);
+  }, [openPanel]);
 
   // Keyboard shortcuts
   useEffect(() => {

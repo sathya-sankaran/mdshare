@@ -310,7 +310,7 @@ export function CommentSidebar({
       {/* Add comment form */}
       {canComment && (
         <div className="border-t border-neutral-800 pt-3">
-          {selectedText && (
+          {selectedText ? (
             <div className="flex items-start gap-1 mb-2">
               <div className="flex-1 text-[11px] text-indigo-400 italic border-l-2 border-indigo-500 pl-2">
                 &ldquo;{selectedText.slice(0, 60)}
@@ -324,6 +324,10 @@ export function CommentSidebar({
                 &times;
               </button>
             </div>
+          ) : (
+            <p className="text-[11px] text-neutral-600 mb-2 italic">
+              Select text in the editor to anchor your comment
+            </p>
           )}
           <p className="text-[11px] text-neutral-600 mb-2">
             Commenting as{" "}
