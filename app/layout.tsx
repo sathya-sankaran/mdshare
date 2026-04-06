@@ -60,7 +60,7 @@ export default function RootLayout({
               "applicationCategory": "Productivity",
               "operatingSystem": "Any",
               "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-              "keywords": "markdown, sharing, MCP, model context protocol, collaboration, free"
+              "keywords": "markdown, sharing, MCP, model context protocol, collaboration, free, VS Code, Obsidian, link revocation, real-time, WebSocket"
             })
           }}
         />

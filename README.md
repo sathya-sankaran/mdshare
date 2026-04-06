@@ -17,14 +17,15 @@ Upload a markdown file, get shareable links with different permissions, collabor
 - **WYSIWYG editor** -- rich text editing with formatting toolbar, tables, code blocks
 - **Inline comments** -- select text, leave comments anchored to specific sections with highlights
 - **Live presence** -- see who's currently viewing the document
-- **Real-time updates** -- changes appear across all connected browsers, tab title flashes on updates
+- **Real-time updates** -- WebSocket sync across all connected browsers, tab title flashes on updates
 - **Display names** -- set once, used for comments, edits, and presence
 - **API & AI-friendly** -- full REST API, works with curl and AI chatbots
 - **Content sanitization** -- XSS protection, binary file rejection, protocol whitelist
 - **Rate limiting** -- abuse prevention on all write endpoints
 - **Link management** -- revoke links instantly, optional expiration dates, 50-link cap per document
 - **Recent documents** -- quickly access previously visited docs from the landing page
-- **Keyboard shortcuts** -- Cmd+B/I/E for formatting, Cmd+\\ for comments, Cmd+D to download
+- **VS Code & Obsidian plugins** -- share markdown directly from your editor
+- **Keyboard shortcuts** -- Cmd+B/I/E for formatting, Cmd+K for links, Cmd+\\ for comments, Cmd+D to download
 - **Mobile responsive** -- touch-friendly, collapsible panels, works on phones and tablets
 - **Rich link previews** -- Open Graph tags for Slack, WhatsApp, and social media
 
