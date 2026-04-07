@@ -1,4 +1,5 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
+// @ts-ignore - provided by the Workers runtime at build time
+import { env } from "cloudflare:workers";
 
 /**
  * Broadcast a document update to all connected WebSocket clients
@@ -10,7 +11,6 @@ export async function broadcastUpdate(
   contentHash: string
 ): Promise<void> {
   try {
-    const { env } = getCloudflareContext();
     const doBinding = (env as Record<string, any>).DOCUMENT_WS as DurableObjectNamespace;
     if (!doBinding) return;
 

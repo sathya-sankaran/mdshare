@@ -1,8 +1,8 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
+// @ts-ignore - provided by the Workers runtime at build time
+import { env } from "cloudflare:workers";
 
 export function getDB(): D1Database {
-  const { env } = getCloudflareContext();
-  return env.DB;
+  return (env as { DB: D1Database }).DB;
 }
 
 export interface DocumentRow {

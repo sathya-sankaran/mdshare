@@ -9,6 +9,9 @@ export default defineConfig({
   build: {
     format: "file",
   },
+  security: {
+    checkOrigin: false,
+  },
   integrations: [react()],
   vite: {
     css: {
