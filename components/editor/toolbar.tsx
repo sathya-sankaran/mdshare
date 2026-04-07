@@ -1,4 +1,3 @@
-"use client";
 
 import type { Editor } from "@tiptap/react";
 import { ShortcutsHelp } from "@/components/ui/shortcuts-help";

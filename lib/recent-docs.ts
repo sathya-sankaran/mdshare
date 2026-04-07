@@ -1,4 +1,3 @@
-"use client";
 
 const STORAGE_KEY = "mdshare_recent";
 const MAX_RECENT = 10;
