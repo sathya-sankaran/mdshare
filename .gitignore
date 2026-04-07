@@ -52,3 +52,5 @@ mcp/.mcpregistry_github_token
 mcp/.mcpregistry_registry_token
 awesome-cloudflare
 awesome-markdown
+dist/
+.astro/

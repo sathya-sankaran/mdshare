@@ -1,22 +1,15 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "main": "custom-worker.ts",
   "name": "mdshare",
   "compatibility_date": "2026-04-01",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "placement": {
     "mode": "smart"
   },
   "assets": {
-    "directory": ".open-next/assets",
+    "directory": "./dist",
     "binding": "ASSETS"
   },
-  "services": [
-    {
-      "binding": "WORKER_SELF_REFERENCE",
-      "service": "mdshare"
-    }
-  ],
   "d1_databases": [
     {
       "binding": "DB",
@@ -24,21 +17,7 @@
       "database_id": "88a26b65-c21b-4b1a-8971-7393d880ad66"
     }
   ],
-  "durable_objects": {
-    "bindings": [
-      {
-        "name": "DOCUMENT_WS",
-        "class_name": "DocumentWebSocket"
-      }
-    ]
-  },
   "triggers": {
     "crons": ["0 3 * * *", "*/5 * * * *"]
-  },
-  "migrations": [
-    {
-      "tag": "v1",
-      "new_sqlite_classes": ["DocumentWebSocket"]
-    }
-  ]
+  }
 }

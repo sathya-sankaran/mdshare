@@ -1,0 +1,82 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  ogType?: string;
+  canonical?: string;
+}
+
+const {
+  title = "mdshare — Share markdown instantly, free",
+  description = "Free markdown sharing. Upload, get a link, collaborate. No login, no accounts, no cost.",
+  ogType = "website",
+  canonical,
+} = Astro.props;
+
+const siteUrl = "https://mdshare.live";
+const ogImage = `${siteUrl}/og.png`;
+---
+
+<!doctype html>
+<html lang="en" class="h-full antialiased dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="mdshare" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "mdshare",
+      "url": siteUrl,
+      "description": "Free markdown sharing with MCP integration. Upload, get a link, collaborate. Works with Claude, ChatGPT, Gemini, Cursor, Windsurf.",
+      "applicationCategory": "Productivity",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "keywords": "markdown, sharing, MCP, model context protocol, collaboration, free, VS Code, Obsidian, link revocation, real-time, WebSocket"
+    })} />
+  </head>
+  <body class="min-h-full flex flex-col bg-neutral-950 text-neutral-200" style="font-family: 'Geist', system-ui, sans-serif;">
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  @import "../styles/globals.css";
+
+  code, pre, .font-mono, kbd {
+    font-family: 'Geist Mono', monospace;
+  }
+</style>
