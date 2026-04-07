@@ -17,6 +17,11 @@ export default defineConfig({
     css: {
       postcss: "./postcss.config.mjs",
     },
+    ssr: {
+      optimizeDeps: {
+        include: ["astro > picomatch"],
+      },
+    },
     build: {
       rollupOptions: {
         external: ["next", "next/server", "next/font/google", "next/navigation", "@opennextjs/cloudflare"],

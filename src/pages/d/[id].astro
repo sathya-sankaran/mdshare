@@ -1,0 +1,53 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { DocumentView } from "../../components/DocumentView";
+import { getDB } from "../../../lib/db";
+import { resolveToken } from "../../../lib/permissions";
+import type { DocumentRow } from "../../../lib/db-types";
+
+export const prerender = false;
+
+const id = Astro.params.id!;
+const key = Astro.url.searchParams.get("key");
+
+let doc: DocumentRow | null = null;
+let permission: string | null = null;
+let notFound = false;
+
+if (!key) {
+  notFound = true;
+} else {
+  const db = getDB();
+  const resolved = await resolveToken(db, key);
+  if (!resolved || resolved.documentId !== id) {
+    notFound = true;
+  } else {
+    permission = resolved.permission;
+    const row = await db
+      .prepare("SELECT * FROM documents WHERE id = ?")
+      .bind(id)
+      .first<DocumentRow>();
+    if (!row) {
+      notFound = true;
+    } else {
+      doc = row;
+    }
+  }
+}
+
+if (notFound) {
+  return new Response("Not found", { status: 404 });
+}
+
+const title = `${doc!.title || "Untitled"} — mdshare`;
+const description = `${doc!.title || "Untitled"} — shared via mdshare`;
+---
+
+<Layout title={title} description={description} ogType="article">
+  <DocumentView
+    document={doc!}
+    permission={permission as any}
+    tokenKey={key!}
+    client:only="react"
+  />
+</Layout>

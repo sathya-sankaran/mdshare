@@ -13,8 +13,8 @@
     "db:migrate:local": "wrangler d1 migrations apply mdshare-db --local"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.1.7",
-    "@astrojs/react": "^5.0.3",
+    "@astrojs/cloudflare": "^12.6.13",
+    "@astrojs/react": "^4.4.2",
     "@opennextjs/cloudflare": "^1.18.0",
     "@tiptap/extension-code-block-lowlight": "^3.22.0",
     "@tiptap/extension-link": "^3.22.0",
@@ -26,7 +26,7 @@
     "@tiptap/pm": "^3.22.0",
     "@tiptap/react": "^3.22.0",
     "@tiptap/starter-kit": "^3.22.0",
-    "astro": "^6.1.4",
+    "astro": "^5.18.1",
     "hast-util-sanitize": "^5.0.2",
     "lowlight": "^3.3.0",
     "nanoid": "^5.1.7",
