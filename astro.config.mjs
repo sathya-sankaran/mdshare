@@ -5,6 +5,10 @@ import react from "@astrojs/react";
 export default defineConfig({
   output: "server",
   adapter: cloudflare(),
+  trailingSlash: "never",
+  build: {
+    format: "file",
+  },
   integrations: [react()],
   vite: {
     css: {
