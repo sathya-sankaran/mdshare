@@ -197,14 +197,16 @@ export default function Home() {
           <p className="mt-2 text-neutral-300">
             Share markdown instantly. Free. No login required.
           </p>
-          {stats && (stats.documents_shared > 0 || stats.comments_posted > 0) && (
+          {stats && (stats.documents_shared >= 10 || stats.comments_posted >= 10 || stats.collaborators >= 10) && (
             <p className="mt-4 text-sm text-neutral-400 tracking-wide">
-              <span className="text-neutral-300 font-semibold">{Intl.NumberFormat("en", { notation: "compact" }).format(stats.documents_shared)}</span> documents shared
-              {stats.comments_posted > 0 && (
-                <> <span className="text-neutral-700 mx-1">&middot;</span> <span className="text-neutral-300 font-semibold">{Intl.NumberFormat("en", { notation: "compact" }).format(stats.comments_posted)}</span> comments</>
+              {stats.documents_shared >= 10 && (
+                <><span className="text-neutral-300 font-semibold">{Intl.NumberFormat("en", { notation: "compact" }).format(stats.documents_shared)}</span> documents shared</>
               )}
-              {stats.collaborators > 0 && (
-                <> <span className="text-neutral-700 mx-1">&middot;</span> <span className="text-neutral-300 font-semibold">{Intl.NumberFormat("en", { notation: "compact" }).format(stats.collaborators)}</span> collaborators</>
+              {stats.comments_posted >= 10 && (
+                <>{stats.documents_shared >= 10 && <span className="text-neutral-700 mx-1">&middot;</span>}<span className="text-neutral-300 font-semibold">{Intl.NumberFormat("en", { notation: "compact" }).format(stats.comments_posted)}</span> comments</>
+              )}
+              {stats.collaborators >= 10 && (
+                <>{(stats.documents_shared >= 10 || stats.comments_posted >= 10) && <span className="text-neutral-700 mx-1">&middot;</span>}<span className="text-neutral-300 font-semibold">{Intl.NumberFormat("en", { notation: "compact" }).format(stats.collaborators)}</span> collaborators</>
               )}
             </p>
           )}
