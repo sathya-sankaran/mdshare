@@ -105,7 +105,7 @@ export default function Home() {
           <div className="bg-neutral-900 rounded-xl border border-neutral-800 p-4 sm:p-6 space-y-4">
             <div>
               <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wide mb-2">
-                Admin URL (save this — it&apos;s your master key)
+                Admin URL — your master key
               </label>
               <div className="flex gap-2">
                 <input
@@ -158,6 +158,10 @@ export default function Home() {
                 </button>
               </div>
             </div>
+
+            <p className="text-[11px] text-neutral-600 text-center">
+              Also available any time from the Share links panel inside your document.
+            </p>
 
             {result.expires_at && (
               <p className="text-[11px] text-neutral-600 text-center">

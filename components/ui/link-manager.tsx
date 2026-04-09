@@ -28,6 +28,8 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [revokingId, setRevokingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [adminKeyRevealed, setAdminKeyRevealed] = useState(false);
+  const [adminKeyCopied, setAdminKeyCopied] = useState(false);
 
   const fetchLinks = useCallback(async () => {
     const res = await fetch(`/api/d/${documentId}/links?key=${adminKey}`);
@@ -246,6 +248,57 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
           Auto-copied to clipboard on creation
         </p>
       </div>
+
+      {adminKey && (
+        <div className="border-t border-neutral-800 pt-4 mt-4">
+          <h4 className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500 mb-2">
+            For Developers &amp; AI Agents
+          </h4>
+          <label className="block text-xs text-neutral-400 mb-1.5">Admin key</label>
+          <div className="flex gap-1.5">
+            <input
+              type="text"
+              readOnly
+              value={adminKeyRevealed ? adminKey : `adm_${"•".repeat(24)}`}
+              onFocus={(e) => e.currentTarget.blur()}
+              className="flex-1 min-w-0 bg-neutral-900 border border-neutral-800 rounded-lg px-2.5 py-1.5 text-xs font-mono text-neutral-400 truncate focus:outline-none"
+            />
+            <button
+              onClick={() => setAdminKeyRevealed((v) => !v)}
+              aria-label={adminKeyRevealed ? "Hide admin key" : "Reveal admin key"}
+              className="px-2 py-1.5 text-xs rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 transition-colors"
+            >
+              {adminKeyRevealed ? "Hide" : "Show"}
+            </button>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(adminKey);
+                setAdminKeyCopied(true);
+                setTimeout(() => setAdminKeyCopied(false), 1500);
+              }}
+              className={`px-2 py-1.5 text-xs rounded transition-colors ${
+                adminKeyCopied
+                  ? "bg-green-800 text-green-200"
+                  : "bg-neutral-800 hover:bg-neutral-700 text-neutral-300"
+              }`}
+            >
+              {adminKeyCopied ? "Copied!" : "Copy"}
+            </button>
+          </div>
+          <p className="text-[11px] text-neutral-600 leading-relaxed mt-2">
+            Use this in Claude, Cursor, or the mdshare MCP server to edit this document from AI tools.{" "}
+            <span className="text-amber-500/80">Full control</span> — anyone with this key can edit or delete the document. Don&apos;t paste it into public chats.{" "}
+            <a
+              href="/docs#use-with-ai"
+              target="_blank"
+              rel="noreferrer"
+              className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2"
+            >
+              How to use →
+            </a>
+          </p>
+        </div>
+      )}
     </div>
   );
 }
