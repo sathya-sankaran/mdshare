@@ -197,6 +197,9 @@ export default function Home() {
           <p className="mt-2 text-neutral-300">
             Share markdown instantly. Free. No login required.
           </p>
+          <p className="mt-1 text-sm text-neutral-500">
+            Share markdown files with Claude, ChatGPT, Cursor, and Windsurf via MCP.
+          </p>
           {stats && (stats.documents_shared >= 10 || stats.comments_posted >= 10 || stats.collaborators >= 10) && (
             <p className="mt-4 text-sm text-neutral-400 tracking-wide">
               {stats.documents_shared >= 10 && (
