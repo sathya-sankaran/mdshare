@@ -6,7 +6,7 @@ Package: npx mdshare-mcp
 Registry: io.github.sathya-sankaran/mdshare
 Works with: Claude, ChatGPT/Codex, Gemini CLI, Cursor, Windsurf
 Extensions: VS Code (vsix), Obsidian (BRAT or manual install)
-Tools: upload_markdown, read_document, update_document, patch_document, generate_link, list_links, revoke_link, list_comments, post_comment, resolve_comment, get_versions
+Tools: upload_markdown, read_document, update_document, patch_document, generate_link, list_links, revoke_link, list_comments, post_comment, resolve_comment, get_versions, list_my_documents, get_admin_url, register_document
 
 ## API
 Base URL: https://mdshare.live

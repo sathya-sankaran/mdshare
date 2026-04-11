@@ -29,6 +29,20 @@ export default function Home() {
       .catch(() => {});
   }, []);
 
+  // Reset transient state when the page is restored from bfcache (e.g. user
+  // tapped "Start with a blank page", was navigated to the new doc, then
+  // hit browser back — iOS Safari restores this page with loading still true).
+  useEffect(() => {
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) {
+        setLoading(false);
+        setError("");
+      }
+    };
+    window.addEventListener("pageshow", onPageShow);
+    return () => window.removeEventListener("pageshow", onPageShow);
+  }, []);
+
   const handleBlank = useCallback(async () => {
     setLoading(true);
     setError("");

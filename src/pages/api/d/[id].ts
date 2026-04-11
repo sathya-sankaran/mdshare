@@ -69,6 +69,7 @@ export const GET: APIRoute = async ({ request, params }) => {
       last_edited_at: lastVersion?.created_at || null,
       created_at: doc.created_at,
       updated_at: doc.updated_at,
+      expires_at: expiresAt || null,
     },
     { headers: { "X-Content-Source": "user-generated" } }
   );

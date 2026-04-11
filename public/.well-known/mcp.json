@@ -2,13 +2,13 @@
   "schema": "io.github.urbanmorph/mdshare",
   "name": "mdshare",
   "title": "mdshare — Free markdown sharing with AI integration",
-  "description": "Upload markdown, get shareable links, collaborate. Upload, read, update documents, manage comments, generate share links — all via MCP tools. No login required.",
-  "version": "1.2.0",
+  "description": "Upload markdown, get shareable links, collaborate. Upload, read, update documents, manage comments, generate share links — all via MCP tools. Admin credentials stay local. No login required.",
+  "version": "1.3.0",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "mdshare-mcp",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "transport": ["stdio"]
     }
   ],
@@ -23,7 +23,10 @@
     "list_comments",
     "post_comment",
     "resolve_comment",
-    "get_versions"
+    "get_versions",
+    "list_my_documents",
+    "get_admin_url",
+    "register_document"
   ],
   "links": {
     "homepage": "https://mdshare.live",
