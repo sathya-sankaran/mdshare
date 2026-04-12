@@ -208,26 +208,10 @@ export function DocumentView({
     [comments]
   );
 
-  // Text selection tracking — legacy path for normal /d/[id] route.
-  // When enableCommentBubble is true (/try/[id] route), the bubble is the
-  // canonical path and this tracker is skipped so testing is isolated.
-  useEffect(() => {
-    if (openPanel !== "comments") return;
-    if (enableCommentBubble) return;
-    const handleSelection = (e: Event) => {
-      const editorContainer = document.getElementById("editor-scroll-container");
-      if (!editorContainer || !editorContainer.contains(e.target as Node)) return;
-      const selection = window.getSelection();
-      const text = selection?.toString().trim() || "";
-      if (text) setSelectedText(text);
-    };
-    document.addEventListener("mouseup", handleSelection);
-    document.addEventListener("touchend", handleSelection);
-    return () => {
-      document.removeEventListener("mouseup", handleSelection);
-      document.removeEventListener("touchend", handleSelection);
-    };
-  }, [openPanel, enableCommentBubble]);
+  // Selection tracking for comment anchoring is handled by the BubbleMenu
+  // in tiptap-editor.tsx. The legacy mouseup/touchend tracker that used to
+  // live here was removed in Phase 3 — it was broken on iOS (see commit
+  // history for the diagnosis) and the bubble is the single primary path.
 
   // Keyboard shortcuts
   useEffect(() => {
