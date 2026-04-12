@@ -24,6 +24,7 @@ interface CommentSidebarProps {
   onActiveCommentChange: (id: string | null) => void;
   displayName: string;
   onChangeDisplayName: (name: string) => void;
+  onClosePanel?: () => void;
 }
 
 export function CommentSidebar({
@@ -38,6 +39,7 @@ export function CommentSidebar({
   onActiveCommentChange,
   displayName,
   onChangeDisplayName,
+  onClosePanel,
 }: CommentSidebarProps) {
   const [newComment, setNewComment] = useState("");
   const [posting, setPosting] = useState(false);
@@ -201,6 +203,11 @@ export function CommentSidebar({
                       );
                       if (el) {
                         el.scrollIntoView({ behavior: "smooth", block: "center" });
+                      }
+                      // On mobile the panel covers the editor — close it so the
+                      // user sees the highlighted anchor text in the document.
+                      if (window.innerWidth < 1024 && onClosePanel) {
+                        onClosePanel();
                       }
                     }
                   }}
