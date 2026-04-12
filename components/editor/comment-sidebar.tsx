@@ -48,10 +48,10 @@ export function CommentSidebar({
   const [replyText, setReplyText] = useState("");
   const commentRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const prevSelectedTextRef = useRef(selectedText);
+  const prevSelectedTextRef = useRef("");
 
   useEffect(() => {
-    if (selectedText && !prevSelectedTextRef.current) {
+    if (selectedText && selectedText !== prevSelectedTextRef.current) {
       textareaRef.current?.focus();
     }
     prevSelectedTextRef.current = selectedText;
