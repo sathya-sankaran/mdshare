@@ -180,6 +180,7 @@ export function TiptapEditor({
             <button
               type="button"
               aria-label="Comment on selection"
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => {
                 const { from, to } = editor.state.selection;
                 const text = editor.state.doc.textBetween(from, to, " ").trim();
