@@ -7,6 +7,9 @@
   "placement": {
     "mode": "smart"
   },
+  "observability": {
+    "enabled": true
+  },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS"
