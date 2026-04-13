@@ -30,7 +30,19 @@ const GENERIC_VERBS = [
   "Fetching content...",
 ];
 
-export type SpinnerContext = "upload" | "save" | "comment" | "link" | "generic";
+const PANEL_COMMENTS_VERBS = [
+  "Gathering feedback...",
+  "Rounding up comments...",
+  "Loading the conversation...",
+];
+
+const PANEL_LINKS_VERBS = [
+  "Fetching share links...",
+  "Loading permissions...",
+  "Preparing link manager...",
+];
+
+export type SpinnerContext = "upload" | "save" | "comment" | "link" | "generic" | "panel-comments" | "panel-links";
 
 const VERB_MAP: Record<SpinnerContext, string[]> = {
   upload: UPLOAD_VERBS,
@@ -38,6 +50,8 @@ const VERB_MAP: Record<SpinnerContext, string[]> = {
   comment: COMMENT_VERBS,
   link: LINK_VERBS,
   generic: GENERIC_VERBS,
+  "panel-comments": PANEL_COMMENTS_VERBS,
+  "panel-links": PANEL_LINKS_VERBS,
 };
 
 interface SpinnerProps {
