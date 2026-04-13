@@ -1,10 +1,12 @@
-import { useState, useCallback, useEffect, useMemo, useRef } from "react";
+import { useState, useCallback, useEffect, useMemo, useRef, lazy, Suspense } from "react";
 import { TiptapEditor } from "../../components/editor/tiptap-editor";
-import { LinkManager } from "../../components/ui/link-manager";
-import { CommentSidebar } from "../../components/editor/comment-sidebar";
 import type { Comment } from "../../components/editor/comment-sidebar";
 import { DownloadButton } from "../../components/ui/download-button";
 import { AboutButton } from "../../components/ui/about-modal";
+import { Spinner } from "../../components/ui/spinner";
+
+const CommentSidebar = lazy(() => import("../../components/editor/comment-sidebar").then(m => ({ default: m.CommentSidebar })));
+const LinkManager = lazy(() => import("../../components/ui/link-manager").then(m => ({ default: m.LinkManager })));
 import { MarkdownViewer } from "../../components/editor/markdown-viewer";
 import type { DocumentRow } from "../../lib/db-types";
 import type { Permission } from "../../lib/tokens";
@@ -491,23 +493,27 @@ export function DocumentView({
           {/* Panel content */}
           <div className="flex-1 min-h-0 overflow-hidden">
             {openPanel === "comments" && canComment && (
-              <CommentSidebar
-                documentId={doc.id}
-                tokenKey={tokenKey}
-                canComment={canComment}
-                selectedText={selectedText}
-                onClearSelection={() => setSelectedText("")}
-                comments={comments}
-                onCommentsChange={fetchComments}
-                activeCommentId={activeCommentId}
-                onActiveCommentChange={setActiveCommentId}
-                displayName={displayName}
-                onChangeDisplayName={setDisplayName}
-                onClosePanel={() => setOpenPanel(null)}
-              />
+              <Suspense fallback={<div className="p-4"><Spinner context="panel-comments" /></div>}>
+                <CommentSidebar
+                  documentId={doc.id}
+                  tokenKey={tokenKey}
+                  canComment={canComment}
+                  selectedText={selectedText}
+                  onClearSelection={() => setSelectedText("")}
+                  comments={comments}
+                  onCommentsChange={fetchComments}
+                  activeCommentId={activeCommentId}
+                  onActiveCommentChange={setActiveCommentId}
+                  displayName={displayName}
+                  onChangeDisplayName={setDisplayName}
+                  onClosePanel={() => setOpenPanel(null)}
+                />
+              </Suspense>
             )}
             {openPanel === "links" && permission === "admin" && (
-              <LinkManager documentId={doc.id} adminKey={tokenKey} />
+              <Suspense fallback={<div className="p-4"><Spinner context="panel-links" /></div>}>
+                <LinkManager documentId={doc.id} adminKey={tokenKey} />
+              </Suspense>
             )}
           </div>
         </div>
