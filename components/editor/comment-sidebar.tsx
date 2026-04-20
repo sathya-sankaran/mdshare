@@ -7,6 +7,8 @@ export interface Comment {
   author_name: string;
   content: string;
   anchor_text: string | null;
+  anchor_start: number | null;
+  anchor_end: number | null;
   resolved: number;
   parent_id: string | null;
   created_at: string;
@@ -16,7 +18,8 @@ interface CommentSidebarProps {
   documentId: string;
   tokenKey: string;
   canComment: boolean;
-  selectedText: string;
+  canResolve: boolean;
+  pendingAnchor: { text: string; start: number; end: number } | null;
   onClearSelection: () => void;
   comments: Comment[];
   onCommentsChange: () => void;
@@ -31,7 +34,8 @@ export function CommentSidebar({
   documentId,
   tokenKey,
   canComment,
-  selectedText,
+  canResolve,
+  pendingAnchor,
   onClearSelection,
   comments,
   onCommentsChange,
@@ -41,6 +45,7 @@ export function CommentSidebar({
   onChangeDisplayName,
   onClosePanel,
 }: CommentSidebarProps) {
+  const selectedText = pendingAnchor?.text ?? "";
   const [newComment, setNewComment] = useState("");
   const [posting, setPosting] = useState(false);
   const [showResolved, setShowResolved] = useState(false);
@@ -56,8 +61,6 @@ export function CommentSidebar({
     }
     prevSelectedTextRef.current = selectedText;
   }, [selectedText]);
-
-  const canResolve = canComment; // edit and admin can resolve
 
   const toggleResolve = async (commentId: string, currentlyResolved: boolean) => {
     await fetch(`/api/comments/${commentId}?key=${tokenKey}`, {
@@ -129,7 +132,9 @@ export function CommentSidebar({
           body: JSON.stringify({
             content: newComment,
             author_name: displayName,
-            anchor_text: selectedText || null,
+            anchor_text: pendingAnchor?.text ?? null,
+            anchor_start: pendingAnchor?.start ?? null,
+            anchor_end: pendingAnchor?.end ?? null,
           }),
         }
       );

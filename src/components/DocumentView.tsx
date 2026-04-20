@@ -57,11 +57,18 @@ export function DocumentView({
     if (openPanel) localStorage.setItem("openPanel", openPanel);
     else localStorage.removeItem("openPanel");
   }, [openPanel]);
-  const [selectedText, setSelectedText] = useState("");
-  const handleRequestComment = useCallback((text: string) => {
-    setSelectedText(text);
-    setOpenPanel("comments");
-  }, []);
+  const [pendingAnchor, setPendingAnchor] = useState<{
+    text: string;
+    start: number;
+    end: number;
+  } | null>(null);
+  const handleRequestComment = useCallback(
+    (text: string, anchorStart: number, anchorEnd: number) => {
+      setPendingAnchor({ text, start: anchorStart, end: anchorEnd });
+      setOpenPanel("comments");
+    },
+    []
+  );
   const [comments, setComments] = useState<Comment[]>([]);
   const [activeCommentId, setActiveCommentId] = useState<string | null>(null);
   const [liveContent, setLiveContent] = useState(doc.content);
@@ -206,7 +213,12 @@ export function DocumentView({
     () =>
       comments
         .filter((c) => c.anchor_text)
-        .map((c) => ({ id: c.id, anchorText: c.anchor_text! })),
+        .map((c) => ({
+          id: c.id,
+          anchorText: c.anchor_text!,
+          anchorStart: c.anchor_start ?? undefined,
+          anchorEnd: c.anchor_end ?? undefined,
+        })),
     [comments]
   );
 
@@ -498,8 +510,9 @@ export function DocumentView({
                   documentId={doc.id}
                   tokenKey={tokenKey}
                   canComment={canComment}
-                  selectedText={selectedText}
-                  onClearSelection={() => setSelectedText("")}
+                  canResolve={permission === "admin" || permission === "edit"}
+                  pendingAnchor={pendingAnchor}
+                  onClearSelection={() => setPendingAnchor(null)}
                   comments={comments}
                   onCommentsChange={fetchComments}
                   activeCommentId={activeCommentId}

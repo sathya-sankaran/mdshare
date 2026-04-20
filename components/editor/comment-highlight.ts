@@ -6,6 +6,8 @@ import type { Node as ProsemirrorNode } from "@tiptap/pm/model";
 export interface CommentAnchor {
   id: string;
   anchorText: string;
+  anchorStart?: number;
+  anchorEnd?: number;
 }
 
 const commentHighlightKey = new PluginKey("commentHighlight");
@@ -103,6 +105,39 @@ export const CommentHighlight = Extension.create({
               const normalizedAnchor = normalize(anchor.anchorText);
               if (!normalizedAnchor) continue;
 
+              const isActive = anchor.id === activeId;
+              const className = isActive
+                ? "comment-highlight comment-highlight-active"
+                : "comment-highlight";
+
+              // Position-first path: when a comment carries prosemirror positions
+              // and the text there still matches, anchor by position. The indexOf
+              // fallback below always picks the first occurrence, which is wrong
+              // when the same phrase appears multiple times in the document.
+              const { anchorStart, anchorEnd } = anchor;
+              if (
+                typeof anchorStart === "number" &&
+                typeof anchorEnd === "number" &&
+                anchorStart >= 0 &&
+                anchorStart < anchorEnd &&
+                anchorEnd <= doc.content.size
+              ) {
+                try {
+                  const textAtPos = doc.textBetween(anchorStart, anchorEnd, " ");
+                  if (normalize(textAtPos) === normalizedAnchor) {
+                    decorations.push(
+                      Decoration.inline(anchorStart, anchorEnd, {
+                        class: className,
+                        "data-comment-id": anchor.id,
+                      })
+                    );
+                    continue;
+                  }
+                } catch {
+                  // fall through to text search
+                }
+              }
+
               // Find the anchor in the normalized full text
               const idx = normalizedFull.indexOf(normalizedAnchor);
               if (idx === -1) continue;
@@ -159,15 +194,11 @@ export const CommentHighlight = Extension.create({
 
               if (startDocPos === -1 || endDocPos === -1 || startDocPos === undefined || endDocPos === undefined) continue;
 
-              const isActive = anchor.id === activeId;
-
               // Create inline decorations — they handle spanning across nodes automatically
               try {
                 decorations.push(
                   Decoration.inline(startDocPos, endDocPos + 1, {
-                    class: isActive
-                      ? "comment-highlight comment-highlight-active"
-                      : "comment-highlight",
+                    class: className,
                     "data-comment-id": anchor.id,
                   })
                 );

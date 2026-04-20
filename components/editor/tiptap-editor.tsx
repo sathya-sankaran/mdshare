@@ -29,7 +29,7 @@ interface TiptapEditorProps {
   onToggleLight?: () => void;
   isAdmin?: boolean;
   canComment?: boolean;
-  onRequestComment?: (text: string) => void;
+  onRequestComment?: (text: string, anchorStart: number, anchorEnd: number) => void;
 }
 
 export function TiptapEditor({
@@ -185,7 +185,7 @@ export function TiptapEditor({
                 const { from, to } = editor.state.selection;
                 const text = editor.state.doc.textBetween(from, to, " ").trim();
                 if (text) {
-                  onRequestComment(text);
+                  onRequestComment(text, from, to);
                   // Collapse selection so iOS dismisses its native popup and
                   // shouldShow returns false (hides the bubble cleanly).
                   editor.commands.setTextSelection(to);
