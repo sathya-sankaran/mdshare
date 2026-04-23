@@ -1,5 +1,4 @@
 import { useState, useRef, useCallback, useEffect } from "react";
-import { AboutButton } from "../../components/ui/about-modal";
 import { Spinner } from "../../components/ui/spinner";
 import { getRecentDocs, type RecentDoc } from "../../lib/recent-docs";
 
@@ -239,7 +238,7 @@ export default function Home() {
           <p className="mt-2 text-neutral-300">
             Share markdown instantly. Free. No login required.
           </p>
-          <p className="mt-1 text-sm text-neutral-500">
+          <p className="mt-1 text-sm text-neutral-400">
             Share markdown files with Claude, ChatGPT, Cursor, and Windsurf via MCP.
           </p>
           {stats && (stats.documents_created >= 10 || stats.comments_posted >= 10 || stats.collaborators >= 10) && (
@@ -256,7 +255,12 @@ export default function Home() {
             </p>
           )}
           <div className="mt-3 flex items-center justify-center gap-3">
-            <AboutButton variant="text" />
+            <a
+              href="/about"
+              className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-400/30 hover:decoration-indigo-300/50 transition-colors touch-manipulation"
+            >
+              What is mdshare?
+            </a>
             <span className="text-neutral-700">|</span>
             <a
               href="/docs"
@@ -266,7 +270,7 @@ export default function Home() {
             </a>
             <span className="text-neutral-700">|</span>
             <a
-              href="/docs#use-with-ai"
+              href="/share-markdown-with-ai"
               className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-400/30 hover:decoration-indigo-300/50 transition-colors"
             >
               Use with AI
@@ -307,7 +311,7 @@ export default function Home() {
           <p className="text-neutral-300">
             Drop a .md file here, or click to browse
           </p>
-          <p className="text-xs text-neutral-600 mt-1">
+          <p className="text-xs text-neutral-400 mt-1">
             Max 10MB &middot; Markdown only
           </p>
           <input
@@ -391,9 +395,6 @@ export default function Home() {
           </div>
         )}
 
-        <p className="text-center text-[11px] text-neutral-700 mt-4">
-          Your markdown, your links, your responsibility. No login. No encryption. No takebacks. Documents expire in 90 days.
-        </p>
       </div>
     </main>
   );

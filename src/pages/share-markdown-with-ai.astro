@@ -1,0 +1,284 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+export const prerender = true;
+
+const title = "Share markdown with Claude, ChatGPT, and every MCP client — mdshare";
+const description = "Share markdown files with Claude, Claude Code, Cursor, Windsurf, ChatGPT, and Gemini via MCP. Free, no login, instant link sharing for AI workflows.";
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is MCP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "MCP (Model Context Protocol) is an open standard from Anthropic that lets AI clients like Claude, Cursor, and Windsurf talk to external tools and services. mdshare ships an MCP server so any MCP-compatible AI can upload markdown, read it back, edit it, and share links — all from inside the chat."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need an API key to use mdshare with Claude?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. mdshare has no account or auth system. The MCP server runs locally on your machine, and each document it creates comes with its own shareable link. No tokens, no signups, no keys to manage."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which AI clients support mdshare?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Claude Desktop, Claude Code, Cursor, Windsurf, OpenAI Codex CLI, Google Gemini CLI, and any MCP-compatible client. The same npx mdshare-mcp install works across all of them — you just point the client's config file at it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long do documents last?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ninety days from creation. After that they expire and are deleted. Not built for permanent storage — built for fast, ephemeral sharing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this an alternative to pasting markdown into the chat?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Instead of pasting 2000 lines of markdown into a Claude prompt (burning context) or asking the model to regenerate a long document each time, mdshare lets the model upload once and reference by link. Edits happen by patching, not re-sending the whole file."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens on the server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The MCP server is a thin npm package that talks to mdshare.live over HTTPS. Your content lives on Cloudflare's D1 (SQLite). No tracking, no auth, no analytics account required on your side."
+      }
+    }
+  ]
+};
+---
+
+<Layout title={title} description={description} canonical="https://mdshare.live/share-markdown-with-ai">
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <div class="min-h-screen bg-neutral-950">
+    <header class="border-b border-neutral-800 px-4 sm:px-8 py-4">
+      <div class="max-w-3xl mx-auto flex items-center justify-between">
+        <a href="/" class="text-lg font-bold text-white">
+          md<span class="text-indigo-400">share</span>
+        </a>
+        <span class="text-xs text-neutral-400 bg-neutral-900 px-2 py-1 rounded">
+          Share with AI
+        </span>
+      </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
+      <div class="prose-docs">
+        <h1>Share markdown with Claude, ChatGPT, and every MCP client</h1>
+
+        <p class="lead">
+          <strong>mdshare</strong> is a free, no-login markdown sharing service. It ships with an
+          MCP server so AI clients can upload, read, edit, comment on, and share markdown
+          documents without any account setup, API keys, or copy-paste.
+        </p>
+
+        <p>
+          If you've ever burned Claude context pasting a 2000-line markdown file, or asked the
+          model to regenerate a long document from memory, this is the fix. The LLM uploads once,
+          gets a link, and from then on edits happen by patching — not by re-sending the whole file.
+        </p>
+
+        <hr />
+
+        <h2 id="install">Install the MCP server</h2>
+
+        <p>One command, any OS:</p>
+
+        <pre><code>npx mdshare-mcp</code></pre>
+
+        <p>
+          The package is published on the
+          <a href="https://www.npmjs.com/package/mdshare-mcp" target="_blank" rel="noopener" class="text-indigo-400 hover:text-indigo-300 underline">npm registry</a>
+          and the
+          <a href="https://registry.modelcontextprotocol.io/v0/servers?search=mdshare" target="_blank" rel="noopener" class="text-indigo-400 hover:text-indigo-300 underline">official MCP Registry</a>.
+          It runs as a local stdio process. No service to host, no credentials to rotate.
+        </p>
+
+        <hr />
+
+        <h2 id="connect">Connect to your AI client</h2>
+
+        <p>Pick your client and add the config block. Every client uses the same command — only the config file path differs.</p>
+
+        <h3 id="claude-desktop">Claude Desktop &amp; Claude Code</h3>
+        <p>Add to <code>~/.claude/claude_desktop_config.json</code>:</p>
+        <pre><code>{`{
+  "mcpServers": {
+    "mdshare": {
+      "command": "npx",
+      "args": ["mdshare-mcp"]
+    }
+  }
+}`}</code></pre>
+        <p>Restart Claude. Ask it to share a markdown file — it will call the <code>upload_markdown</code> tool and return a share link.</p>
+
+        <h3 id="cursor">Cursor</h3>
+        <p>Add to <code>~/.cursor/mcp.json</code>:</p>
+        <pre><code>{`{
+  "mcpServers": {
+    "mdshare": {
+      "command": "npx",
+      "args": ["mdshare-mcp"]
+    }
+  }
+}`}</code></pre>
+
+        <h3 id="windsurf">Windsurf</h3>
+        <p>Add to <code>~/.codeium/windsurf/mcp_config.json</code>:</p>
+        <pre><code>{`{
+  "mcpServers": {
+    "mdshare": {
+      "command": "npx",
+      "args": ["mdshare-mcp"]
+    }
+  }
+}`}</code></pre>
+
+        <h3 id="codex">OpenAI Codex CLI (ChatGPT)</h3>
+        <p>Add to <code>~/.codex/config.json</code>:</p>
+        <pre><code>{`{
+  "mcpServers": {
+    "mdshare": {
+      "command": "npx",
+      "args": ["mdshare-mcp"]
+    }
+  }
+}`}</code></pre>
+
+        <h3 id="gemini">Google Gemini CLI</h3>
+        <p>Add to <code>~/.gemini/settings.json</code>:</p>
+        <pre><code>{`{
+  "mcpServers": {
+    "mdshare": {
+      "command": "npx",
+      "args": ["mdshare-mcp"]
+    }
+  }
+}`}</code></pre>
+
+        <h3 id="generic">Any other MCP client</h3>
+        <p>
+          Same pattern — <code>command: "npx"</code>, <code>args: ["mdshare-mcp"]</code>. Transport is stdio. No environment variables required.
+        </p>
+
+        <hr />
+
+        <h2 id="tools">What the LLM can do</h2>
+
+        <p>The MCP server exposes 14 tools across four groups. Each is callable by the model as needed, with no extra prompting required.</p>
+
+        <h3 id="tools-documents">Documents</h3>
+        <ul class="list-disc pl-5 space-y-1 text-sm text-neutral-400">
+          <li><code>upload_markdown</code> — create a document from a file path or inline content</li>
+          <li><code>read_document</code> — fetch the current content (text or JSON)</li>
+          <li><code>update_document</code> — replace content (file_path preferred for large files)</li>
+          <li><code>patch_document</code> — apply find/replace operations without retransmitting the whole doc</li>
+          <li><code>get_versions</code> — inspect the edit history</li>
+        </ul>
+
+        <h3 id="tools-sharing">Sharing &amp; permissions</h3>
+        <ul class="list-disc pl-5 space-y-1 text-sm text-neutral-400">
+          <li><code>generate_link</code> — create a new view/comment/edit/admin link, optionally with expiry</li>
+          <li><code>revoke_link</code> — invalidate a specific share link</li>
+          <li><code>list_links</code> — see all active links for a document</li>
+          <li><code>get_admin_url</code> — retrieve the admin URL (for direct user request only)</li>
+        </ul>
+
+        <h3 id="tools-comments">Comments</h3>
+        <ul class="list-disc pl-5 space-y-1 text-sm text-neutral-400">
+          <li><code>post_comment</code> — add a comment (optionally anchored to text)</li>
+          <li><code>list_comments</code> — read the comment thread</li>
+          <li><code>resolve_comment</code> — mark a thread as resolved</li>
+        </ul>
+
+        <h3 id="tools-admin">Admin</h3>
+        <ul class="list-disc pl-5 space-y-1 text-sm text-neutral-400">
+          <li><code>list_my_documents</code> — all documents uploaded via this MCP server (local credential store)</li>
+          <li><code>register_document</code> — import an admin URL from elsewhere into the local store</li>
+        </ul>
+
+        <p class="text-sm text-neutral-500">
+          Full tool schemas, arguments, and example responses live in the
+          <a href="/docs" class="text-indigo-400 hover:text-indigo-300 underline">REST API docs</a>
+          — mdshare's MCP server is a thin wrapper around the same REST endpoints.
+        </p>
+
+        <hr />
+
+        <h2 id="faq">FAQ</h2>
+
+        <h3>What is MCP?</h3>
+        <p>
+          MCP (Model Context Protocol) is an
+          <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener" class="text-indigo-400 hover:text-indigo-300 underline">open standard from Anthropic</a>
+          that lets AI clients talk to external tools. Think of it as "USB for LLMs" — one plug
+          shape, any tool. mdshare ships an MCP server so any compatible AI can share markdown
+          without custom integration work.
+        </p>
+
+        <h3>Do I need an API key?</h3>
+        <p>
+          No. mdshare has no account, no auth system, no keys to manage. Each document the MCP
+          server creates is its own sharable artifact with its own link.
+        </p>
+
+        <h3>Which AI clients support this?</h3>
+        <p>
+          Claude Desktop, Claude Code, Cursor, Windsurf, OpenAI Codex CLI (ChatGPT), Google Gemini
+          CLI, and anything else that implements the MCP spec. Configuration is identical across
+          clients — the only difference is which JSON file you paste into.
+        </p>
+
+        <h3>Where does the content live?</h3>
+        <p>
+          On Cloudflare D1 (SQLite), served through a Cloudflare Worker. No third-party analytics,
+          no tracking, no auth database. Content expires after 90 days.
+        </p>
+
+        <h3>Is this an alternative to copy-pasting into the chat?</h3>
+        <p>
+          That's the main use case. Pasting a long markdown file into Claude burns context tokens
+          and forces the model to work against a snapshot. With mdshare, the model uploads once,
+          works against a live URL, and applies patches instead of rewriting. Your context stays
+          clean and the document is shareable with any teammate.
+        </p>
+
+        <h3>What about privacy?</h3>
+        <p>
+          Content is sanitized server-side but otherwise stored as-is. Anyone with a share link
+          can access the document at that permission tier. Don't upload anything sensitive — this
+          is a paste-and-share service, not an encrypted vault.
+        </p>
+
+        <hr />
+
+        <div class="flex flex-wrap gap-3 pt-4">
+          <a href="/" class="inline-block px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors">
+            Try mdshare →
+          </a>
+          <a href="/docs" class="inline-block px-5 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 text-sm font-medium rounded-lg transition-colors">
+            REST API docs
+          </a>
+          <a href="/about" class="inline-block px-5 py-2.5 bg-transparent hover:bg-neutral-900 text-neutral-400 hover:text-neutral-200 text-sm font-medium rounded-lg transition-colors">
+            What is mdshare?
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+</Layout>

@@ -289,7 +289,7 @@ export function LinkManager({ documentId, adminKey }: LinkManagerProps) {
             Use this in Claude, Cursor, or the mdshare MCP server to edit this document from AI tools.{" "}
             <span className="text-amber-500/80">Full control</span> — anyone with this key can edit or delete the document. Don&apos;t paste it into public chats.{" "}
             <a
-              href="/docs#use-with-ai"
+              href="/share-markdown-with-ai"
               target="_blank"
               rel="noreferrer"
               className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2"

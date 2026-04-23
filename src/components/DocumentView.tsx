@@ -2,7 +2,6 @@ import { useState, useCallback, useEffect, useMemo, useRef, lazy, Suspense } fro
 import { TiptapEditor } from "../../components/editor/tiptap-editor";
 import type { Comment } from "../../components/editor/comment-sidebar";
 import { DownloadButton } from "../../components/ui/download-button";
-import { AboutButton } from "../../components/ui/about-modal";
 import { Spinner } from "../../components/ui/spinner";
 
 const CommentSidebar = lazy(() => import("../../components/editor/comment-sidebar").then(m => ({ default: m.CommentSidebar })));
@@ -401,7 +400,16 @@ export function DocumentView({
             tokenKey={tokenKey}
             title={currentTitle}
           />
-          <AboutButton />
+          <a
+            href="/about"
+            className="p-2.5 rounded-lg text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800 transition-colors touch-manipulation"
+            title="About mdshare"
+            aria-label="About mdshare"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </a>
         </div>
       </header>
 

@@ -1,0 +1,147 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+export const prerender = true;
+
+const title = "About mdshare — Free markdown sharing, no login, built for AI workflows";
+const description = "mdshare is free markdown sharing with link-based access, four permission tiers, inline comments, and MCP integration for AI clients. No account, no login, no cost.";
+---
+
+<Layout title={title} description={description} canonical="https://mdshare.live/about">
+  <div class="min-h-screen bg-neutral-950">
+    <header class="border-b border-neutral-800 px-4 sm:px-8 py-4">
+      <div class="max-w-3xl mx-auto flex items-center justify-between">
+        <a href="/" class="text-lg font-bold text-white">
+          md<span class="text-indigo-400">share</span>
+        </a>
+        <span class="text-xs text-neutral-400 bg-neutral-900 px-2 py-1 rounded">
+          About
+        </span>
+      </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
+      <div class="prose-docs">
+        <h1>About mdshare</h1>
+
+        <p class="lead">
+          mdshare is free markdown sharing — upload a document, get a link, share it with people
+          or AI clients. No account, no login, no cost.
+        </p>
+
+        <p>
+          The design goal is a zero-friction path from "I have some markdown" to "here's a link
+          to it." Every feature is judged against the minimal flow: paste and go. If a feature
+          needs explanation, it didn't earn its place.
+        </p>
+
+        <hr />
+
+        <h2 id="features">What mdshare does</h2>
+
+        <h3>Link-based sharing</h3>
+        <p>
+          Upload markdown, get shareable links with different permission tiers. No accounts
+          needed on either side — the person you share with doesn't sign up for anything.
+        </p>
+
+        <h3>WYSIWYG markdown editor</h3>
+        <p>
+          Formatting toolbar, code blocks, tables, and keyboard shortcuts. Editors see a clean
+          editing surface; viewers see rendered markdown. Both sides are mobile-friendly.
+        </p>
+
+        <h3>Inline comments and replies</h3>
+        <p>
+          Anchor a comment to specific text in the document, reply to threads, and mark them
+          resolved. Clicking a comment jumps to the exact anchor point in the doc.
+        </p>
+
+        <h3>Four permission tiers</h3>
+        <p>
+          <strong>Admin</strong>, <strong>Edit</strong>, <strong>Comment</strong>, and
+          <strong>View</strong> — each with its own link. You can generate any number of each,
+          with optional expiry dates, and revoke any link instantly.
+        </p>
+
+        <h3>API and MCP for AI clients</h3>
+        <p>
+          A REST API for curl and scripts. An MCP server for Claude Desktop, Claude Code,
+          Cursor, Windsurf, OpenAI Codex CLI, and Gemini CLI. Plus standalone VS Code and
+          Obsidian plugins. See <a href="/share-markdown-with-ai" class="text-indigo-400 hover:text-indigo-300 underline">the AI integration page</a> for setup.
+        </p>
+
+        <h3>Real-time sync</h3>
+        <p>
+          Changes broadcast via WebSocket to all open viewers. Presence indicators show who's
+          currently reading. Falls back to polling when WebSocket isn't available.
+        </p>
+
+        <hr />
+
+        <h2 id="for-whom">Who mdshare is for</h2>
+
+        <p>
+          Developers and writers who think in markdown and want to share a document without
+          setting up accounts or logging anyone in. Drafting an RFC, a README, a technical spec,
+          or anything else you'd rather keep in markdown than translate to rich text — mdshare
+          gives you a link in a paste.
+        </p>
+
+        <p>
+          For markdown workflows where a full Google Docs or Word setup is overkill, mdshare is
+          the zero-login shortcut. It's not trying to replace full-featured document editors —
+          it's for the times you just need a shareable link to some markdown, not an entire
+          collaboration platform.
+        </p>
+
+        <hr />
+
+        <h2 id="not">What mdshare is not</h2>
+        <ul class="list-disc pl-5 space-y-1 text-sm text-neutral-400">
+          <li>Not a CMS or wiki</li>
+          <li>Not a note-taking app</li>
+          <li>Not a collaboration platform with user accounts</li>
+          <li>Not permanent storage — documents expire after 90 days</li>
+          <li>Not encrypted storage — anyone with a share link can access the document at that tier</li>
+        </ul>
+
+        <hr />
+
+        <h2 id="fine-print">Fine print</h2>
+        <p class="text-sm text-neutral-500">
+          You own your content — we just host it. Don't upload anything illegal or sensitive.
+          Links are keys — anyone with a link can access the document at that permission tier.
+          Documents expire in 90 days. We store nothing personal — your display name, recent
+          documents, and any local preferences live only in your browser. No guarantees on
+          uptime, availability, or data recovery. Service is free, provided as-is.
+        </p>
+
+        <hr />
+
+        <h2 id="contact">Built by</h2>
+        <p>
+          Sathya Sankaran · <a href="mailto:contact@urbanmorph.com" class="text-indigo-400 hover:text-indigo-300 underline">contact@urbanmorph.com</a>
+        </p>
+        <p class="text-sm text-neutral-500">
+          Source on <a href="https://github.com/urbanmorph/mdshare" target="_blank" rel="noopener" class="text-indigo-400 hover:text-indigo-300 underline">GitHub</a>.
+          Drop a ⭐ if you find it useful.
+        </p>
+
+        <hr />
+
+        <div class="flex flex-wrap gap-3 pt-4">
+          <a href="/" class="inline-block px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors">
+            Try mdshare →
+          </a>
+          <a href="/share-markdown-with-ai" class="inline-block px-5 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 text-sm font-medium rounded-lg transition-colors">
+            Use with Claude / MCP
+          </a>
+          <a href="/docs" class="inline-block px-5 py-2.5 bg-transparent hover:bg-neutral-900 text-neutral-400 hover:text-neutral-200 text-sm font-medium rounded-lg transition-colors">
+            REST API
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+</Layout>

@@ -11,7 +11,8 @@ Tools: upload_markdown, read_document, update_document, patch_document, generate
 ## API
 Base URL: https://mdshare.live
 Documentation: https://mdshare.live/docs/raw
-MCP setup: https://mdshare.live/docs#use-with-ai
+MCP setup: https://mdshare.live/share-markdown-with-ai
+About: https://mdshare.live/about
 
 ## Quick Start
 Upload: POST /api/documents (Content-Type: text/markdown, body: raw markdown)

@@ -6,7 +6,7 @@ export default function DocsContent() {
           <a href="/" className="text-lg font-bold text-white">
             md<span className="text-indigo-400">share</span>
           </a>
-          <span className="text-xs text-neutral-500 bg-neutral-900 px-2 py-1 rounded">
+          <span className="text-xs text-neutral-400 bg-neutral-900 px-2 py-1 rounded">
             Docs
           </span>
         </div>
@@ -181,6 +181,10 @@ curl -H "Accept: text/markdown" "https://mdshare.live/api/d/{id}?key={key}"`}</c
 
           <h2 id="use-with-ai">Use with AI</h2>
 
+          <p className="text-sm text-indigo-300 bg-indigo-950/30 border border-indigo-900/60 rounded px-3 py-2 mb-3">
+            See <a href="/share-markdown-with-ai" className="underline underline-offset-2 hover:text-indigo-200">/share-markdown-with-ai</a> for a dedicated guide with per-client setup, tool reference, and FAQs.
+          </p>
+
           <h3>MCP Setup</h3>
           <p>mdshare works as an MCP server with Claude, ChatGPT/Codex, and Gemini CLI.</p>
           <pre><code>npx mdshare-mcp</code></pre>
@@ -310,6 +314,20 @@ then upload this markdown and give me a share link.`}</code></pre>
             <li><strong>Command palette:</strong> <code>Cmd/Ctrl+P</code> &rarr; &ldquo;Share current file on mdshare&rdquo;</li>
           </ul>
           <p className="text-sm text-neutral-400">The admin URL is automatically copied to your clipboard.</p>
+
+          <hr />
+
+          <div className="flex flex-wrap gap-3 pt-4">
+            <a href="/" className="inline-block px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors no-underline">
+              Try mdshare &rarr;
+            </a>
+            <a href="/share-markdown-with-ai" className="inline-block px-5 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 text-sm font-medium rounded-lg transition-colors no-underline">
+              Use with Claude / MCP
+            </a>
+            <a href="/about" className="inline-block px-5 py-2.5 bg-transparent hover:bg-neutral-900 text-neutral-400 hover:text-neutral-200 text-sm font-medium rounded-lg transition-colors no-underline">
+              What is mdshare?
+            </a>
+          </div>
         </div>
       </main>
     </div>

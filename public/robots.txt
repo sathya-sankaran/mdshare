@@ -1,6 +1,8 @@
 User-agent: *
 Allow: /
 Allow: /docs
+Allow: /share-markdown-with-ai
+Allow: /about
 Allow: /llms.txt
 
 Disallow: /api/
