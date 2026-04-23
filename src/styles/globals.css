@@ -18,6 +18,23 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
+/* Keyboard-only focus ring.
+   Components across the app apply Tailwind's `focus:outline-none` to hide
+   the default browser outline for mouse interactions — which leaves keyboard
+   users with no visible focus state (WCAG 2.4.7). This `:focus-visible` rule
+   restores one for keyboard focus only, using `!important` to beat the
+   utility classes without a per-component edit everywhere. */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #6366f1 !important;
+  outline-offset: 2px !important;
+  border-radius: 4px;
+}
+
 /* Docs page prose */
 .prose-docs h1 { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
 .prose-docs h2 { font-size: 1.4rem; font-weight: 600; color: #eee; margin-top: 2rem; margin-bottom: 0.75rem; }

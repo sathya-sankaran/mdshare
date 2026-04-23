@@ -274,10 +274,10 @@ then upload this markdown and give me a share link.`}</code></pre>
           <h3>Install</h3>
           <ol className="list-decimal pl-5 space-y-1 text-sm text-neutral-300">
             <li>Open the <strong>Extensions</strong> panel in VS Code (<code>Cmd+Shift+X</code> or <code>Ctrl+Shift+X</code>)</li>
-            <li>Search for <strong>mdshare</strong> and click <strong>Install</strong>, or install directly from the <a href="https://marketplace.visualstudio.com/items?itemName=urbanmorph.mdshare-live" className="text-indigo-400 hover:text-indigo-300 underline" target="_blank" rel="noopener noreferrer">Marketplace page</a></li>
+            <li>Search for <strong>mdshare</strong> and click <strong>Install</strong>, or install directly from the <a href="https://marketplace.visualstudio.com/items?itemName=urbanmorph.mdshare-live" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2" target="_blank" rel="noopener noreferrer">Marketplace page</a></li>
           </ol>
           <p className="text-sm text-neutral-500">
-            Or install manually: download <a href="/mdshare-vscode.vsix" className="text-indigo-400 hover:text-indigo-300 underline">mdshare-vscode.vsix</a>, then <code>Cmd+Shift+P</code> &rarr; <strong>Install from VSIX</strong>.
+            Or install manually: download <a href="/mdshare-vscode.vsix" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">mdshare-vscode.vsix</a>, then <code>Cmd+Shift+P</code> &rarr; <strong>Install from VSIX</strong>.
           </p>
 
           <h3>Usage</h3>
@@ -294,14 +294,14 @@ then upload this markdown and give me a share link.`}</code></pre>
 
           <h3>Install via BRAT (recommended)</h3>
           <ol className="list-decimal pl-5 space-y-1 text-sm text-neutral-300">
-            <li>Install <a href="https://github.com/TfTHacker/obsidian42-brat" className="text-indigo-400 hover:text-indigo-300 underline" target="_blank" rel="noopener noreferrer">BRAT</a> from Community Plugins</li>
+            <li>Install <a href="https://github.com/TfTHacker/obsidian42-brat" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2" target="_blank" rel="noopener noreferrer">BRAT</a> from Community Plugins</li>
             <li>In BRAT settings, click &ldquo;Add Beta Plugin&rdquo;</li>
             <li>Enter: <code>urbanmorph/obsidian-mdshare</code></li>
           </ol>
 
           <h3>Manual install</h3>
           <ol className="list-decimal pl-5 space-y-1 text-sm text-neutral-300">
-            <li>Download <a href="/obsidian-mdshare-main.js" className="text-indigo-400 hover:text-indigo-300 underline" download="main.js">main.js</a> and <a href="/obsidian-mdshare-manifest.json" className="text-indigo-400 hover:text-indigo-300 underline" download="manifest.json">manifest.json</a></li>
+            <li>Download <a href="/obsidian-mdshare-main.js" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2" download="main.js">main.js</a> and <a href="/obsidian-mdshare-manifest.json" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2" download="manifest.json">manifest.json</a></li>
             <li>Create a folder: <code>&lt;your-vault&gt;/.obsidian/plugins/mdshare/</code></li>
             <li>Copy both files into that folder</li>
             <li>Enable in Settings &rarr; Community Plugins</li>

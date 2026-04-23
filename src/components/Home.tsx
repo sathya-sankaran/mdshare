@@ -257,35 +257,35 @@ export default function Home() {
           <div className="mt-3 flex items-center justify-center gap-3">
             <a
               href="/about"
-              className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-400/30 hover:decoration-indigo-300/50 transition-colors touch-manipulation"
+              className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-2 decoration-indigo-400/40 hover:decoration-indigo-300/70 transition-colors touch-manipulation"
             >
               What is mdshare?
             </a>
             <span className="text-neutral-700">|</span>
             <a
               href="/docs"
-              className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-400/30 hover:decoration-indigo-300/50 transition-colors"
+              className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-2 decoration-indigo-400/40 hover:decoration-indigo-300/70 transition-colors"
             >
               API Docs
             </a>
             <span className="text-neutral-700">|</span>
             <a
               href="/share-markdown-with-ai"
-              className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-400/30 hover:decoration-indigo-300/50 transition-colors"
+              className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-2 decoration-indigo-400/40 hover:decoration-indigo-300/70 transition-colors"
             >
               Use with AI
             </a>
             <span className="text-neutral-700">|</span>
             <a
               href="/docs#vscode"
-              className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-400/30 hover:decoration-indigo-300/50 transition-colors"
+              className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-2 decoration-indigo-400/40 hover:decoration-indigo-300/70 transition-colors"
             >
               VS Code
             </a>
             <span className="text-neutral-700">|</span>
             <a
               href="/docs#obsidian"
-              className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-400/30 hover:decoration-indigo-300/50 transition-colors"
+              className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-2 decoration-indigo-400/40 hover:decoration-indigo-300/70 transition-colors"
             >
               Obsidian
             </a>
