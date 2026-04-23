@@ -4,6 +4,7 @@ import { getDB } from "../../../lib/db";
 import { generateToken, hashToken, tokenPrefix } from "../../../lib/tokens";
 import { sanitizeMarkdown, contentHash, validateIsText } from "../../../lib/sanitize";
 import { checkRateLimit, rateLimitResponse } from "../../../lib/rate-limit";
+import { incrementStat } from "../../../lib/stats";
 
 export const prerender = false;
 
@@ -116,6 +117,7 @@ export const POST: APIRoute = async ({ request }) => {
       )
       .bind(linkId, docId, adminPrefix, adminTokenHash, adminToken),
   ]);
+  await incrementStat(db, "documents_created");
   const dbMs = Date.now() - tDb;
 
   const baseUrl = new URL(request.url).origin;

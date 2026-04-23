@@ -18,13 +18,13 @@ export default function Home() {
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [recentDocs, setRecentDocs] = useState<RecentDoc[]>([]);
-  const [stats, setStats] = useState<{ documents_shared: number; comments_posted: number; collaborators: number } | null>(null);
+  const [stats, setStats] = useState<{ documents_created: number; documents_shared: number; comments_posted: number; collaborators: number } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setRecentDocs(getRecentDocs());
     fetch("/api/stats")
-      .then(r => r.ok ? r.json() as Promise<{ documents_shared: number; comments_posted: number; collaborators: number }> : null)
+      .then(r => r.ok ? r.json() as Promise<{ documents_created: number; documents_shared: number; comments_posted: number; collaborators: number }> : null)
       .then(data => { if (data) setStats(data); })
       .catch(() => {});
   }, []);
@@ -242,16 +242,16 @@ export default function Home() {
           <p className="mt-1 text-sm text-neutral-500">
             Share markdown files with Claude, ChatGPT, Cursor, and Windsurf via MCP.
           </p>
-          {stats && (stats.documents_shared >= 10 || stats.comments_posted >= 10 || stats.collaborators >= 10) && (
+          {stats && (stats.documents_created >= 10 || stats.comments_posted >= 10 || stats.collaborators >= 10) && (
             <p className="mt-4 text-sm text-neutral-400 tracking-wide">
-              {stats.documents_shared >= 10 && (
-                <><span className="text-neutral-300 font-semibold">{Intl.NumberFormat("en", { notation: "compact" }).format(stats.documents_shared)}</span> documents shared</>
+              {stats.documents_created >= 10 && (
+                <><span className="text-neutral-300 font-semibold">{Intl.NumberFormat("en", { notation: "compact" }).format(stats.documents_created)}</span> documents</>
               )}
               {stats.comments_posted >= 10 && (
-                <>{stats.documents_shared >= 10 && <span className="text-neutral-700 mx-1">&middot;</span>}<span className="text-neutral-300 font-semibold">{Intl.NumberFormat("en", { notation: "compact" }).format(stats.comments_posted)}</span> comments</>
+                <>{stats.documents_created >= 10 && <span className="text-neutral-700 mx-1">&middot;</span>}<span className="text-neutral-300 font-semibold">{Intl.NumberFormat("en", { notation: "compact" }).format(stats.comments_posted)}</span> comments</>
               )}
               {stats.collaborators >= 10 && (
-                <>{(stats.documents_shared >= 10 || stats.comments_posted >= 10) && <span className="text-neutral-700 mx-1">&middot;</span>}<span className="text-neutral-300 font-semibold">{Intl.NumberFormat("en", { notation: "compact" }).format(stats.collaborators)}</span> collaborators</>
+                <>{(stats.documents_created >= 10 || stats.comments_posted >= 10) && <span className="text-neutral-700 mx-1">&middot;</span>}<span className="text-neutral-300 font-semibold">{Intl.NumberFormat("en", { notation: "compact" }).format(stats.collaborators)}</span> collaborators</>
               )}
             </p>
           )}
