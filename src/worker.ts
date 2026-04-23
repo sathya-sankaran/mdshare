@@ -6,6 +6,8 @@ import { App } from "astro/app";
 import { handle } from "@astrojs/cloudflare/handler";
 import { tokenPrefix, verifyToken } from "../lib/tokens";
 
+type IncomingRequest = Parameters<ExportedHandlerFetchHandler>[0];
+
 // Re-export the Durable Object class
 import { DocumentWebSocket } from "../worker/document-ws";
 export { DocumentWebSocket };
@@ -14,6 +16,7 @@ interface Env {
   DB: D1Database;
   DOCUMENT_WS: DurableObjectNamespace;
   ASSETS: Fetcher;
+  [key: string]: unknown;
 }
 
 /**
@@ -55,7 +58,7 @@ export function createExports(manifest: SSRManifest) {
   return {
     default: {
       async fetch(
-        request: Request,
+        request: IncomingRequest,
         env: Env,
         ctx: ExecutionContext
       ): Promise<Response> {
@@ -120,7 +123,7 @@ export function createExports(manifest: SSRManifest) {
       },
 
       async scheduled(
-        _event: ScheduledEvent,
+        _controller: ScheduledController,
         env: Env,
         _ctx: ExecutionContext
       ) {
