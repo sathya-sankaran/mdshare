@@ -27,6 +27,7 @@ interface CommentSidebarProps {
   onActiveCommentChange: (id: string | null) => void;
   displayName: string;
   onChangeDisplayName: (name: string) => void;
+  onAfterOwnPost?: () => void;
   onClosePanel?: () => void;
 }
 
@@ -43,6 +44,7 @@ export function CommentSidebar({
   onActiveCommentChange,
   displayName,
   onChangeDisplayName,
+  onAfterOwnPost,
   onClosePanel,
 }: CommentSidebarProps) {
   const selectedText = pendingAnchor?.text ?? "";
@@ -118,6 +120,7 @@ export function CommentSidebar({
         setReplyText("");
         setReplyingTo(null);
         onCommentsChange();
+        onAfterOwnPost?.();
       }
     } finally {
       setPosting(false);
@@ -146,6 +149,7 @@ export function CommentSidebar({
         setNewComment("");
         onClearSelection();
         onCommentsChange();
+        onAfterOwnPost?.();
       }
     } finally {
       setPosting(false);

@@ -14,6 +14,7 @@ import type { CommentAnchor } from "../../components/editor/comment-highlight";
 import { useDocumentWS } from "../../lib/use-document-ws";
 import { useDisplayName } from "../../lib/use-display-name";
 import { saveRecentDoc } from "../../lib/recent-docs";
+import { useUnreadCount, seedLastSeenIfMissing, pruneLastSeen } from "../../lib/lastseen";
 
 interface DocumentViewProps {
   document: DocumentRow;
@@ -112,6 +113,30 @@ export function DocumentView({
       permission,
     });
   }, [doc.id, currentTitle, tokenKey, permission]);
+
+  // Seed lastseen on first visit so the badge doesn't claim everything is
+  // unread on a doc you've never opened. Prune oldest entries to keep
+  // localStorage bounded.
+  useEffect(() => {
+    seedLastSeenIfMissing(doc.id);
+    pruneLastSeen();
+  }, [doc.id]);
+
+  const { unreadCount, markSeen } = useUnreadCount(doc.id, comments);
+
+  // Advance lastseen when the comments panel is open AND the tab is visible
+  // — that's when the user has a chance to actually see the comments.
+  // Re-fires whenever new comments arrive while watching.
+  useEffect(() => {
+    if (openPanel !== "comments") return;
+    if (typeof document === "undefined") return;
+    const advanceIfVisible = () => {
+      if (document.visibilityState === "visible") markSeen();
+    };
+    advanceIfVisible();
+    document.addEventListener("visibilitychange", advanceIfVisible);
+    return () => document.removeEventListener("visibilitychange", advanceIfVisible);
+  }, [openPanel, comments, markSeen]);
 
   const [viewers, setViewers] = useState<{ name: string }[]>([]);
   const sessionIdRef = useRef(Math.random().toString(36).slice(2));
@@ -340,10 +365,17 @@ export function DocumentView({
               </svg>
               <span className="hidden sm:inline">Comments</span>
               {comments.length > 0 && (
-                <span className={`absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center rounded-full text-[10px] font-bold ${
-                  openPanel === "comments" ? "bg-white text-indigo-600" : "bg-indigo-600 text-white"
-                }`}>
-                  {comments.length}
+                <span
+                  className={`absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center rounded-full text-[10px] font-bold ${
+                    unreadCount > 0
+                      ? "bg-amber-500 text-white"
+                      : openPanel === "comments"
+                        ? "bg-white text-indigo-600"
+                        : "bg-indigo-600 text-white"
+                  }`}
+                  title={unreadCount > 0 ? `${unreadCount} new since you last looked` : undefined}
+                >
+                  {unreadCount > 0 ? unreadCount : comments.length}
                 </span>
               )}
             </button>
@@ -519,6 +551,7 @@ export function DocumentView({
                   onActiveCommentChange={setActiveCommentId}
                   displayName={displayName}
                   onChangeDisplayName={setDisplayName}
+                  onAfterOwnPost={markSeen}
                   onClosePanel={() => setOpenPanel(null)}
                 />
               </Suspense>
