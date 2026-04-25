@@ -89,21 +89,21 @@ const faqSchema = {
 
         <p>One-liner — convert and share:</p>
 
-        <pre><code>markitdown report.pdf | curl -X POST \
-  -H "Content-Type: text/markdown" \
-  --data-binary @- \
-  https://mdshare.live/api/documents</code></pre>
+        <pre><code>{`markitdown report.pdf | curl -X POST \\
+  -H "Content-Type: text/markdown" \\
+  --data-binary @- \\
+  https://mdshare.live/api/documents`}</code></pre>
 
         <p>The response is JSON with a <code>share_url</code> field. Open it, send it to a teammate,
           paste it into Slack — that's the whole flow.</p>
 
         <p>If you want the URL extracted directly:</p>
 
-        <pre><code>markitdown report.pdf | curl -sX POST \
-  -H "Content-Type: text/markdown" \
-  --data-binary @- \
-  https://mdshare.live/api/documents \
-  | jq -r .share_url</code></pre>
+        <pre><code>{`markitdown report.pdf | curl -sX POST \\
+  -H "Content-Type: text/markdown" \\
+  --data-binary @- \\
+  https://mdshare.live/api/documents \\
+  | jq -r .share_url`}</code></pre>
 
         <hr />
 
@@ -116,19 +116,19 @@ const faqSchema = {
           mdshare's renderer.
         </p>
 
-        <pre><code>pandoc thesis.tex -t gfm | curl -X POST \
-  -H "Content-Type: text/markdown" \
-  --data-binary @- \
-  https://mdshare.live/api/documents</code></pre>
+        <pre><code>{`pandoc thesis.tex -t gfm | curl -X POST \\
+  -H "Content-Type: text/markdown" \\
+  --data-binary @- \\
+  https://mdshare.live/api/documents`}</code></pre>
 
         <p>For DOCX with embedded images, extract media to a folder first (mdshare doesn't host
           binaries — only markdown):</p>
 
-        <pre><code>pandoc spec.docx -t gfm --extract-media=./media -o spec.md
+        <pre><code>{`pandoc spec.docx -t gfm --extract-media=./media -o spec.md
 # review spec.md, then:
-curl -X POST -H "Content-Type: text/markdown" \
-  --data-binary @spec.md \
-  https://mdshare.live/api/documents</code></pre>
+curl -X POST -H "Content-Type: text/markdown" \\
+  --data-binary @spec.md \\
+  https://mdshare.live/api/documents`}</code></pre>
 
         <hr />
 
@@ -140,10 +140,10 @@ curl -X POST -H "Content-Type: text/markdown" \
           table and layout recovery. Install with <code>pip install docling</code>.
         </p>
 
-        <pre><code>docling report.pdf --to md --output - | curl -X POST \
-  -H "Content-Type: text/markdown" \
-  --data-binary @- \
-  https://mdshare.live/api/documents</code></pre>
+        <pre><code>{`docling report.pdf --to md --output - | curl -X POST \\
+  -H "Content-Type: text/markdown" \\
+  --data-binary @- \\
+  https://mdshare.live/api/documents`}</code></pre>
 
         <hr />
 
@@ -155,10 +155,10 @@ curl -X POST -H "Content-Type: text/markdown" \
           tables, GPU-accelerated. Install with <code>pip install marker-pdf</code>.
         </p>
 
-        <pre><code>marker_single paper.pdf --output_dir ./out
-curl -X POST -H "Content-Type: text/markdown" \
-  --data-binary @./out/paper/paper.md \
-  https://mdshare.live/api/documents</code></pre>
+        <pre><code>{`marker_single paper.pdf --output_dir ./out
+curl -X POST -H "Content-Type: text/markdown" \\
+  --data-binary @./out/paper/paper.md \\
+  https://mdshare.live/api/documents`}</code></pre>
 
         <hr />
 
@@ -170,13 +170,13 @@ curl -X POST -H "Content-Type: text/markdown" \
           turning a blog post or doc page into a shareable artifact you can annotate.
         </p>
 
-        <pre><code>curl -sX POST https://api.firecrawl.dev/v1/scrape \
-  -H "Authorization: Bearer $FIRECRAWL_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"url":"https://example.com/post","formats":["markdown"]}' \
-  | jq -r .data.markdown \
-  | curl -X POST -H "Content-Type: text/markdown" \
-      --data-binary @- https://mdshare.live/api/documents</code></pre>
+        <pre><code>{`curl -sX POST https://api.firecrawl.dev/v1/scrape \\
+  -H "Authorization: Bearer $FIRECRAWL_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"url":"https://example.com/post","formats":["markdown"]}' \\
+  | jq -r .data.markdown \\
+  | curl -X POST -H "Content-Type: text/markdown" \\
+      --data-binary @- https://mdshare.live/api/documents`}</code></pre>
 
         <hr />
 
@@ -188,9 +188,9 @@ curl -X POST -H "Content-Type: text/markdown" \
           clean markdown back. No API key needed for basic use.
         </p>
 
-        <pre><code>curl -s https://r.jina.ai/https://example.com/post \
-  | curl -X POST -H "Content-Type: text/markdown" \
-      --data-binary @- https://mdshare.live/api/documents</code></pre>
+        <pre><code>{`curl -s https://r.jina.ai/https://example.com/post \\
+  | curl -X POST -H "Content-Type: text/markdown" \\
+      --data-binary @- https://mdshare.live/api/documents`}</code></pre>
 
         <hr />
 
