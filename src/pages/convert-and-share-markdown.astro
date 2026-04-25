@@ -1,0 +1,283 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+export const prerender = true;
+
+const title = "Convert PDF, DOCX, or web pages to markdown and share — markitdown, pandoc, Docling, Marker, Firecrawl + mdshare";
+const description = "Pipe markitdown, pandoc, Docling, Marker, Firecrawl, or Jina Reader output straight into a shareable link. PDF, DOCX, HTML, URL → markdown → mdshare.live. One command, no login.";
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I share markitdown output online?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pipe the markitdown output into curl against mdshare.live's POST /api/documents endpoint. The response gives you a shareable link. No login, no account, no API key. Example: markitdown report.pdf | curl -X POST -H 'Content-Type: text/markdown' --data-binary @- https://mdshare.live/api/documents"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I share pandoc output as a link?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Convert your file to markdown with pandoc, then POST it to mdshare.live's API. Example: pandoc input.docx -t gfm | curl -X POST -H 'Content-Type: text/markdown' --data-binary @- https://mdshare.live/api/documents. The response includes a share URL valid for 90 days."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does mdshare convert PDF or DOCX directly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. mdshare is the sharing layer — it accepts markdown only. Use markitdown (Microsoft) or pandoc to convert from PDF, DOCX, HTML, EPUB, or other formats into markdown first, then share. The two-tool split keeps each tool focused: converters convert, mdshare shares."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can my AI agent do the convert-and-share in one step?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Install the mdshare MCP server (npx mdshare-mcp) and your agent can call upload_markdown with a file_path argument. If the file is a PDF or DOCX, run markitdown or pandoc first to produce a .md file, then point upload_markdown at that path. The agent never has to load the markdown into its context."
+      }
+    }
+  ]
+};
+---
+
+<Layout title={title} description={description} canonical="https://mdshare.live/convert-and-share-markdown">
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <div class="min-h-screen bg-neutral-950">
+    <header class="border-b border-neutral-800 px-4 sm:px-8 py-4">
+      <div class="max-w-3xl mx-auto flex items-center justify-between">
+        <a href="/" class="text-lg font-bold text-white">
+          md<span class="text-indigo-400">share</span>
+        </a>
+        <span class="text-xs text-neutral-400 bg-neutral-900 px-2 py-1 rounded">
+          Workflows
+        </span>
+      </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
+      <div class="prose-docs">
+        <h1>Convert with markitdown or pandoc, share with mdshare</h1>
+
+        <p class="lead">
+          <strong>markitdown</strong> and <strong>pandoc</strong> turn anything into markdown.
+          <strong>mdshare</strong> turns markdown into a link. Together they cover the full path
+          from "PDF on disk" to "URL in someone's inbox" — no login, no account, no upload UI.
+        </p>
+
+        <p>
+          Each tool stays focused: converters convert, mdshare shares. Pipe one into the other and
+          you get a one-line workflow that works for humans at a terminal and for AI agents calling
+          tools.
+        </p>
+
+        <hr />
+
+        <h2 id="markitdown">markitdown → mdshare</h2>
+
+        <p>
+          <a href="https://github.com/microsoft/markitdown" target="_blank" rel="noopener" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">markitdown</a>
+          is Microsoft's converter for PDF, DOCX, PPTX, XLSX, HTML, audio (with transcription), and
+          images. Install it with <code>pip install markitdown[all]</code>.
+        </p>
+
+        <p>One-liner — convert and share:</p>
+
+        <pre><code>markitdown report.pdf | curl -X POST \
+  -H "Content-Type: text/markdown" \
+  --data-binary @- \
+  https://mdshare.live/api/documents</code></pre>
+
+        <p>The response is JSON with a <code>share_url</code> field. Open it, send it to a teammate,
+          paste it into Slack — that's the whole flow.</p>
+
+        <p>If you want the URL extracted directly:</p>
+
+        <pre><code>markitdown report.pdf | curl -sX POST \
+  -H "Content-Type: text/markdown" \
+  --data-binary @- \
+  https://mdshare.live/api/documents \
+  | jq -r .share_url</code></pre>
+
+        <hr />
+
+        <h2 id="pandoc">pandoc → mdshare</h2>
+
+        <p>
+          <a href="https://pandoc.org" target="_blank" rel="noopener" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">pandoc</a>
+          handles a wider format matrix (LaTeX, EPUB, RST, OPML, org-mode, Jupyter notebooks, and
+          more). Use GitHub-flavored markdown as the output target — it round-trips cleanly through
+          mdshare's renderer.
+        </p>
+
+        <pre><code>pandoc thesis.tex -t gfm | curl -X POST \
+  -H "Content-Type: text/markdown" \
+  --data-binary @- \
+  https://mdshare.live/api/documents</code></pre>
+
+        <p>For DOCX with embedded images, extract media to a folder first (mdshare doesn't host
+          binaries — only markdown):</p>
+
+        <pre><code>pandoc spec.docx -t gfm --extract-media=./media -o spec.md
+# review spec.md, then:
+curl -X POST -H "Content-Type: text/markdown" \
+  --data-binary @spec.md \
+  https://mdshare.live/api/documents</code></pre>
+
+        <hr />
+
+        <h2 id="docling">Docling → mdshare</h2>
+
+        <p>
+          <a href="https://github.com/docling-project/docling" target="_blank" rel="noopener" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">Docling</a>
+          (IBM) is purpose-built for RAG pipelines — PDF, DOCX, PPTX, HTML, images, with strong
+          table and layout recovery. Install with <code>pip install docling</code>.
+        </p>
+
+        <pre><code>docling report.pdf --to md --output - | curl -X POST \
+  -H "Content-Type: text/markdown" \
+  --data-binary @- \
+  https://mdshare.live/api/documents</code></pre>
+
+        <hr />
+
+        <h2 id="marker">Marker → mdshare</h2>
+
+        <p>
+          <a href="https://github.com/datalab-to/marker" target="_blank" rel="noopener" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">Marker</a>
+          is the go-to PDF→markdown converter for LLM ingestion — fast, accurate on math and
+          tables, GPU-accelerated. Install with <code>pip install marker-pdf</code>.
+        </p>
+
+        <pre><code>marker_single paper.pdf --output_dir ./out
+curl -X POST -H "Content-Type: text/markdown" \
+  --data-binary @./out/paper/paper.md \
+  https://mdshare.live/api/documents</code></pre>
+
+        <hr />
+
+        <h2 id="firecrawl">Firecrawl → mdshare</h2>
+
+        <p>
+          <a href="https://www.firecrawl.dev" target="_blank" rel="noopener" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">Firecrawl</a>
+          scrapes any URL and returns clean markdown — strips nav, ads, and boilerplate. Useful for
+          turning a blog post or doc page into a shareable artifact you can annotate.
+        </p>
+
+        <pre><code>curl -sX POST https://api.firecrawl.dev/v1/scrape \
+  -H "Authorization: Bearer $FIRECRAWL_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"url":"https://example.com/post","formats":["markdown"]}' \
+  | jq -r .data.markdown \
+  | curl -X POST -H "Content-Type: text/markdown" \
+      --data-binary @- https://mdshare.live/api/documents</code></pre>
+
+        <hr />
+
+        <h2 id="jina-reader">Jina Reader → mdshare</h2>
+
+        <p>
+          <a href="https://jina.ai/reader" target="_blank" rel="noopener" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">Jina Reader</a>
+          is a free URL→markdown service — prefix any URL with <code>r.jina.ai/</code> and you get
+          clean markdown back. No API key needed for basic use.
+        </p>
+
+        <pre><code>curl -s https://r.jina.ai/https://example.com/post \
+  | curl -X POST -H "Content-Type: text/markdown" \
+      --data-binary @- https://mdshare.live/api/documents</code></pre>
+
+        <hr />
+
+        <h2 id="ai">From an AI agent (MCP)</h2>
+
+        <p>
+          If you're driving this from Claude, Cursor, Windsurf, or another MCP client, install the
+          mdshare MCP server once:
+        </p>
+
+        <pre><code>npx mdshare-mcp</code></pre>
+
+        <p>
+          Then ask the agent to convert and share. It runs <code>markitdown</code>,
+          <code>pandoc</code>, <code>docling</code>, or <code>marker</code> via shell, then calls
+          <code>upload_markdown</code> with a
+          <code>file_path</code> argument — the markdown never enters the conversation context, so
+          a 200-page PDF costs the same tokens as a haiku.
+        </p>
+
+        <p>
+          Full setup for every supported client: <a href="/share-markdown-with-ai" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">Share markdown with AI</a>.
+        </p>
+
+        <hr />
+
+        <h2 id="why">Why split conversion and sharing?</h2>
+
+        <p>
+          markitdown and pandoc are both excellent at what they do — there's no good reason to
+          rebuild conversion server-side, and plenty of reasons not to (MIME parsing, security
+          surface, format drift). mdshare's job ends and begins at "here's some markdown, give me
+          a link." Keeping the layers separate means each one stays small and the pipe between them
+          stays a single character.
+        </p>
+
+        <p>
+          The same logic runs in reverse — if you already have markdown, mdshare doesn't care where
+          it came from. Hand-written, generated by an LLM, exported from Notion or Obsidian, piped
+          out of pandoc — same endpoint, same response shape, same shareable link.
+        </p>
+
+        <hr />
+
+        <h2 id="faq">FAQ</h2>
+
+        <h3>Does mdshare convert PDF or DOCX?</h3>
+        <p>
+          No — by design. Use markitdown or pandoc upstream. mdshare is the sharing layer; it
+          accepts markdown only. This keeps the service tiny, fast, and free.
+        </p>
+
+        <h3>What about images and other binaries?</h3>
+        <p>
+          mdshare stores markdown text only. If your converter extracts images, they'll appear as
+          local file references in the markdown — those won't render in the shared view. Either
+          host the images elsewhere (GitHub, S3, Imgur) and rewrite the markdown to point at them,
+          or strip the images before uploading.
+        </p>
+
+        <h3>How long does the link last?</h3>
+        <p>
+          90 days. Re-upload to refresh, or generate a new link from the admin URL. mdshare is
+          built for ephemeral sharing, not archival.
+        </p>
+
+        <h3>Can I edit after uploading?</h3>
+        <p>
+          Yes — the create response includes an <code>admin_url</code> for editing in the browser,
+          plus an <code>edit_key</code> if you want to PUT or PATCH from your script. Re-running
+          markitdown and pushing a PATCH is a common loop for documents that change underneath you.
+        </p>
+
+        <hr />
+
+        <div class="flex flex-wrap gap-3 pt-4">
+          <a href="/" class="inline-block px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors">
+            Try mdshare →
+          </a>
+          <a href="/share-markdown-with-ai" class="inline-block px-5 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 text-sm font-medium rounded-lg transition-colors">
+            Use with Claude / MCP
+          </a>
+          <a href="/docs" class="inline-block px-5 py-2.5 bg-transparent hover:bg-neutral-900 text-neutral-400 hover:text-neutral-200 text-sm font-medium rounded-lg transition-colors">
+            REST API
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+</Layout>

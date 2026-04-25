@@ -12,7 +12,19 @@ Tools: upload_markdown, read_document, update_document, patch_document, generate
 Base URL: https://mdshare.live
 Documentation: https://mdshare.live/docs/raw
 MCP setup: https://mdshare.live/share-markdown-with-ai
+Convert + share workflows: https://mdshare.live/convert-and-share-markdown
 About: https://mdshare.live/about
+
+## Works with
+- markitdown (Microsoft) — convert PDF/DOCX/PPTX/XLSX/HTML/audio to markdown
+- pandoc — convert LaTeX/EPUB/RST/org/Jupyter to markdown
+- Docling (IBM) — RAG-focused PDF/DOCX/PPTX/HTML conversion with table recovery
+- Marker — fast, accurate PDF to markdown for LLM ingestion
+- Firecrawl — scrape any URL to clean markdown
+- Jina Reader — free URL to markdown via r.jina.ai/{url}
+- One-liner pattern: `<converter> file | curl -X POST -H "Content-Type: text/markdown" --data-binary @- https://mdshare.live/api/documents`
+- mdshare is the sharing layer; conversion happens upstream. Same pattern for any tool that emits markdown.
+- Workflow guide: https://mdshare.live/convert-and-share-markdown
 
 ## Quick Start
 Upload: POST /api/documents (Content-Type: text/markdown, body: raw markdown)
