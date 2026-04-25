@@ -3,6 +3,23 @@ import Layout from "../../layouts/Layout.astro";
 import DocsContent from "../../components/DocsContent";
 
 export const prerender = true;
+
+const docsSchema = {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "mdshare API & MCP Documentation",
+  "description": "REST API and MCP server reference for mdshare — endpoints, authentication, rate limits, and AI client integration.",
+  "url": "https://mdshare.live/docs",
+  "mainEntityOfPage": "https://mdshare.live/docs",
+  "about": [
+    { "@type": "Thing", "name": "REST API" },
+    { "@type": "Thing", "name": "Model Context Protocol" },
+    { "@type": "Thing", "name": "Markdown sharing" }
+  ],
+  "proficiencyLevel": "Beginner",
+  "isAccessibleForFree": true,
+  "inLanguage": "en"
+};
 ---
 
 <Layout
@@ -10,5 +27,6 @@ export const prerender = true;
   description="REST API and MCP server for mdshare. Use with Claude, ChatGPT, Gemini, Cursor, Windsurf, or curl."
   canonical="https://mdshare.live/docs"
 >
+  <script type="application/ld+json" set:html={JSON.stringify(docsSchema)} />
   <DocsContent />
 </Layout>

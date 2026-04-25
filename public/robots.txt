@@ -2,6 +2,7 @@ User-agent: *
 Allow: /
 Allow: /docs
 Allow: /share-markdown-with-ai
+Allow: /convert-and-share-markdown
 Allow: /about
 Allow: /llms.txt
 

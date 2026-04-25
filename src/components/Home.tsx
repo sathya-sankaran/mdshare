@@ -254,7 +254,7 @@ export default function Home() {
               )}
             </p>
           )}
-          <div className="mt-3 flex items-center justify-center gap-3">
+          <div className="mt-3 flex items-center justify-center flex-wrap gap-x-3 gap-y-1">
             <a
               href="/about"
               className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-2 decoration-indigo-400/40 hover:decoration-indigo-300/70 transition-colors touch-manipulation"
@@ -274,6 +274,13 @@ export default function Home() {
               className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-2 decoration-indigo-400/40 hover:decoration-indigo-300/70 transition-colors"
             >
               Use with AI
+            </a>
+            <span className="text-neutral-700">|</span>
+            <a
+              href="/convert-and-share-markdown"
+              className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-2 decoration-indigo-400/40 hover:decoration-indigo-300/70 transition-colors"
+            >
+              Convert PDF/DOCX
             </a>
             <span className="text-neutral-700">|</span>
             <a

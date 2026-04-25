@@ -5,9 +5,57 @@ export const prerender = true;
 
 const title = "About mdshare — Free markdown sharing, no login, built for AI workflows";
 const description = "mdshare is free markdown sharing with link-based access, four permission tiers, inline comments, and MCP integration for AI clients. No account, no login, no cost.";
+
+const aboutSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://www.sathyasankaran.com/#person",
+      "name": "Sathya Sankaran",
+      "url": "https://www.sathyasankaran.com",
+      "image": "https://github.com/urbanmorph.png",
+      "sameAs": [
+        "https://www.linkedin.com/in/sathyasankaran/",
+        "https://github.com/urbanmorph"
+      ],
+      "jobTitle": "Director",
+      "worksFor": { "@id": "https://urbanmorph.com/#org" }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://urbanmorph.com/#org",
+      "name": "Urban Morph",
+      "description": "Consulting firm building tools to solve mobility in cities.",
+      "url": "https://urbanmorph.com",
+      "founder": { "@id": "https://www.sathyasankaran.com/#person" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://mdshare.live/#app",
+      "name": "mdshare",
+      "url": "https://mdshare.live",
+      "applicationCategory": "Productivity",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "creator": { "@id": "https://www.sathyasankaran.com/#person" },
+      "license": "https://github.com/urbanmorph/mdshare/blob/main/LICENSE",
+      "codeRepository": "https://github.com/urbanmorph/mdshare"
+    },
+    {
+      "@type": "AboutPage",
+      "url": "https://mdshare.live/about",
+      "name": title,
+      "description": description,
+      "mainEntity": { "@id": "https://mdshare.live/#app" },
+      "author": { "@id": "https://www.sathyasankaran.com/#person" }
+    }
+  ]
+};
 ---
 
 <Layout title={title} description={description} canonical="https://mdshare.live/about">
+  <script type="application/ld+json" set:html={JSON.stringify(aboutSchema)} />
   <div class="min-h-screen bg-neutral-950">
     <header class="border-b border-neutral-800 px-4 sm:px-8 py-4">
       <div class="max-w-3xl mx-auto flex items-center justify-between">
@@ -171,6 +219,9 @@ const description = "mdshare is free markdown sharing with link-based access, fo
           </a>
           <a href="/share-markdown-with-ai" class="inline-block px-5 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 text-sm font-medium rounded-lg transition-colors">
             Use with Claude / MCP
+          </a>
+          <a href="/convert-and-share-markdown" class="inline-block px-5 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 text-sm font-medium rounded-lg transition-colors">
+            Convert PDF/DOCX
           </a>
           <a href="/docs" class="inline-block px-5 py-2.5 bg-transparent hover:bg-neutral-900 text-neutral-400 hover:text-neutral-200 text-sm font-medium rounded-lg transition-colors">
             REST API
