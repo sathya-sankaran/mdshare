@@ -69,37 +69,63 @@ export function createExports(manifest: SSRManifest) {
           url.pathname.startsWith("/api/ws/") &&
           request.headers.get("Upgrade") === "websocket"
         ) {
-          const id = url.pathname.split("/")[3];
-          const key = url.searchParams.get("key");
-          if (!id || !key) {
-            return Response.json({ error: "Not found" }, { status: 404 });
+          try {
+            const id = url.pathname.split("/")[3];
+            const key = url.searchParams.get("key");
+            if (!id || !key) {
+              return Response.json({ error: "Not found" }, { status: 404 });
+            }
+
+            const resolved = await resolveTokenDirect(env.DB, key);
+            if (!resolved || resolved.documentId !== id) {
+              return Response.json({ error: "Not found" }, { status: 404 });
+            }
+
+            const doBinding = env.DOCUMENT_WS;
+            if (!doBinding) {
+              return Response.json(
+                { error: "WebSocket not available" },
+                { status: 503 }
+              );
+            }
+
+            const doId = doBinding.idFromName(id);
+            const stub = doBinding.get(doId);
+            const doUrl = new URL(request.url);
+            doUrl.searchParams.set("permission", resolved.permission);
+
+            return await stub.fetch(doUrl.toString(), {
+              headers: request.headers,
+            });
+          } catch (err) {
+            console.error("WS upgrade failed", {
+              url: request.url,
+              path: url.pathname,
+              colo: (request as IncomingRequest).cf?.colo,
+              error:
+                err instanceof Error
+                  ? { name: err.name, message: err.message, stack: err.stack }
+                  : String(err),
+            });
+            throw err;
           }
-
-          const resolved = await resolveTokenDirect(env.DB, key);
-          if (!resolved || resolved.documentId !== id) {
-            return Response.json({ error: "Not found" }, { status: 404 });
-          }
-
-          const doBinding = env.DOCUMENT_WS;
-          if (!doBinding) {
-            return Response.json(
-              { error: "WebSocket not available" },
-              { status: 503 }
-            );
-          }
-
-          const doId = doBinding.idFromName(id);
-          const stub = doBinding.get(doId);
-          const doUrl = new URL(request.url);
-          doUrl.searchParams.set("permission", resolved.permission);
-
-          return stub.fetch(doUrl.toString(), {
-            headers: request.headers,
-          });
         }
 
         // Everything else goes through Astro
-        const response = await handle(manifest, app, request, env, ctx);
+        let response: Response;
+        try {
+          response = await handle(manifest, app, request, env, ctx);
+        } catch (err) {
+          console.error("Astro handler failed", {
+            url: request.url,
+            method: request.method,
+            error:
+              err instanceof Error
+                ? { name: err.name, message: err.message, stack: err.stack }
+                : String(err),
+          });
+          throw err;
+        }
 
         // Add security headers
         const headers = new Headers(response.headers);

@@ -12,32 +12,45 @@ export class DocumentWebSocket extends DurableObject {
   private connections = new Set<WebSocket>();
 
   async fetch(request: Request): Promise<Response> {
-    const url = new URL(request.url);
+    try {
+      const url = new URL(request.url);
 
-    // Non-WebSocket: broadcast an update to all connected clients (called by API routes)
-    if (request.headers.get("Upgrade") !== "websocket") {
-      if (request.method === "POST" && url.pathname.endsWith("/broadcast")) {
-        const data = await request.text();
-        for (const conn of this.ctx.getWebSockets()) {
-          if (conn.readyState === WebSocket.OPEN) {
-            conn.send(data);
+      // Non-WebSocket: broadcast an update to all connected clients (called by API routes)
+      if (request.headers.get("Upgrade") !== "websocket") {
+        if (request.method === "POST" && url.pathname.endsWith("/broadcast")) {
+          const data = await request.text();
+          for (const conn of this.ctx.getWebSockets()) {
+            if (conn.readyState === WebSocket.OPEN) {
+              conn.send(data);
+            }
           }
+          return new Response("ok");
         }
-        return new Response("ok");
+        return new Response("Expected WebSocket", { status: 426 });
       }
-      return new Response("Expected WebSocket", { status: 426 });
+
+      const permission = url.searchParams.get("permission") || "view";
+
+      const pair = new WebSocketPair();
+      const [client, server] = [pair[0], pair[1]];
+
+      // Accept with hibernation
+      this.ctx.acceptWebSocket(server, [permission]);
+      this.connections.add(server);
+
+      return new Response(null, { status: 101, webSocket: client });
+    } catch (err) {
+      console.error("DocumentWebSocket.fetch failed", {
+        url: request.url,
+        method: request.method,
+        upgrade: request.headers.get("Upgrade"),
+        error:
+          err instanceof Error
+            ? { name: err.name, message: err.message, stack: err.stack }
+            : String(err),
+      });
+      throw err;
     }
-
-    const permission = url.searchParams.get("permission") || "view";
-
-    const pair = new WebSocketPair();
-    const [client, server] = [pair[0], pair[1]];
-
-    // Accept with hibernation
-    this.ctx.acceptWebSocket(server, [permission]);
-    this.connections.add(server);
-
-    return new Response(null, { status: 101, webSocket: client });
   }
 
   /**
