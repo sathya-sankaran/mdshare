@@ -159,7 +159,7 @@ export function createExports(manifest: SSRManifest) {
             "DELETE FROM documents WHERE expires_at IS NOT NULL AND expires_at < datetime('now')"
           )
           .run();
-        console.log(
+        console.warn(
           `Cron cleanup: deleted ${result.meta?.changes || 0} expired documents`
         );
       },

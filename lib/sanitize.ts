@@ -35,11 +35,15 @@ const BINARY_SIGNATURES: [number[], string][] = [
   [[0xd0, 0xcf, 0x11, 0xe0], "MS Office legacy (DOC/XLS/PPT)"],
 ];
 
-// Dangerous Unicode ranges
+// Dangerous Unicode ranges. The 'misleading character class' and 'control regex'
+// rules below flag exactly what this code is supposed to match — joiner sequences
+// and control bytes — so they're disabled with intent.
 const BIDI_CHARS =
   /[\u202A-\u202E\u2066-\u2069\u200F\u200E\u061C\u2067\u2068]/g;
+// eslint-disable-next-line no-misleading-character-class
 const ZERO_WIDTH_CHARS = /[\u200B\u200C\u200D\uFEFF]/g;
 const DANGEROUS_CONTROL_CHARS =
+  // eslint-disable-next-line no-control-regex
   /[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g;
 
 /**

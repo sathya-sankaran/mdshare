@@ -21,7 +21,9 @@ export function DownloadButton({
           url: currentUrl,
         });
         return;
-      } catch {}
+      } catch {
+        // User dismissed the share sheet; fall through to clipboard copy.
+      }
     }
     // Fallback: copy URL to clipboard
     navigator.clipboard.writeText(currentUrl);

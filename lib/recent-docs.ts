@@ -24,7 +24,9 @@ export function saveRecentDoc(doc: Omit<RecentDoc, "visitedAt">) {
       STORAGE_KEY,
       JSON.stringify(filtered.slice(0, MAX_RECENT))
     );
-  } catch {}
+  } catch {
+    // localStorage may be unavailable (private mode, quota); silently no-op.
+  }
 }
 
 export function getRecentDocs(): RecentDoc[] {

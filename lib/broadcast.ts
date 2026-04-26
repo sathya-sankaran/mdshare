@@ -1,4 +1,3 @@
-// @ts-ignore - provided by the Workers runtime at build time
 import { env } from "cloudflare:workers";
 
 /**

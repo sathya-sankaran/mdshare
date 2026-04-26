@@ -1,9 +1,5 @@
 import { DurableObject } from "cloudflare:workers";
 
-interface WebSocketAttachment {
-  permission: string;
-}
-
 /**
  * Durable Object that manages WebSocket connections for a single document.
  * Uses the Hibernation API to sleep when no clients are connected (free tier friendly).
@@ -82,7 +78,7 @@ export class DocumentWebSocket extends DurableObject {
   /**
    * Called when a WebSocket is closed.
    */
-  async webSocketClose(ws: WebSocket, code: number, reason: string, wasClean: boolean): Promise<void> {
+  async webSocketClose(ws: WebSocket, _code: number, _reason: string, _wasClean: boolean): Promise<void> {
     this.connections.delete(ws);
     this.broadcastPresence();
   }
@@ -90,7 +86,7 @@ export class DocumentWebSocket extends DurableObject {
   /**
    * Called when a WebSocket errors.
    */
-  async webSocketError(ws: WebSocket, error: unknown): Promise<void> {
+  async webSocketError(ws: WebSocket, _error: unknown): Promise<void> {
     this.connections.delete(ws);
   }
 

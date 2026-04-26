@@ -59,6 +59,9 @@ export const CommentHighlight = Extension.create({
   },
 
   addProseMirrorPlugins() {
+    // Tiptap stores per-extension state on `this`; the ProseMirror plugin
+    // callbacks below need access to it but lose `this` binding when invoked.
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const extension = this;
 
     return [
@@ -144,14 +147,14 @@ export const CommentHighlight = Extension.create({
 
               // Map back to document positions, skipping sentinel positions (-1)
               // We need to find real character positions for the match range
-              let realCharIndex = 0;
+              const realCharIndex = 0;
               let startDocPos = -1;
               let endDocPos = -1;
 
               // Walk through the original fullText to map normalized index to positions
-              let normalizedIdx = 0;
-              let matchStart = -1;
-              let matchEnd = -1;
+              const normalizedIdx = 0;
+              const matchStart = -1;
+              const matchEnd = -1;
 
               // Rebuild the normalized-to-original index mapping
               const origChars: { char: string; posIdx: number }[] = [];
@@ -160,7 +163,7 @@ export const CommentHighlight = Extension.create({
               }
 
               // Normalize and track positions
-              let normI = 0;
+              const normI = 0;
               let inWhitespace = false;
               const normToOrig: number[] = []; // normToOrig[normalizedIndex] = original index
 

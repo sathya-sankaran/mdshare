@@ -213,7 +213,9 @@ export function DocumentView({
         flashTabTitle();
         setTimeout(() => setSaveStatus("Ready"), 2000);
       }
-    } catch {}
+    } catch {
+      // Polling failures are recoverable; the next tick will retry.
+    }
   }, [doc.id, tokenKey, flashTabTitle]);
 
   useEffect(() => {

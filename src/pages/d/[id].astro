@@ -4,6 +4,7 @@ import { DocumentView } from "../../components/DocumentView";
 import { getDB } from "../../../lib/db";
 import { resolveToken } from "../../../lib/permissions";
 import type { DocumentRow } from "../../../lib/db-types";
+import type { Permission } from "../../../lib/tokens";
 
 export const prerender = false;
 
@@ -52,7 +53,7 @@ const description = `${doc!.title || "Untitled"} — shared via mdshare`;
 <Layout title={title} description={description} ogType="article">
   <DocumentView
     document={doc!}
-    permission={permission as any}
+    permission={permission as Permission}
     tokenKey={key!}
     enableCommentBubble={true}
     client:only="react"
