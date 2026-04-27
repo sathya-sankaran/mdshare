@@ -238,7 +238,7 @@ export function DocumentView({
   const commentAnchors: CommentAnchor[] = useMemo(
     () =>
       comments
-        .filter((c) => c.anchor_text)
+        .filter((c) => c.anchor_text && !c.resolved)
         .map((c) => ({
           id: c.id,
           anchorText: c.anchor_text!,
