@@ -4,6 +4,7 @@ Allow: /docs
 Allow: /share-markdown-with-ai
 Allow: /convert-and-share-markdown
 Allow: /about
+Allow: /privacy
 Allow: /llms.txt
 
 Disallow: /api/

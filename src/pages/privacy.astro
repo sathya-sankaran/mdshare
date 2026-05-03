@@ -1,0 +1,157 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+export const prerender = true;
+
+const title = "Privacy Policy — mdshare";
+const description = "mdshare's privacy policy: what data we collect (minimal), what we don't (no accounts, no email), and your rights under GDPR and India's DPDPA.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": title,
+  "url": "https://mdshare.live/privacy",
+  "description": description,
+  "datePublished": "2026-05-03",
+  "dateModified": "2026-05-03",
+  "isPartOf": {
+    "@type": "WebSite",
+    "url": "https://mdshare.live",
+    "name": "mdshare"
+  }
+};
+---
+
+<Layout title={title} description={description} canonical="https://mdshare.live/privacy">
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <div class="min-h-screen bg-neutral-950">
+    <header class="border-b border-neutral-800 px-4 sm:px-8 py-4">
+      <div class="max-w-3xl mx-auto flex items-center justify-between">
+        <a href="/" class="text-lg font-bold text-white">
+          md<span class="text-indigo-400">share</span>
+        </a>
+        <span class="text-xs text-neutral-400 bg-neutral-900 px-2 py-1 rounded">
+          Privacy
+        </span>
+      </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
+      <div class="prose-docs">
+        <h1>Privacy Policy</h1>
+
+        <p class="text-sm text-neutral-500">Effective 2026-05-03 · Last updated 2026-05-03</p>
+
+        <p class="lead">
+          mdshare is a free markdown sharing service. No accounts, no login, minimal data — and what little we collect is described in full below.
+        </p>
+
+        <hr />
+
+        <h2 id="what-we-collect">What we collect</h2>
+        <ul>
+          <li><strong>Markdown content you upload</strong> — the document body, stored on Cloudflare D1.</li>
+          <li><strong>Comments anyone posts</strong> on a document, with the display name they choose. Comments default to "Anonymous" if no name is provided.</li>
+          <li><strong>IP address and user agent</strong>, transiently logged via Cloudflare for abuse detection. Subject to Cloudflare's standard retention policy.</li>
+          <li><strong>Aggregate page-view counts</strong> via Cloudflare Web Analytics — no personal identifiers, no cross-site tracking, no cookies.</li>
+        </ul>
+
+        <h2 id="what-we-dont-collect">What we don't collect</h2>
+        <ul>
+          <li>Email addresses — there is no signup or login mechanism</li>
+          <li>User accounts — none exist</li>
+          <li>Third-party trackers, advertising IDs, or cross-site cookies</li>
+          <li>Behavioral profiles or any data tied to identified individuals</li>
+        </ul>
+
+        <h2 id="sharing">How content is shared</h2>
+        <p>
+          Documents are accessible via share links at the permission tier the link grants
+          (admin, edit, comment, or view). We don't control who you share links with — the link
+          is the only access control. Don't paste sensitive content.
+        </p>
+
+        <h2 id="lifetime">Document lifetime</h2>
+        <p>
+          Documents and their comments auto-expire 90 days after the document's last edit.
+          Expired records are permanently deleted from our database. The admin URL for any
+          document also lets you delete it earlier.
+        </p>
+
+        <h2 id="storage">Where data is stored</h2>
+        <p>
+          Cloudflare D1 (SQLite) for documents and comments, served through Cloudflare Workers
+          across Cloudflare's global edge network. Cloudflare's privacy practices apply at the
+          infrastructure layer.
+        </p>
+
+        <hr />
+
+        <h2 id="gdpr">Your rights under GDPR (EU/EEA users)</h2>
+        <p>
+          mdshare processes the minimal personal data described above on the lawful basis of
+          legitimate interest (operating the free service) and your consent (by uploading content).
+          You have the right to:
+        </p>
+        <ul>
+          <li><strong>Access</strong> your document — anyone with the share link can view it; the admin URL gives full access.</li>
+          <li><strong>Rectify</strong> content — the admin or edit URL lets you modify the document in place.</li>
+          <li><strong>Erase</strong> content — the admin URL lets you delete the document immediately. Documents also auto-delete after 90 days.</li>
+          <li><strong>Object</strong> to processing — stop using mdshare and your data will expire within 90 days; or delete immediately via the admin URL.</li>
+          <li><strong>Lodge a complaint</strong> with your local supervisory authority.</li>
+        </ul>
+        <p>
+          Cross-border transfer: data is handled by Cloudflare, a US-headquartered provider operating
+          a global edge network. Cloudflare maintains Standard Contractual Clauses and other GDPR
+          transfer safeguards.
+        </p>
+
+        <h2 id="dpdpa">Your rights under DPDPA (India users)</h2>
+        <p>
+          The Digital Personal Data Protection Act, 2023 grants you the rights to:
+        </p>
+        <ul>
+          <li><strong>Notice</strong> — this policy serves as notice of the data processing.</li>
+          <li><strong>Access</strong> — the share or admin URL provides access to your document.</li>
+          <li><strong>Correction and erasure</strong> — via the admin URL or 90-day auto-expiry.</li>
+          <li><strong>Grievance redressal</strong> — contact us at the email below.</li>
+          <li><strong>Nominate</strong> — you may nominate another person to exercise your rights in the event of incapacity or death.</li>
+        </ul>
+        <p>
+          Consent: by uploading content to mdshare, you consent to the minimal processing described
+          above. You may withdraw consent at any time by deleting the document via the admin URL.
+        </p>
+
+        <h2 id="cookies">Cookies</h2>
+        <p>
+          mdshare itself sets no cookies. Cloudflare may set strictly-necessary cookies for security
+          and bot detection at the network edge.
+        </p>
+
+        <h2 id="changes">Changes to this policy</h2>
+        <p>
+          Material changes will be announced at <a href="/" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">mdshare.live</a>.
+          The effective date at the top reflects the most recent revision.
+        </p>
+
+        <h2 id="contact">Contact</h2>
+        <p>
+          For privacy questions, data subject requests, or grievances:
+          <a href="mailto:sathya@urbanmorph.com" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">sathya@urbanmorph.com</a>
+        </p>
+
+        <hr />
+
+        <div class="flex flex-wrap gap-3 pt-4">
+          <a href="/" class="inline-block px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors">
+            Back to mdshare →
+          </a>
+          <a href="/about" class="inline-block px-5 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 text-sm font-medium rounded-lg transition-colors">
+            About mdshare
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+</Layout>
