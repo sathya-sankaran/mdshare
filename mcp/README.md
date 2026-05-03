@@ -30,6 +30,13 @@ Config file locations:
 - **Cursor:** `~/.cursor/mcp.json`
 - **Windsurf:** `~/.codeium/windsurf/mcp_config.json`
 
+For **Claude Code / Claude Desktop**, you can skip manual config and install via the bundled plugin:
+
+```
+/plugin marketplace add urbanmorph/mdshare
+/plugin install mdshare@urbanmorph
+```
+
 ## Tools
 
 | Tool | What it does |

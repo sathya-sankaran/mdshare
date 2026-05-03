@@ -8,6 +8,13 @@ Works with: Claude, ChatGPT/Codex, Gemini CLI, Cursor, Windsurf
 Extensions: VS Code (vsix), Obsidian (BRAT or manual install)
 Tools: upload_markdown, read_document, update_document, patch_document, generate_link, list_links, revoke_link, list_comments, post_comment, resolve_comment, get_versions, list_my_documents, get_admin_url, register_document
 
+## Claude Code Plugin
+Marketplace: urbanmorph (self-marketplace at github.com/urbanmorph/mdshare)
+Install: /plugin marketplace add urbanmorph/mdshare && /plugin install mdshare@urbanmorph
+Skill: mdshare-tools (auto-invocable on "share this markdown", "publish my notes", "give me a link for this doc")
+Setup guide: https://mdshare.live/install-mdshare-plugin
+Source: https://github.com/urbanmorph/mdshare/tree/main/plugins/claude-code
+
 ## API
 Base URL: https://mdshare.live
 Documentation: https://mdshare.live/docs/raw

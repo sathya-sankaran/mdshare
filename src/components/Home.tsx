@@ -282,19 +282,27 @@ export default function Home() {
             >
               Convert PDF/DOCX
             </a>
+          </div>
+          <div className="mt-1 flex items-center justify-center flex-wrap gap-x-3 gap-y-1">
+            <a
+              href="/install-mdshare-plugin"
+              className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-2 decoration-indigo-400/40 hover:decoration-indigo-300/70 transition-colors"
+            >
+              LLM plugin
+            </a>
             <span className="text-neutral-700">|</span>
             <a
               href="/docs#vscode"
               className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-2 decoration-indigo-400/40 hover:decoration-indigo-300/70 transition-colors"
             >
-              VS Code
+              VS Code plugin
             </a>
             <span className="text-neutral-700">|</span>
             <a
               href="/docs#obsidian"
               className="text-sm text-indigo-400 hover:text-indigo-300 underline underline-offset-2 decoration-indigo-400/40 hover:decoration-indigo-300/70 transition-colors"
             >
-              Obsidian
+              Obsidian plugin
             </a>
           </div>
         </div>

@@ -43,6 +43,15 @@ npx mdshare-mcp
 
 Say *"upload my-notes.md to mdshare"* in any MCP-compatible AI tool. The MCP server reads files directly from disk (no echoing through the conversation), so it's fast even for large markdown files. [Setup guide](https://mdshare.live/share-markdown-with-ai)
 
+## Claude Code Plugin
+
+```
+/plugin marketplace add urbanmorph/mdshare
+/plugin install mdshare@urbanmorph
+```
+
+Wraps the MCP server above with a single skill — Claude reaches for it on phrases like *"share this markdown"*. [Setup guide](https://mdshare.live/install-mdshare-plugin) · [source](plugins/claude-code/)
+
 ## Tech Stack
 
 | Component | Technology |

@@ -1,0 +1,225 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+export const prerender = true;
+
+const title = "Install mdshare plugin — Claude Code & Desktop, more clients soon";
+const description = "Install mdshare in Claude Code or Claude Desktop with one command via the urbanmorph plugin marketplace. Skill-based markdown sharing, no manual MCP config required.";
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does the mdshare plugin install?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The plugin bundles the mdshare-mcp server (npm package) plus a single skill called mdshare-tools that activates Claude on natural-language requests like 'share this markdown' or 'give me a link for this doc'. Once installed, Claude can call 14 mdshare tools to upload, read, edit, comment on, and version markdown documents."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the plugin need my admin URL or any account setup?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. mdshare has no accounts. The plugin creates a local credential store on your machine for documents you upload through it, so the admin key never appears in the Claude conversation. No login, no API keys to configure."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I update the mdshare plugin?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The MCP server is published to npm and the plugin installs it via npx -y mdshare-mcp, so you get the latest published version automatically each time the plugin starts. Plugin metadata (skill instructions, manifest) updates when Claude Code refreshes the marketplace, typically on session start."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use the plugin and a manual MCP config at the same time?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can, but you don't need to. The plugin includes the same MCP server you'd configure manually. If you have both, you may end up with two registrations of the same MCP server in Claude Code — uninstall the manual one or remove it from claude_desktop_config.json."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What permissions does the plugin require?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Network access to mdshare.live (for uploading and managing documents), and read access to local files when you ask Claude to share a specific file by path. The plugin does not access user data, environment variables, or other files unless the file_path argument is explicitly passed by the user."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I uninstall the plugin?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Run /plugin uninstall mdshare@urbanmorph in any Claude Code session. This removes the plugin and its MCP server from Claude's loaded toolset. To also clear the local credential store, delete ~/.mdshare-mcp/documents.json."
+      }
+    }
+  ]
+};
+---
+
+<Layout title={title} description={description} canonical="https://mdshare.live/install-mdshare-plugin">
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <div class="min-h-screen bg-neutral-950">
+    <header class="border-b border-neutral-800 px-4 sm:px-8 py-4">
+      <div class="max-w-3xl mx-auto flex items-center justify-between">
+        <a href="/" class="text-lg font-bold text-white">
+          md<span class="text-indigo-400">share</span>
+        </a>
+        <span class="text-xs text-neutral-400 bg-neutral-900 px-2 py-1 rounded">
+          Plugin install
+        </span>
+      </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
+      <div class="prose-docs">
+        <h1>Install mdshare as a plugin</h1>
+
+        <p class="lead">
+          Add mdshare to your AI tool of choice via the easiest path — bundled plugins.
+          Today: <strong>Claude Code & Claude Desktop</strong>. Coming as we test there:
+          Cursor, OpenAI Codex, Gemini CLI.
+        </p>
+
+        <hr />
+
+        <h2 id="claude-code">Claude Code & Claude Desktop</h2>
+
+        <p>One command in any Claude Code session (or via <code>/plugin</code> in Claude Desktop):</p>
+
+        <pre><code>{`/plugin marketplace add urbanmorph/mdshare
+/plugin install mdshare@urbanmorph`}</code></pre>
+
+        <p>That installs:</p>
+        <ul class="list-disc pl-5 space-y-1 text-sm text-neutral-400">
+          <li>The mdshare MCP server — 14 tools for uploading, reading, editing, commenting on, and versioning markdown documents</li>
+          <li>A skill (<code>mdshare-tools</code>) that activates Claude on natural-language requests</li>
+        </ul>
+
+        <h3 id="how-to-use">How to use it</h3>
+
+        <p>Just talk to Claude naturally — the skill triggers on phrases like:</p>
+
+        <ul class="list-disc pl-5 space-y-1 text-sm text-neutral-400">
+          <li>"share this markdown with me"</li>
+          <li>"send this doc to my designer for feedback"</li>
+          <li>"publish these notes as a link"</li>
+          <li>"give me an edit link for this doc"</li>
+        </ul>
+
+        <p>Claude picks the right tool, infers the appropriate permission tier (view / comment / edit), and returns a hosted URL.</p>
+
+        <h3 id="uninstall">Uninstall</h3>
+
+        <pre><code>/plugin uninstall mdshare@urbanmorph</code></pre>
+
+        <p>Removes the plugin and its MCP server. To also clear the local credential store, delete <code>~/.mdshare-mcp/documents.json</code>.</p>
+
+        <hr />
+
+        <h2 id="why-plugin">Why a plugin instead of raw MCP config?</h2>
+
+        <p>
+          You can absolutely use mdshare via raw MCP config — see the
+          <a href="/share-markdown-with-ai" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">manual setup guide</a>.
+          Same underlying server, same 14 tools. The plugin adds:
+        </p>
+
+        <ul class="list-disc pl-5 space-y-1 text-sm text-neutral-400">
+          <li><strong>One-command install</strong> — no editing JSON config files</li>
+          <li><strong>The skill layer</strong> — Claude proactively reaches for mdshare on natural-language requests, instead of waiting to be told which tool to use</li>
+          <li><strong>Cleaner versioning</strong> — Claude Code refreshes the plugin metadata from the marketplace; the underlying npm package updates automatically each session</li>
+        </ul>
+
+        <hr />
+
+        <h2 id="other-clients">Other AI clients (coming soon)</h2>
+
+        <p>
+          Cursor (since Feb 2026), OpenAI Codex CLI, and Gemini CLI all have plugin / extension
+          formats with very similar shape — manifest + MCP launcher + skills. As we test mdshare
+          in each, we'll ship a plugin and add a section here.
+        </p>
+
+        <p>
+          If you want to use mdshare in one of those tools today, follow the
+          <a href="/share-markdown-with-ai" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">manual MCP setup guide</a> —
+          the same MCP server works there with a few lines of config.
+        </p>
+
+        <hr />
+
+        <h2 id="faq">FAQ</h2>
+
+        <h3>What does the mdshare plugin install?</h3>
+        <p>
+          The plugin bundles the <code>mdshare-mcp</code> server (npm package) plus a single skill
+          (<code>mdshare-tools</code>) that activates Claude on natural-language requests like
+          "share this markdown" or "give me a link for this doc". Once installed, Claude can call
+          14 mdshare tools to upload, read, edit, comment on, and version markdown documents.
+        </p>
+
+        <h3>Does the plugin need my admin URL or any account setup?</h3>
+        <p>
+          No. mdshare has no accounts. The plugin creates a local credential store on your machine
+          for documents you upload through it, so the admin key never appears in the Claude
+          conversation. No login, no API keys to configure.
+        </p>
+
+        <h3>How do I update the mdshare plugin?</h3>
+        <p>
+          The MCP server is published to npm and the plugin installs it via
+          <code>npx -y mdshare-mcp</code>, so you get the latest published version automatically
+          each time the plugin starts. Plugin metadata (skill instructions, manifest) updates
+          when Claude Code refreshes the marketplace, typically on session start.
+        </p>
+
+        <h3>Can I use the plugin and a manual MCP config at the same time?</h3>
+        <p>
+          You can, but you don't need to. The plugin includes the same MCP server you'd configure
+          manually. If you have both, you may end up with two registrations of the same MCP
+          server in Claude Code — uninstall the manual one or remove it from
+          <code>claude_desktop_config.json</code>.
+        </p>
+
+        <h3>What permissions does the plugin require?</h3>
+        <p>
+          Network access to mdshare.live (for uploading and managing documents), and read access
+          to local files when you ask Claude to share a specific file by path. The plugin does
+          not access user data, environment variables, or other files unless the
+          <code>file_path</code> argument is explicitly passed by the user.
+        </p>
+
+        <h3>How do I uninstall the plugin?</h3>
+        <p>
+          Run <code>/plugin uninstall mdshare@urbanmorph</code> in any Claude Code session.
+          This removes the plugin and its MCP server from Claude's loaded toolset. To also
+          clear the local credential store, delete <code>~/.mdshare-mcp/documents.json</code>.
+        </p>
+
+        <hr />
+
+        <div class="flex flex-wrap gap-3 pt-4">
+          <a href="/" class="inline-block px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors">
+            Try mdshare →
+          </a>
+          <a href="/share-markdown-with-ai" class="inline-block px-5 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 text-sm font-medium rounded-lg transition-colors">
+            Manual MCP setup
+          </a>
+          <a href="https://github.com/urbanmorph/mdshare/tree/main/plugins/claude-code" target="_blank" rel="noopener" class="inline-block px-5 py-2.5 bg-transparent hover:bg-neutral-900 text-neutral-400 hover:text-neutral-200 text-sm font-medium rounded-lg transition-colors">
+            Plugin source on GitHub
+          </a>
+          <a href="/about" class="inline-block px-5 py-2.5 bg-transparent hover:bg-neutral-900 text-neutral-400 hover:text-neutral-200 text-sm font-medium rounded-lg transition-colors">
+            About mdshare
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+</Layout>
