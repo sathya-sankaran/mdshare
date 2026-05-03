@@ -372,6 +372,10 @@ export default function Home() {
           Start with a blank page →
         </button>
 
+        <p className="text-center text-[11px] text-neutral-600 pt-2">
+          <a href="/privacy" className="hover:text-neutral-400 transition-colors">Privacy</a>
+        </p>
+
         {recentDocs.length > 0 && (
           <div className="mt-4 pt-4 border-t border-neutral-900">
             <p className="text-xs text-neutral-600 mb-2">Recent documents</p>
