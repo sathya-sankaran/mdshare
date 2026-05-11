@@ -52,6 +52,10 @@ Say *"upload my-notes.md to mdshare"* in any MCP-compatible AI tool. The MCP ser
 
 Wraps the MCP server above with a single skill — Claude reaches for it on phrases like *"share this markdown"*. [Setup guide](https://mdshare.live/install-mdshare-plugin) · [source](plugins/claude-code/)
 
+## Cursor Plugin
+
+Listed on [Cursor Directory](https://cursor.directory/plugins/mdshare) — click "Add to Cursor" on the listing page. Same MCP server, same skill as the Claude Code plugin. [Source](plugins/mdshare-cursor/)
+
 ## Tech Stack
 
 | Component | Technology |

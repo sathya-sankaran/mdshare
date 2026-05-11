@@ -83,8 +83,8 @@ const faqSchema = {
 
         <p class="lead">
           Add mdshare to your AI tool of choice via the easiest path — bundled plugins.
-          Today: <strong>Claude Code & Claude Desktop</strong>. Coming as we test there:
-          Cursor, OpenAI Codex, Gemini CLI.
+          Today: <strong>Claude Code & Claude Desktop</strong>, <strong>Cursor</strong>.
+          Coming as we test there: OpenAI Codex, Gemini CLI.
         </p>
 
         <hr />
@@ -123,6 +123,25 @@ const faqSchema = {
 
         <hr />
 
+        <h2 id="cursor">Cursor</h2>
+
+        <p>Listed on <a href="https://cursor.directory/plugins/mdshare" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">Cursor Directory</a> — click <strong>Add to Cursor</strong> on the listing page to install in one step.</p>
+
+        <p>Same MCP server, same 14 tools, same <code>mdshare-tools</code> skill as the Claude Code plugin. The skill activates on phrases like "share this markdown" or "give me a comment link for this doc".</p>
+
+        <p><strong>Manual install (skip the directory):</strong> add to <code>~/.cursor/mcp.json</code>:</p>
+
+        <pre><code>{`{
+  "mcpServers": {
+    "mdshare": {
+      "command": "npx",
+      "args": ["-y", "mdshare-mcp"]
+    }
+  }
+}`}</code></pre>
+
+        <hr />
+
         <h2 id="why-plugin">Why a plugin instead of raw MCP config?</h2>
 
         <p>
@@ -142,9 +161,9 @@ const faqSchema = {
         <h2 id="other-clients">Other AI clients (coming soon)</h2>
 
         <p>
-          Cursor (since Feb 2026), OpenAI Codex CLI, and Gemini CLI all have plugin / extension
-          formats with very similar shape — manifest + MCP launcher + skills. As we test mdshare
-          in each, we'll ship a plugin and add a section here.
+          OpenAI Codex CLI and Gemini CLI both have plugin / extension formats with very similar
+          shape — manifest + MCP launcher + skills. As we test mdshare in each, we'll ship a
+          plugin and add a section here.
         </p>
 
         <p>

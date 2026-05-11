@@ -37,6 +37,8 @@ For **Claude Code / Claude Desktop**, you can skip manual config and install via
 /plugin install mdshare@urbanmorph
 ```
 
+For **Cursor**, install via the [Cursor Directory listing](https://cursor.directory/plugins/mdshare) (click "Add to Cursor") instead of editing `~/.cursor/mcp.json` manually.
+
 ## Tools
 
 | Tool | What it does |

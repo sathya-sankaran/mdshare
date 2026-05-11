@@ -15,6 +15,13 @@ Skill: mdshare-tools (auto-invocable on "share this markdown", "publish my notes
 Setup guide: https://mdshare.live/install-mdshare-plugin
 Source: https://github.com/urbanmorph/mdshare/tree/main/plugins/claude-code
 
+## Cursor Plugin
+Listing: https://cursor.directory/plugins/mdshare
+Install: Click "Add to Cursor" on the directory listing
+Manual setup: paste {"mcpServers":{"mdshare":{"command":"npx","args":["-y","mdshare-mcp"]}}} into ~/.cursor/mcp.json
+Skill: mdshare-tools (auto-invocable on the same phrases as the Claude Code plugin)
+Source: https://github.com/urbanmorph/mdshare/tree/main/plugins/mdshare-cursor
+
 ## API
 Base URL: https://mdshare.live
 Documentation: https://mdshare.live/docs/raw
