@@ -5,7 +5,7 @@
 Package: npx mdshare-mcp
 Registry: io.github.sathya-sankaran/mdshare
 Works with: Claude, ChatGPT/Codex, Gemini CLI, Cursor, Windsurf
-Extensions: VS Code (vsix), Obsidian (BRAT or manual install)
+Extensions: VS Code (Marketplace), Obsidian (Community Plugins — search "mdshare")
 Tools: upload_markdown, read_document, update_document, patch_document, generate_link, list_links, revoke_link, list_comments, post_comment, resolve_comment, get_versions, list_my_documents, get_admin_url, register_document
 
 ## Claude Code Plugin
@@ -21,6 +21,12 @@ Install: Click "Add to Cursor" on the directory listing
 Manual setup: paste {"mcpServers":{"mdshare":{"command":"npx","args":["-y","mdshare-mcp"]}}} into ~/.cursor/mcp.json
 Skill: mdshare-tools (auto-invocable on the same phrases as the Claude Code plugin)
 Source: https://github.com/urbanmorph/mdshare/tree/main/plugins/mdshare-cursor
+
+## Obsidian Plugin
+Listing: https://community.obsidian.md/plugins/mdshare
+Install: Obsidian → Settings → Community Plugins → Browse → search "mdshare" → Install → Enable
+Usage: right-click any .md file → "Share on mdshare" (admin URL copied to clipboard). Selection sharing and command palette ("mdshare: Share current file") also supported.
+Source: https://github.com/urbanmorph/obsidian-mdshare
 
 ## API
 Base URL: https://mdshare.live

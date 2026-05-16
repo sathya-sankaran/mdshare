@@ -56,6 +56,10 @@ Wraps the MCP server above with a single skill — Claude reaches for it on phra
 
 Listed on [Cursor Directory](https://cursor.directory/plugins/mdshare) — click "Add to Cursor" on the listing page. Same MCP server, same skill as the Claude Code plugin. [Source](plugins/mdshare-cursor/)
 
+## Obsidian Plugin
+
+Listed in the [Obsidian Community Plugins directory](https://community.obsidian.md/plugins/mdshare) — install via `Settings → Community Plugins → Browse → search "mdshare"`. Right-click any `.md` file in your vault to share it; admin URL is copied to your clipboard. [Source](https://github.com/urbanmorph/obsidian-mdshare)
+
 ## Tech Stack
 
 | Component | Technology |
