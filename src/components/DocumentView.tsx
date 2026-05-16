@@ -472,7 +472,7 @@ export function DocumentView({
             <TiptapEditor
               content={liveContent}
               editable={editable}
-              onUpdate={handleUpdate}
+              onUpdate={editable ? handleUpdate : undefined}
               commentAnchors={commentAnchors}
               activeCommentId={activeCommentId}
               lightMode={lightEditor}
